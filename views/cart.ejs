@@ -1,0 +1,33 @@
+<%- include('partials/header') %>
+<section class="sec">
+  <div class="wrap narrow">
+    <h1 class="h2">Giỏ hàng</h1>
+    <% if (!cart.items.length) { %>
+      <p class="empty">Giỏ hàng đang trống.</p>
+      <a class="btn" href="/cua-hang">Đi mua sắm</a>
+    <% } else { %>
+      <ul class="lines">
+        <% cart.items.forEach(i => { %>
+        <li class="line">
+          <img src="<%= productImg(i.product) %>" alt="" width="80" height="80">
+          <div class="line__n"><a href="/san-pham/<%= i.product.slug %>"><%= i.product.name %></a><span><%= money(i.product.price) %></span></div>
+          <form method="post" action="/gio-hang/cap-nhat" class="qty">
+            <input type="hidden" name="_csrf" value="<%= csrf %>"><input type="hidden" name="id" value="<%= i.product.id %>">
+            <input type="number" name="qty" value="<%= i.qty %>" min="0" max="20" aria-label="Số lượng">
+            <button class="btn btn--ghost btn--sm">Cập nhật</button>
+          </form>
+          <strong><%= money(i.total) %></strong>
+        </li>
+        <% }) %>
+      </ul>
+      <div class="sum">
+        <p><span>Tạm tính</span><span><%= money(cart.subtotal) %></span></p>
+        <p><span>Phí vận chuyển</span><span><%= cart.shipping ? money(cart.shipping) : 'Miễn phí' %></span></p>
+        <% if (cart.shipping) { %><p class="note">Mua thêm <%= money(site.freeShip - cart.subtotal) %> để được freeship.</p><% } %>
+        <p class="sum__t"><span>Tổng cộng</span><span><%= money(cart.total) %></span></p>
+        <a class="btn btn--block" href="/thanh-toan">Tiến hành thanh toán</a>
+      </div>
+    <% } %>
+  </div>
+</section>
+<%- include('partials/footer') %>

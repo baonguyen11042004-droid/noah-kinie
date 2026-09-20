@@ -1,0 +1,20 @@
+<%- include('partials/header') %>
+<section class="sec">
+  <div class="wrap narrow center">
+    <p class="big">🎉</p>
+    <h1 class="h2">Cảm ơn bạn đã đặt hàng!</h1>
+    <p class="lead">Mã đơn của bạn: <strong><%= order.code %></strong>. Kinie sẽ liên hệ qua số <strong><%= order.phone %></strong> để xác nhận và nhận ảnh.</p>
+    <% if (order.payment === 'bank') { %>
+    <div class="box">
+      <h3>Thông tin chuyển khoản</h3>
+      <p>Ngân hàng: <b><%= bank.name %></b></p>
+      <p>Số tài khoản: <b><%= bank.account %></b></p>
+      <p>Chủ tài khoản: <b><%= bank.holder %></b></p>
+      <p>Số tiền: <b><%= money(order.total) %></b></p>
+      <p>Nội dung: <b><%= order.code %></b></p>
+    </div>
+    <% } %>
+    <p><a class="btn" href="/cua-hang">Tiếp tục mua sắm</a></p>
+  </div>
+</section>
+<%- include('partials/footer') %>

@@ -1,0 +1,15 @@
+<article class="card">
+  <a class="card__img" href="/san-pham/<%= p.slug %>">
+    <img src="<%= productImg(p) %>" alt="<%= p.name %>" loading="lazy" width="400" height="400">
+    <% if (p.tag) { %><span class="chip"><%= p.tag %></span><% } %>
+  </a>
+  <div class="card__b">
+    <h3><a href="/san-pham/<%= p.slug %>"><%= p.name %></a></h3>
+    <p class="price"><%= money(p.price) %><% if (p.oldPrice > p.price) { %> <s><%= money(p.oldPrice) %></s><% } %></p>
+    <form method="post" action="/gio-hang/them">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <input type="hidden" name="id" value="<%= p.id %>">
+      <button class="btn btn--ghost btn--sm" <%= p.stock < 1 ? 'disabled' : '' %>><%= p.stock < 1 ? 'Hết hàng' : 'Thêm vào giỏ' %></button>
+    </form>
+  </div>
+</article>

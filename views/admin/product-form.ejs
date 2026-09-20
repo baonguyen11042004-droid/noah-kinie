@@ -1,0 +1,19 @@
+<form method="post" action="/admin/products/save" class="form form--admin">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <input type="hidden" name="id" value="<%= p.id || '' %>">
+  <label>Tên<input name="name" value="<%= p.name || '' %>" required></label>
+  <div class="row3">
+    <label>Danh mục<select name="category"><% categories.forEach(c => { %><option value="<%= c.id %>" <%= p.category === c.id ? 'selected' : '' %>><%= c.name %></option><% }) %></select></label>
+    <label>Giá (đ)<input name="price" type="number" min="0" value="<%= p.price || 0 %>"></label>
+    <label>Giá cũ (đ)<input name="oldPrice" type="number" min="0" value="<%= p.oldPrice || 0 %>"></label>
+  </div>
+  <div class="row3">
+    <label>Tồn kho<input name="stock" type="number" min="0" value="<%= p.stock ?? 100 %>"></label>
+    <label>Nhãn (Mới, Hot…)<input name="tag" value="<%= p.tag || '' %>"></label>
+    <label>Ảnh (URL hoặc /img/…)<input name="image" value="<%= p.image || '' %>"></label>
+  </div>
+  <label>Mô tả ngắn<input name="short" value="<%= p.short || '' %>"></label>
+  <label>Mô tả chi tiết<textarea name="description" rows="3"><%= p.description || '' %></textarea></label>
+  <label class="opt"><input type="checkbox" name="featured" <%= p.featured ? 'checked' : '' %>> Hiện ở mục nổi bật trang chủ</label>
+  <button class="btn btn--sm">Lưu</button>
+</form>

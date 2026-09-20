@@ -1,0 +1,51 @@
+<%- include('../partials/header') %>
+<% const labels = { new: 'Mới', confirmed: 'Đã xác nhận', shipping: 'Đang giao', done: 'Hoàn thành', cancelled: 'Đã huỷ' }; %>
+<section class="sec"><div class="wrap">
+  <div class="sec__head">
+    <h1 class="h2">Quản trị Kinie</h1>
+    <form method="post" action="/admin/logout"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--ghost btn--sm">Đăng xuất</button></form>
+  </div>
+  <div class="stats">
+    <div><b><%= orders.length %></b>Đơn hàng</div>
+    <div><b><%= money(revenue) %></b>Doanh thu</div>
+    <div><b><%= products.length %></b>Sản phẩm</div>
+    <div><b><%= messages.length %></b>Tin nhắn</div>
+  </div>
+
+  <h2 class="h3">Đơn hàng</h2>
+  <div class="tbl"><table>
+    <tr><th>Mã</th><th>Khách</th><th>Sản phẩm</th><th>Tổng</th><th>Thanh toán</th><th>Trạng thái</th></tr>
+    <% orders.forEach(o => { %>
+    <tr>
+      <td><%= o.code %><br><small><%= new Date(o.createdAt).toLocaleString('vi-VN') %></small></td>
+      <td><%= o.name %><br><small><%= o.phone %></small><br><small><%= o.address %></small><% if (o.note) { %><br><small>“<%= o.note %>”</small><% } %></td>
+      <td><% o.items.forEach(i => { %><%= i.name %> ×<%= i.qty %><br><% }) %></td>
+      <td><%= money(o.total) %></td>
+      <td><%= o.payment === 'bank' ? 'Chuyển khoản' : 'COD' %></td>
+      <td><form method="post" action="/admin/orders/<%= o.code %>/status">
+        <input type="hidden" name="_csrf" value="<%= csrf %>">
+        <select name="status" data-autosubmit><% Object.keys(labels).forEach(k => { %><option value="<%= k %>" <%= o.status === k ? 'selected' : '' %>><%= labels[k] %></option><% }) %></select>
+      </form></td>
+    </tr>
+    <% }) %>
+    <% if (!orders.length) { %><tr><td colspan="6">Chưa có đơn hàng.</td></tr><% } %>
+  </table></div>
+
+  <h2 class="h3" id="products">Sản phẩm</h2>
+  <% products.forEach(p => { %>
+  <details class="pedit">
+    <summary><%= p.name %> — <%= money(p.price) %> (kho: <%= p.stock %>)</summary>
+    <%- include('product-form', { p, csrf, categories }) %>
+    <form method="post" action="/admin/products/<%= p.id %>/delete" data-confirm="Xoá sản phẩm này?"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--ghost btn--sm">Xoá</button></form>
+  </details>
+  <% }) %>
+  <details class="pedit" open>
+    <summary>+ Thêm sản phẩm mới</summary>
+    <%- include('product-form', { p: {}, csrf, categories }) %>
+  </details>
+
+  <h2 class="h3">Tin nhắn liên hệ</h2>
+  <% messages.forEach(m => { %><div class="box"><b><%= m.name %></b> · <a href="mailto:<%= m.email %>"><%= m.email %></a> · <small><%= new Date(m.at).toLocaleString('vi-VN') %></small><p><%= m.message %></p></div><% }) %>
+  <% if (!messages.length) { %><p class="empty">Chưa có tin nhắn.</p><% } %>
+</div></section>
+<%- include('../partials/footer') %>

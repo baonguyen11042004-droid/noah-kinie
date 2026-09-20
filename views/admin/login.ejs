@@ -1,0 +1,11 @@
+<%- include('../partials/header') %>
+<section class="sec"><div class="wrap narrow">
+  <h1 class="h2">Đăng nhập admin</h1>
+  <% if (error) { %><ul class="errors"><li><%= error %></li></ul><% } %>
+  <form method="post" action="/admin/login" class="form">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <label>Mật khẩu<input type="password" name="password" required autocomplete="current-password"></label>
+    <button class="btn">Đăng nhập</button>
+  </form>
+</div></section>
+<%- include('../partials/footer') %>

@@ -1,0 +1,74 @@
+<%- include('partials/header') %>
+<section class="hero">
+  <div class="wrap hero__in">
+    <div class="hero__t">
+      <p class="eyebrow">Ảnh nam châm handmade</p>
+      <h1>Kỷ niệm nhỏ,<br><em>đặt ngay</em> trên tủ lạnh</h1>
+      <p class="lead">Kinie in ảnh của bạn thành nam châm polaroid, vuông mini, acrylic… Mỗi chiếc là một khoảnh khắc đáng yêu, luôn ở trong tầm mắt mỗi ngày.</p>
+      <div class="hero__cta">
+        <a class="btn" href="/cua-hang">Khám phá cửa hàng →</a>
+        <a class="btn btn--ghost" href="/lien-he">Đặt in theo yêu cầu</a>
+      </div>
+      <ul class="trust"><li>♡ Giấy ảnh cao cấp</li><li>♡ Nam châm bám chắc</li><li>♡ Freeship từ <%= money(site.freeShip) %></li></ul>
+    </div>
+    <div class="hero__art" aria-hidden="true">
+      <img class="ph ph1" src="/art/polaroid-6.svg" alt="">
+      <img class="ph ph2" src="/art/round-4.svg" alt="">
+      <img class="ph ph3" src="/art/acrylic-3.svg" alt="">
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <p class="eyebrow center">Kinie làm gì</p>
+    <h2 class="center">Bốn kiểu magnet để bạn chọn</h2>
+    <div class="cats">
+      <% categories.slice(0,4).forEach((c, i) => { %>
+      <a class="cat" href="/cua-hang?cat=<%= c.id %>"><img src="/art/<%= ['polaroid-6','square-9','round-4','acrylic-3'][i] %>.svg" alt="" loading="lazy"><span><%= c.name %></span></a>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--tint">
+  <div class="wrap">
+    <div class="sec__head"><div><p class="eyebrow">Được yêu thích</p><h2>Sản phẩm nổi bật</h2></div><a class="link" href="/cua-hang">Xem tất cả →</a></div>
+    <div class="grid">
+      <% featured.forEach(p => { %><%- include('partials/card', { p }) %><% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <p class="eyebrow center">Quy trình</p>
+    <h2 class="center">Từ tấm ảnh đến chiếc magnet</h2>
+    <ol class="steps">
+      <li><b>1</b><h3>Chọn sản phẩm</h3><p>Chọn kiểu magnet và số lượng ảnh.</p></li>
+      <li><b>2</b><h3>Gửi ảnh</h3><p>Gửi ảnh qua Zalo/Instagram, Kinie chỉnh màu và căn khung.</p></li>
+      <li><b>3</b><h3>In &amp; hoàn thiện</h3><p>In, ép, cắt bo và gắn nam châm thủ công.</p></li>
+      <li><b>4</b><h3>Nhận hàng</h3><p>Đóng gói cẩn thận, giao tận nơi trong 2–4 ngày.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec sec--tint">
+  <div class="wrap">
+    <p class="eyebrow center">Lời khen</p>
+    <h2 class="center">Khách hàng nói gì</h2>
+    <div class="quotes">
+      <blockquote>“Ảnh lên màu rất đẹp, nam châm bám chắc. Mình tặng cả nhóm bạn thân, ai cũng mê!”<cite>— Ngọc Anh</cite></blockquote>
+      <blockquote>“Hộp quà đóng gói xinh xỉu, kèm thiệp viết tay làm bạn gái mình cảm động lắm.”<cite>— Minh Quân</cite></blockquote>
+      <blockquote>“Magnet acrylic nhìn sang như đồ shop nước ngoài. Sẽ ủng hộ tiếp.”<cite>— Thu Hà</cite></blockquote>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap cta">
+    <div><h2>Có ảnh muốn in?</h2><p>Nhắn Kinie qua Zalo, mình tư vấn kiểu magnet và báo giá ngay.</p></div>
+    <a class="btn" href="<%= site.zalo %>" target="_blank" rel="noopener">Nhắn Zalo</a>
+  </div>
+</section>
+<%- include('partials/footer') %>

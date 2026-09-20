@@ -1,0 +1,26 @@
+<%- include('partials/header') %>
+<section class="sec">
+  <div class="wrap">
+    <p class="eyebrow">Cửa hàng</p>
+    <h1 class="h2">Tất cả sản phẩm</h1>
+    <form class="filters" method="get" action="/cua-hang">
+      <div class="pills">
+        <a class="pill <%= !cat ? 'on' : '' %>" href="/cua-hang">Tất cả</a>
+        <% categories.forEach(c => { %><a class="pill <%= cat === c.id ? 'on' : '' %>" href="/cua-hang?cat=<%= c.id %>"><%= c.name %></a><% }) %>
+      </div>
+      <input type="hidden" name="cat" value="<%= cat %>">
+      <label class="sort">Sắp xếp
+        <select name="sort" data-autosubmit>
+          <option value="">Mặc định</option>
+          <option value="asc" <%= sort === 'asc' ? 'selected' : '' %>>Giá tăng dần</option>
+          <option value="desc" <%= sort === 'desc' ? 'selected' : '' %>>Giá giảm dần</option>
+        </select>
+      </label>
+    </form>
+    <% if (!list.length) { %><p class="empty">Chưa có sản phẩm trong mục này.</p><% } %>
+    <div class="grid">
+      <% list.forEach(p => { %><%- include('partials/card', { p }) %><% }) %>
+    </div>
+  </div>
+</section>
+<%- include('partials/footer') %>
