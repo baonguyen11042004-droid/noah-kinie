@@ -93,7 +93,7 @@ app.use((req, res, next) => {
   res.locals.cartCount = cartOf(req).count;
   res.locals.path = req.path;
   res.locals.title = '';
-  res.locals.desc = 'Kinie – in ảnh nam châm handmade: polaroid, vuông mini, acrylic. Lưu giữ khoảnh khắc trên tủ lạnh của bạn.';
+  res.locals.desc = 'Nhật ký Kinie – in ảnh nam châm handmade: polaroid, vuông mini, acrylic. Lưu giữ khoảnh khắc trên tủ lạnh của bạn.';
   next();
 });
 
@@ -120,7 +120,7 @@ app.get('/art/:id.svg', (req, res) => {
 // ---------- pages ----------
 app.get('/', (req, res) => {
   const products = db.get().products;
-  res.render('index', { title: 'Kinie – Ảnh nam châm handmade', featured: products.filter((p) => p.featured).slice(0, 4) });
+  res.render('index', { title: 'Ảnh nam châm handmade', featured: products.filter((p) => p.featured).slice(0, 4) });
 });
 
 app.get('/cua-hang', (req, res) => {
@@ -155,7 +155,7 @@ app.post('/lien-he', formLimiter, checkCsrf, async (req, res) => {
   const s = db.get();
   s.messages.unshift({ ...form, at: new Date().toISOString() });
   db.save();
-  notify('Kinie – tin nhắn mới', `${form.name} <${form.email}>\n\n${form.message}`);
+  notify('Nhật ký Kinie – tin nhắn mới', `${form.name} <${form.email}>\n\n${form.message}`);
   res.redirect('/lien-he?sent=1');
 });
 
@@ -215,7 +215,7 @@ app.post('/thanh-toan', formLimiter, checkCsrf, async (req, res) => {
   db.save();
   req.session.cart = [];
   req.session.lastOrder = code;
-  notify(`Kinie – đơn mới ${code}`, `${form.name} – ${form.phone}\n${form.address}\nTổng: ${money(order.total)} (${form.payment})\n` +
+  notify(`Nhật ký Kinie – đơn mới ${code}`, `${form.name} – ${form.phone}\n${form.address}\nTổng: ${money(order.total)} (${form.payment})\n` +
     order.items.map((i) => `- ${i.name} x${i.qty}`).join('\n'));
   res.redirect('/dat-hang-thanh-cong');
 });
@@ -304,4 +304,4 @@ app.use((err, req, res, next) => {
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Kinie chạy tại http://localhost:${port}`));
+app.listen(port, () => console.log(`Nhật ký Kinie chạy tại http://localhost:${port}`));

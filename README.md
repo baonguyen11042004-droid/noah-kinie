@@ -1,4 +1,4 @@
-# Kinie – website ảnh nam châm
+# Nhật ký Kinie – website ảnh nam châm
 
 Express + EJS, không cần bước build. Dữ liệu (sản phẩm, đơn hàng, tin nhắn) lưu trong `data/db.json`.
 

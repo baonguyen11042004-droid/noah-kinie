@@ -1,7 +1,7 @@
 {
   "name": "kinie",
   "version": "1.0.0",
-  "description": "Kinie - website bán ảnh nam châm (Express + EJS)",
+  "description": "Nhật ký Kinie - website bán ảnh nam châm (Express + EJS)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
