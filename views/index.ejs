@@ -14,14 +14,12 @@
       </ul>
     </div>
     <div class="hero__art">
-      <div class="hero__mascot">
+      <div class="hero__top">
         <span class="ribbon"><%= t('ribbon') %></span>
-        <img src="/img/mascot.jpg" alt="<%= t('mascotAlt') %>" width="280" height="310">
+        <img class="hero__mascot" src="/img/mascot.jpg" alt="<%= t('mascotAlt') %>" width="150" height="166">
       </div>
-      <div class="hero__mags" aria-hidden="true">
-        <img class="ph ph1" src="/art/p6.svg" alt="">
-        <img class="ph ph2" src="/art/p20.svg" alt="">
-        <img class="ph ph3" src="/art/p50.svg" alt="">
+      <div class="hero__cards" aria-hidden="true">
+        <% ['l', 'm', 'r'].forEach(pos => { %><div class="mag mag--<%= pos %>"><span><%= t('yourPhoto') %><br><%= t('specs')[0][1] %></span></div><% }) %>
       </div>
     </div>
   </div>
