@@ -2,14 +2,14 @@
 <section class="sec">
   <div class="wrap about">
     <div>
-      <p class="eyebrow">Về Kinie</p>
-      <h1 class="h2">Những khoảnh khắc nhỏ xứng đáng được nhìn thấy mỗi ngày</h1>
-      <p>Nhật ký Kinie bắt đầu từ một chiếc tủ lạnh trống trơn và một xấp ảnh chưa biết để đâu. Chúng mình tin rằng ảnh đẹp nhất là ảnh được đặt ở nơi ta nhìn thấy mỗi sáng.</p>
-      <p>Mỗi chiếc magnet của Kinie được in trên giấy ảnh cao cấp, ép chống nước, cắt bo và gắn nam châm thủ công – từng chi tiết đều được kiểm tra trước khi đóng gói.</p>
-      <ul class="specs"><li>Chất liệu bền màu, không bong tróc</li><li>Nam châm bám chắc, không làm xước bề mặt</li><li>Nhận in theo yêu cầu, làm quà tặng</li></ul>
-      <a class="btn" href="/cua-hang">Xem sản phẩm</a>
+      <p class="eyebrow"><%= t('aboutEyebrow') %></p>
+      <h1 class="h2"><%= t('aboutTitle') %></h1>
+      <p><%= t('aboutP1') %></p>
+      <p><%= t('aboutP2') %></p>
+      <ul class="specs"><% t('aboutList').forEach(s => { %><li><%= s %></li><% }) %></ul>
+      <a class="btn" href="/bang-gia"><%= t('aboutCta') %></a>
     </div>
-    <div class="about__art"><img src="/art/gift-box.svg" alt="Hộp quà Nhật ký Kinie" loading="lazy"></div>
+    <div class="about__art"><img src="/img/mascot.jpg" alt="<%= t('aboutAlt') %>" width="420" height="465" loading="lazy"></div>
   </div>
 </section>
 <%- include('partials/footer') %>

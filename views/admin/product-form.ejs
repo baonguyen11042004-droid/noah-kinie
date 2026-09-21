@@ -1,19 +1,20 @@
 <form method="post" action="/admin/products/save" class="form form--admin">
   <input type="hidden" name="_csrf" value="<%= csrf %>">
   <input type="hidden" name="id" value="<%= p.id || '' %>">
-  <label>Tên<input name="name" value="<%= p.name || '' %>" required></label>
+  <label>Tên (hiển thị trong đơn hàng)<input name="name" value="<%= p.name || '' %>" required></label>
   <div class="row3">
-    <label>Danh mục<select name="category"><% categories.forEach(c => { %><option value="<%= c.id %>" <%= p.category === c.id ? 'selected' : '' %>><%= c.name %></option><% }) %></select></label>
+    <label>Nhóm giá<select name="category"><% categories.forEach(c => { %><option value="<%= c.id %>" <%= p.category === c.id ? 'selected' : '' %>><%= c.name %></option><% }) %></select></label>
+    <label>Số ảnh trong gói<input name="qty" type="number" min="1" value="<%= p.qty || 1 %>"></label>
+    <label>Tặng thêm (ảnh)<input name="gift" type="number" min="0" value="<%= p.gift || 0 %>"></label>
+  </div>
+  <div class="row3">
     <label>Giá (đ)<input name="price" type="number" min="0" value="<%= p.price || 0 %>"></label>
     <label>Giá cũ (đ)<input name="oldPrice" type="number" min="0" value="<%= p.oldPrice || 0 %>"></label>
+    <label>Tồn kho<input name="stock" type="number" min="0" value="<%= p.stock ?? 999 %>"></label>
   </div>
-  <div class="row3">
-    <label>Tồn kho<input name="stock" type="number" min="0" value="<%= p.stock ?? 100 %>"></label>
-    <label>Nhãn (Mới, Hot…)<input name="tag" value="<%= p.tag || '' %>"></label>
-    <label>Ảnh (URL hoặc /img/…)<input name="image" value="<%= p.image || '' %>"></label>
-  </div>
-  <label>Mô tả ngắn<input name="short" value="<%= p.short || '' %>"></label>
-  <label>Mô tả chi tiết<textarea name="description" rows="3"><%= p.description || '' %></textarea></label>
-  <label class="opt"><input type="checkbox" name="featured" <%= p.featured ? 'checked' : '' %>> Hiện ở mục nổi bật trang chủ</label>
+  <label>Ảnh (URL hoặc /img/…, để trống dùng ảnh minh hoạ)<input name="image" value="<%= p.image || '' %>"></label>
+  <label class="opt"><input type="checkbox" name="hot" <%= p.hot ? 'checked' : '' %>> Nhãn "Bán chạy"</label>
+  <label class="opt"><input type="checkbox" name="freeship" <%= p.freeship ? 'checked' : '' %>> Gói này được free ship</label>
+  <label class="opt"><input type="checkbox" name="featured" <%= p.featured ? 'checked' : '' %>> Hiện ở mục nổi bật</label>
   <button class="btn btn--sm">Lưu</button>
 </form>

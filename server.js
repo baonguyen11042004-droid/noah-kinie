@@ -8,12 +8,13 @@ const cookieSession = require('cookie-session');
 const nodemailer = require('nodemailer');
 const db = require('./lib/db');
 const { artSvg } = require('./lib/art');
+const { LANGS, translator } = require('./lib/i18n');
 
 const app = express();
 const isProd = process.env.NODE_ENV === 'production';
 const SECRET = process.env.SESSION_SECRET || 'dev-secret-change-me';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
-const FREE_SHIP = 300000;
+const FREE_SHIP = 379000; // = giá combo 20 ảnh, từ mức này trở lên được free ship
 const SHIP_FEE = 25000;
 
 app.set('trust proxy', 1);
@@ -46,22 +47,28 @@ const money = (n) => new Intl.NumberFormat('vi-VN').format(n) + 'đ';
 const site = {
   name: 'Kinie',
   url: process.env.SITE_URL || '',
-  email: process.env.CONTACT_EMAIL || 'hello@kinie.vn',
-  phone: process.env.CONTACT_PHONE || '0900 000 000',
-  zalo: process.env.ZALO_URL || '#',
+  // Liên hệ thật của shop (cố định trong mã, không đọc từ .env để tránh bị số mẫu đè lên).
+  email: 'baonguyen.11042004@gmail.com',
+  phones: [
+    { tel: '0862328336', label: '0862 328 336', zalo: 'https://zalo.me/0862328336' },
+    { tel: '0834231021', label: '0834 231 021', zalo: 'https://zalo.me/0834231021' },
+  ],
+  phone: '0862 328 336 · 0834 231 021',
+  zalo: 'https://zalo.me/0862328336',
   instagram: process.env.INSTAGRAM_URL || '#',
   facebook: process.env.FACEBOOK_URL || '#',
   freeShip: FREE_SHIP,
 };
+// Nhóm giá; tên hiển thị theo ngôn ngữ lấy từ t('tabs')[id].
 const categories = [
-  { id: 'polaroid', name: 'Polaroid' },
-  { id: 'vuong', name: 'Vuông mini' },
-  { id: 'tron', name: 'Tròn vintage' },
-  { id: 'acrylic', name: 'Acrylic' },
-  { id: 'qua-tang', name: 'Hộp quà' },
+  { id: 'le', name: 'Ảnh lẻ' },
+  { id: 'combo', name: 'Combo tiết kiệm' },
+  { id: 'gia-dinh', name: 'Combo gia đình' },
 ];
 const str = (v, max = 200) => String(v ?? '').trim().slice(0, max);
 const productImg = (p) => p.image || `/art/${p.id}.svg`;
+// 29000 -> '29k', 1421000 -> '1.421k'
+const kfmt = (n) => new Intl.NumberFormat('vi-VN').format(Math.round(n / 1000)) + 'k';
 
 function cartOf(req) {
   const products = db.get().products;
@@ -81,10 +88,17 @@ function csrf(req) {
 }
 function checkCsrf(req, res, next) {
   if (req.body._csrf && req.body._csrf === req.session.csrf) return next();
-  res.status(403).render('error', { title: 'Phiên hết hạn', message: 'Phiên làm việc đã hết hạn, vui lòng thử lại.' });
+  res.status(403).render('error', { title: req.t('errSessionTitle'), message: req.t('errSession') });
 }
 
 app.use((req, res, next) => {
+  const lang = LANGS.includes(req.session.lang) ? req.session.lang : 'vi';
+  req.lang = lang;
+  req.t = translator(lang);
+  res.locals.lang = lang;
+  res.locals.t = req.t;
+  res.locals.langs = LANGS;
+  res.locals.kfmt = kfmt;
   res.locals.site = site;
   res.locals.money = money;
   res.locals.categories = categories;
@@ -93,7 +107,7 @@ app.use((req, res, next) => {
   res.locals.cartCount = cartOf(req).count;
   res.locals.path = req.path;
   res.locals.title = '';
-  res.locals.desc = 'Nhật ký Kinie – in ảnh nam châm handmade: polaroid, vuông mini, acrylic. Lưu giữ khoảnh khắc trên tủ lạnh của bạn.';
+  res.locals.desc = req.t('metaDesc');
   next();
 });
 
@@ -118,9 +132,27 @@ app.get('/art/:id.svg', (req, res) => {
 });
 
 // ---------- pages ----------
+// Chuyển ngôn ngữ (VI/EN), rồi quay lại đúng trang đang xem.
+app.get('/ngon-ngu/:lang', (req, res) => {
+  if (LANGS.includes(req.params.lang)) req.session.lang = req.params.lang;
+  let back = '/';
+  try {
+    const u = new URL(req.get('referer') || '', 'http://x');
+    if (u.pathname.startsWith('/') && !u.pathname.startsWith('//') && !u.pathname.startsWith('/ngon-ngu')) back = u.pathname + u.search;
+  } catch { /* dùng '/' */ }
+  res.redirect(back);
+});
+
 app.get('/', (req, res) => {
   const products = db.get().products;
-  res.render('index', { title: 'Ảnh nam châm handmade', featured: products.filter((p) => p.featured).slice(0, 4) });
+  const quick = ['p6', 'p20', 'p50'].map((id) => products.find((p) => p.id === id)).filter(Boolean);
+  res.render('index', { title: req.t('homeTitle'), quick });
+});
+
+app.get('/bang-gia', (req, res) => {
+  const all = db.get().products;
+  const groups = categories.map((c) => ({ id: c.id, rows: all.filter((p) => p.category === c.id).sort((a, b) => a.qty - b.qty) }));
+  res.render('price', { title: req.t('priceTitle'), groups });
 });
 
 app.get('/cua-hang', (req, res) => {
@@ -130,7 +162,7 @@ app.get('/cua-hang', (req, res) => {
   if (cat) list = list.filter((p) => p.category === cat);
   if (sort === 'asc') list.sort((a, b) => a.price - b.price);
   if (sort === 'desc') list.sort((a, b) => b.price - a.price);
-  res.render('shop', { title: 'Cửa hàng', list, cat, sort });
+  res.render('shop', { title: req.t('magnets'), list, cat, sort });
 });
 
 app.get('/san-pham/:slug', (req, res, next) => {
@@ -138,20 +170,20 @@ app.get('/san-pham/:slug', (req, res, next) => {
   const p = products.find((x) => x.slug === req.params.slug);
   if (!p) return next();
   const related = products.filter((x) => x.id !== p.id && x.category === p.category).slice(0, 3);
-  res.render('product', { title: p.name, desc: p.short, p, related });
+  res.render('product', { title: req.t('comboOf', p.qty), p, related });
 });
 
-app.get('/ve-kinie', (req, res) => res.render('about', { title: 'Về Kinie' }));
-app.get('/lien-he', (req, res) => res.render('contact', { title: 'Liên hệ', sent: req.query.sent === '1', errors: [], form: {} }));
+app.get('/ve-kinie', (req, res) => res.render('about', { title: req.t('about') }));
+app.get('/lien-he', (req, res) => res.render('contact', { title: req.t('contact'), sent: req.query.sent === '1', errors: [], form: {} }));
 
 app.post('/lien-he', formLimiter, checkCsrf, async (req, res) => {
   const form = { name: str(req.body.name, 80), email: str(req.body.email, 120), message: str(req.body.message, 2000) };
   if (str(req.body.website)) return res.redirect('/lien-he?sent=1'); // honeypot
   const errors = [];
-  if (!form.name) errors.push('Vui lòng nhập tên.');
-  if (!/^\S+@\S+\.\S+$/.test(form.email)) errors.push('Email chưa hợp lệ.');
-  if (form.message.length < 5) errors.push('Tin nhắn hơi ngắn.');
-  if (errors.length) return res.status(400).render('contact', { title: 'Liên hệ', sent: false, errors, form });
+  if (!form.name) errors.push(req.t('vName'));
+  if (!/^\S+@\S+\.\S+$/.test(form.email)) errors.push(req.t('vEmail'));
+  if (form.message.length < 5) errors.push(req.t('vMsg'));
+  if (errors.length) return res.status(400).render('contact', { title: req.t('contact'), sent: false, errors, form });
   const s = db.get();
   s.messages.unshift({ ...form, at: new Date().toISOString() });
   db.save();
@@ -160,7 +192,7 @@ app.post('/lien-he', formLimiter, checkCsrf, async (req, res) => {
 });
 
 // ---------- cart ----------
-app.get('/gio-hang', (req, res) => res.render('cart', { title: 'Giỏ hàng', cart: cartOf(req) }));
+app.get('/gio-hang', (req, res) => res.render('cart', { title: req.t('cartTitle'), cart: cartOf(req) }));
 
 app.post('/gio-hang/them', checkCsrf, (req, res) => {
   const id = str(req.body.id, 60);
@@ -187,7 +219,7 @@ app.post('/gio-hang/cap-nhat', checkCsrf, (req, res) => {
 app.get('/thanh-toan', (req, res) => {
   const cart = cartOf(req);
   if (!cart.items.length) return res.redirect('/gio-hang');
-  res.render('checkout', { title: 'Thanh toán', cart, errors: [], form: {} });
+  res.render('checkout', { title: req.t('checkoutTitle'), cart, errors: [], form: {} });
 });
 
 app.post('/thanh-toan', formLimiter, checkCsrf, async (req, res) => {
@@ -199,11 +231,11 @@ app.post('/thanh-toan', formLimiter, checkCsrf, async (req, res) => {
     payment: req.body.payment === 'bank' ? 'bank' : 'cod',
   };
   const errors = [];
-  if (!form.name) errors.push('Vui lòng nhập họ tên.');
-  if (!/^(\+?84|0)\d{8,10}$/.test(form.phone.replace(/[\s.-]/g, ''))) errors.push('Số điện thoại chưa hợp lệ.');
-  if (form.email && !/^\S+@\S+\.\S+$/.test(form.email)) errors.push('Email chưa hợp lệ.');
-  if (form.address.length < 8) errors.push('Vui lòng nhập địa chỉ đầy đủ.');
-  if (errors.length) return res.status(400).render('checkout', { title: 'Thanh toán', cart, errors, form });
+  if (!form.name) errors.push(req.t('vFullName'));
+  if (!/^(\+?84|0)\d{8,10}$/.test(form.phone.replace(/[\s.-]/g, ''))) errors.push(req.t('vPhone'));
+  if (form.email && !/^\S+@\S+\.\S+$/.test(form.email)) errors.push(req.t('vEmail'));
+  if (form.address.length < 8) errors.push(req.t('vAddress'));
+  if (errors.length) return res.status(400).render('checkout', { title: req.t('checkoutTitle'), cart, errors, form });
 
   const code = db.nextOrderCode();
   const order = {
@@ -224,7 +256,7 @@ app.get('/dat-hang-thanh-cong', (req, res) => {
   const order = db.get().orders.find((o) => o.code === req.session.lastOrder);
   if (!order) return res.redirect('/');
   res.render('success', {
-    title: 'Đặt hàng thành công', order,
+    title: req.t('successTitle'), order,
     bank: { name: process.env.BANK_NAME || '', account: process.env.BANK_ACCOUNT || '', holder: process.env.BANK_HOLDER || '' },
   });
 });
@@ -267,17 +299,17 @@ app.post('/admin/products/save', requireAdmin, checkCsrf, (req, res) => {
   const name = str(req.body.name, 120);
   if (!name) return res.redirect('/admin');
   const data = {
-    name, category: categories.some((c) => c.id === req.body.category) ? req.body.category : 'polaroid',
+    name, category: categories.some((c) => c.id === req.body.category) ? req.body.category : 'le',
+    qty: Math.max(1, parseInt(req.body.qty, 10) || 1), gift: Math.max(0, parseInt(req.body.gift, 10) || 0),
     price: Math.max(0, parseInt(req.body.price, 10) || 0), oldPrice: Math.max(0, parseInt(req.body.oldPrice, 10) || 0),
     stock: Math.max(0, parseInt(req.body.stock, 10) || 0), image: str(req.body.image, 300),
-    short: str(req.body.short, 200), description: str(req.body.description, 2000),
-    tag: str(req.body.tag, 20), featured: req.body.featured === 'on',
+    hot: req.body.hot === 'on', freeship: req.body.freeship === 'on', featured: req.body.featured === 'on',
   };
   const existing = s.products.find((p) => p.id === req.body.id);
   if (existing) Object.assign(existing, data);
   else {
     const id = slugify(name) + '-' + Date.now().toString(36).slice(-4);
-    s.products.push({ id, slug: id, hue: Math.floor(Math.random() * 360), specs: [], ...data });
+    s.products.push({ id, slug: id, hue: 340 + Math.floor(Math.random() * 40), ...data });
   }
   db.save();
   res.redirect('/admin#products');
@@ -293,14 +325,14 @@ app.post('/admin/products/:id/delete', requireAdmin, checkCsrf, (req, res) => {
 // ---------- seo + errors ----------
 app.get('/robots.txt', (req, res) => res.type('text/plain').send(`User-agent: *\nDisallow: /admin\nSitemap: ${site.url}/sitemap.xml\n`));
 app.get('/sitemap.xml', (req, res) => {
-  const urls = ['', '/cua-hang', '/ve-kinie', '/lien-he', ...db.get().products.map((p) => '/san-pham/' + p.slug)];
+  const urls = ['', '/bang-gia', '/cua-hang', '/ve-kinie', '/lien-he', ...db.get().products.map((p) => '/san-pham/' + p.slug)];
   res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map((u) => `<url><loc>${site.url}${u}</loc></url>`).join('')}</urlset>`);
 });
 
-app.use((req, res) => res.status(404).render('error', { title: 'Không tìm thấy', message: 'Trang bạn tìm không tồn tại.' }));
+app.use((req, res) => res.status(404).render('error', { title: req.t('errNotFoundTitle'), message: req.t('errNotFound') }));
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(500).render('error', { title: 'Có lỗi xảy ra', message: 'Có lỗi xảy ra, vui lòng thử lại sau.' });
+  res.status(500).render('error', { title: req.t('errServerTitle'), message: req.t('errServer') });
 });
 
 const port = process.env.PORT || 3000;

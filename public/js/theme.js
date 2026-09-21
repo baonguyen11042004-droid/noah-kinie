@@ -8,7 +8,7 @@
     var b = document.getElementById('theme-toggle');
     if (b) {
       b.setAttribute('aria-pressed', t === 'dark' ? 'true' : 'false');
-      b.setAttribute('aria-label', t === 'dark' ? 'Chuyển sang giao diện sáng' : 'Chuyển sang giao diện tối');
+      b.setAttribute('aria-label', t === 'dark' ? (b.getAttribute('data-to-light') || 'Light mode') : (b.getAttribute('data-to-dark') || 'Dark mode'));
     }
   }
   apply(stored() || (systemDark() ? 'dark' : 'light'));

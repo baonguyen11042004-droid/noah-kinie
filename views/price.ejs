@@ -1,0 +1,62 @@
+<%- include('partials/header') %>
+<section class="sec pricing">
+  <div class="wrap">
+    <div class="pricing__head">
+      <img class="pricing__logo" src="/img/logo.jpg" alt="Kinie Memory – Nhật ký Kinie" width="200" height="137">
+      <div class="center">
+        <p class="eyebrow"><%= t('priceEyebrow') %></p>
+        <h1 class="h2"><%= t('priceTitle') %></h1>
+        <p class="lead"><%= t('priceSub') %></p>
+      </div>
+      <img class="pricing__mascot" src="/img/mascot.jpg" alt="<%= t('mascotAlt') %>" width="150" height="166">
+    </div>
+
+    <div class="feats">
+      <% const fi = ['sparkle', 'layers', 'magnet']; t('feat').forEach((f, i) => { %>
+      <div class="feat"><span class="feat__i"><%- include('partials/icon', { name: fi[i] }) %></span><div><h3><%= f[0] %></h3><p><%= f[1] %></p></div></div>
+      <% }) %>
+    </div>
+
+    <div class="tiers">
+      <% groups.forEach(g => { %>
+      <section class="tier tier--<%= g.id %>" aria-labelledby="t-<%= g.id %>">
+        <h2 id="t-<%= g.id %>" class="tier__t"><span><%= t('tabs')[g.id] %></span></h2>
+        <ul class="prows">
+          <% g.rows.forEach(p => { %>
+          <li class="prow <%= p.hot ? 'prow--hot' : '' %>">
+            <% if (p.hot) { %><span class="sticker"><%= t('hot') %></span><% } %>
+            <span class="prow__q"><%= t('photos', p.qty) %></span>
+            <span class="prow__x">
+              <% if (p.gift) { %><span><%- include('partials/icon', { name: 'gift' }) %><%= t('gift', p.gift) %></span><% } %>
+              <% if (p.freeship) { %><span><%- include('partials/icon', { name: 'truck' }) %><%= t('freeship') %></span><% } %>
+            </span>
+            <span class="prow__p">
+              <% if (p.oldPrice > p.price) { %><s><%= kfmt(p.oldPrice) %></s><% } %>
+              <b><%= p.qty === 1 ? t('singlePrice', kfmt(p.price)) : kfmt(p.price) %></b>
+            </span>
+            <form method="post" action="/gio-hang/them" class="prow__f">
+              <input type="hidden" name="_csrf" value="<%= csrf %>">
+              <input type="hidden" name="id" value="<%= p.id %>">
+              <button class="prow__b" aria-label="<%= t('addToCart') %>: <%= t('photos', p.qty) %>" title="<%= t('addToCart') %>"><%- include('partials/icon', { name: 'bag' }) %></button>
+            </form>
+          </li>
+          <% }) %>
+        </ul>
+      </section>
+      <% }) %>
+    </div>
+
+    <ul class="specbar">
+      <li><%- include('partials/icon', { name: 'ruler' }) %><span><%= t('specs')[0][0] %></span><b><%= t('specs')[0][1] %></b></li>
+      <li><%- include('partials/icon', { name: 'layers' }) %><span><%= t('specs')[1][0] %></span><b><%= t('specs')[1][1] %></b></li>
+      <li><%- include('partials/icon', { name: 'gift' }) %><span><%= t('specs')[2][0] %></span><b><%= t('specs')[2][1] %></b></li>
+    </ul>
+
+    <div class="tipbar">
+      <span class="badge-soft"><%= t('tip') %></span>
+      <span><%= t('tipBody') %></span>
+      <a class="btn btn--zalo btn--sm" href="<%= site.zalo %>" target="_blank" rel="noopener"><%- include('partials/icon', { name: 'chat' }) %><%= t('zaloCta') %></a>
+    </div>
+  </div>
+</section>
+<%- include('partials/footer') %>

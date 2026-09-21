@@ -1,15 +1,18 @@
 <article class="card">
   <a class="card__img" href="/san-pham/<%= p.slug %>">
-    <img src="<%= productImg(p) %>" alt="<%= p.name %>" loading="lazy" width="400" height="400">
-    <% if (p.tag) { %><span class="chip"><%= p.tag %></span><% } %>
+    <img src="<%= productImg(p) %>" alt="<%= t('comboOf', p.qty) %>" loading="lazy" width="400" height="400">
+    <% if (p.hot) { %><span class="chip"><%= t('hot') %></span><% } %>
   </a>
   <div class="card__b">
-    <h3><a href="/san-pham/<%= p.slug %>"><%= p.name %></a></h3>
+    <h3><a href="/san-pham/<%= p.slug %>"><%= t('photos', p.qty) %></a></h3>
+    <% if (typeof sub !== 'undefined' && sub) { %><p class="card__sub"><%= sub %></p><% } %>
     <p class="price"><%= money(p.price) %><% if (p.oldPrice > p.price) { %> <s><%= money(p.oldPrice) %></s><% } %></p>
+    <p class="card__per">≈ <%= Math.round(p.price / p.qty / 1000) %><%= t('perPhoto') %></p>
+    <% if (p.freeship || p.gift) { %><p class="tags"><% if (p.gift) { %><span class="tag"><%- include('icon', { name: 'gift' }) %><%= t('gift', p.gift) %></span><% } %><% if (p.freeship) { %><span class="tag"><%- include('icon', { name: 'truck' }) %><%= t('freeship') %></span><% } %></p><% } %>
     <form method="post" action="/gio-hang/them">
       <input type="hidden" name="_csrf" value="<%= csrf %>">
       <input type="hidden" name="id" value="<%= p.id %>">
-      <button class="btn btn--ghost btn--sm" <%= p.stock < 1 ? 'disabled' : '' %>><%= p.stock < 1 ? 'Hết hàng' : 'Thêm vào giỏ' %></button>
+      <button class="btn btn--ghost btn--sm" <%= p.stock < 1 ? 'disabled' : '' %>><%= p.stock < 1 ? t('soldOut') : t('addToCart') %></button>
     </form>
   </div>
 </article>

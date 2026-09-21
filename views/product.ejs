@@ -1,29 +1,36 @@
 <%- include('partials/header') %>
 <section class="sec">
   <div class="wrap">
-    <p class="crumb"><a href="/">Trang chủ</a> / <a href="/cua-hang">Cửa hàng</a> / <%= p.name %></p>
+    <p class="crumb"><a href="/"><%= t('crumbHome') %></a> / <a href="/cua-hang"><%= t('magnets') %></a> / <%= t('photos', p.qty) %></p>
     <div class="pd">
-      <div class="pd__img"><img src="<%= productImg(p) %>" alt="<%= p.name %>" width="600" height="600"></div>
+      <div class="pd__img"><img src="<%= productImg(p) %>" alt="<%= t('comboOf', p.qty) %>" width="600" height="600"></div>
       <div class="pd__info">
-        <% if (p.tag) { %><span class="chip chip--static"><%= p.tag %></span><% } %>
-        <h1 class="h2"><%= p.name %></h1>
+        <% if (p.hot) { %><span class="chip chip--static"><%= t('hot') %></span><% } %>
+        <h1 class="h2"><%= t('comboOf', p.qty) %></h1>
         <p class="price price--lg"><%= money(p.price) %><% if (p.oldPrice > p.price) { %> <s><%= money(p.oldPrice) %></s><% } %></p>
-        <p class="lead"><%= p.short %></p>
+        <p class="note"><%= t('approx', Math.round(p.price / p.qty / 1000), p.qty) %></p>
+        <% if (p.freeship || p.gift) { %><p class="tags"><% if (p.gift) { %><span class="tag"><%- include('partials/icon', { name: 'gift' }) %><%= t('gift', p.gift) %></span><% } %><% if (p.freeship) { %><span class="tag"><%- include('partials/icon', { name: 'truck' }) %><%= t('freeship') %></span><% } %></p><% } %>
+        <p class="lead"><%= t('prodBody') %></p>
         <form method="post" action="/gio-hang/them" class="buy">
           <input type="hidden" name="_csrf" value="<%= csrf %>">
           <input type="hidden" name="id" value="<%= p.id %>">
-          <label>Số lượng <input type="number" name="qty" value="1" min="1" max="20"></label>
-          <button class="btn" <%= p.stock < 1 ? 'disabled' : '' %>><%= p.stock < 1 ? 'Hết hàng' : 'Thêm vào giỏ' %></button>
-          <button class="btn btn--ghost" name="next" value="checkout" <%= p.stock < 1 ? 'disabled' : '' %>>Mua ngay</button>
+          <label><%= t('qtyLabel') %> <input type="number" name="qty" value="1" min="1" max="20"></label>
+          <button class="btn" <%= p.stock < 1 ? 'disabled' : '' %>><%= p.stock < 1 ? t('soldOut') : t('addToCart') %></button>
+          <button class="btn btn--ghost" name="next" value="checkout" <%= p.stock < 1 ? 'disabled' : '' %>><%= t('buyNow') %></button>
         </form>
-        <p class="note">Sau khi đặt hàng, Kinie sẽ liên hệ để nhận ảnh của bạn qua Zalo/email.</p>
-        <h3>Mô tả</h3>
-        <p><%= p.description %></p>
-        <% if (p.specs && p.specs.length) { %><ul class="specs"><% p.specs.forEach(s => { %><li><%= s %></li><% }) %></ul><% } %>
+        <p class="note"><%= t('prodNote') %></p>
+        <ul class="specs"><% t('specList', p).forEach(s => { %><li><%= s %></li><% }) %></ul>
+        <a class="btn btn--zalo btn--sm" href="<%= site.zalo %>" target="_blank" rel="noopener"><%- include('partials/icon', { name: 'chat' }) %><%= t('zaloLong') %></a>
       </div>
     </div>
+    <h2 class="h2 mt"><%= t('detailTitle') %></h2>
+    <div class="feats">
+      <% const di = ['printer', 'drop', 'hand']; t('detailFeat').forEach((f, i) => { %>
+      <div class="feat"><span class="feat__i"><%- include('partials/icon', { name: di[i] }) %></span><div><h3><%= f[0] %></h3><p><%= f[1] %></p></div></div>
+      <% }) %>
+    </div>
     <% if (related.length) { %>
-    <h2 class="h2 mt">Có thể bạn thích</h2>
+    <h2 class="h2 mt"><%= t('related') %></h2>
     <div class="grid"><% related.forEach(r => { %><%- include('partials/card', { p: r }) %><% }) %></div>
     <% } %>
   </div>

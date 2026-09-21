@@ -1,30 +1,30 @@
 <%- include('partials/header') %>
 <section class="sec">
   <div class="wrap">
-    <h1 class="h2">Thanh toán</h1>
+    <h1 class="h2"><%= t('checkoutTitle') %></h1>
     <% if (errors.length) { %><ul class="errors" role="alert"><% errors.forEach(e => { %><li><%= e %></li><% }) %></ul><% } %>
     <div class="co">
       <form method="post" action="/thanh-toan" class="form">
         <input type="hidden" name="_csrf" value="<%= csrf %>">
-        <label>Họ và tên<input name="name" value="<%= form.name || '' %>" required autocomplete="name"></label>
+        <label><%= t('fName') %><input name="name" value="<%= form.name || '' %>" required autocomplete="name"></label>
         <div class="row2">
-          <label>Số điện thoại<input name="phone" type="tel" value="<%= form.phone || '' %>" required autocomplete="tel"></label>
-          <label>Email (không bắt buộc)<input name="email" type="email" value="<%= form.email || '' %>" autocomplete="email"></label>
+          <label><%= t('fPhone') %><input name="phone" type="tel" value="<%= form.phone || '' %>" required autocomplete="tel"></label>
+          <label><%= t('fEmail') %><input name="email" type="email" value="<%= form.email || '' %>" autocomplete="email"></label>
         </div>
-        <label>Địa chỉ nhận hàng<input name="address" value="<%= form.address || '' %>" required autocomplete="street-address"></label>
-        <label>Ghi chú (link ảnh, yêu cầu riêng…)<textarea name="note" rows="3"><%= form.note || '' %></textarea></label>
+        <label><%= t('fAddress') %><input name="address" value="<%= form.address || '' %>" required autocomplete="street-address"></label>
+        <label><%= t('fNote') %><textarea name="note" rows="3"><%= form.note || '' %></textarea></label>
         <fieldset>
-          <legend>Phương thức thanh toán</legend>
-          <label class="opt"><input type="radio" name="payment" value="cod" <%= form.payment !== 'bank' ? 'checked' : '' %>> Thanh toán khi nhận hàng (COD)</label>
-          <label class="opt"><input type="radio" name="payment" value="bank" <%= form.payment === 'bank' ? 'checked' : '' %>> Chuyển khoản ngân hàng</label>
+          <legend><%= t('payMethod') %></legend>
+          <label class="opt"><input type="radio" name="payment" value="cod" <%= form.payment !== 'bank' ? 'checked' : '' %>> <%= t('payCod') %></label>
+          <label class="opt"><input type="radio" name="payment" value="bank" <%= form.payment === 'bank' ? 'checked' : '' %>> <%= t('payBank') %></label>
         </fieldset>
-        <button class="btn btn--block">Đặt hàng</button>
+        <button class="btn btn--block"><%= t('placeOrder') %></button>
       </form>
       <aside class="sum">
-        <h3>Đơn hàng của bạn</h3>
-        <% cart.items.forEach(i => { %><p><span><%= i.product.name %> × <%= i.qty %></span><span><%= money(i.total) %></span></p><% }) %>
-        <p><span>Vận chuyển</span><span><%= cart.shipping ? money(cart.shipping) : 'Miễn phí' %></span></p>
-        <p class="sum__t"><span>Tổng</span><span><%= money(cart.total) %></span></p>
+        <h3><%= t('yourOrder') %></h3>
+        <% cart.items.forEach(i => { %><p><span><%= t('comboOf', i.product.qty) %> × <%= i.qty %></span><span><%= money(i.total) %></span></p><% }) %>
+        <p><span><%= t('shipShort') %></span><span><%= cart.shipping ? money(cart.shipping) : t('free') %></span></p>
+        <p class="sum__t"><span><%= t('total') %></span><span><%= money(cart.total) %></span></p>
       </aside>
     </div>
   </div>

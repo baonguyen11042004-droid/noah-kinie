@@ -1,23 +1,23 @@
 <%- include('partials/header') %>
 <section class="sec">
   <div class="wrap">
-    <p class="eyebrow">Cửa hàng</p>
-    <h1 class="h2">Tất cả sản phẩm</h1>
+    <p class="eyebrow"><%= t('shopEyebrow') %></p>
+    <h1 class="h2"><%= t('shopTitle') %></h1>
     <form class="filters" method="get" action="/cua-hang">
       <div class="pills">
-        <a class="pill <%= !cat ? 'on' : '' %>" href="/cua-hang">Tất cả</a>
-        <% categories.forEach(c => { %><a class="pill <%= cat === c.id ? 'on' : '' %>" href="/cua-hang?cat=<%= c.id %>"><%= c.name %></a><% }) %>
+        <a class="pill <%= !cat ? 'on' : '' %>" href="/cua-hang"><%= t('all') %></a>
+        <% categories.forEach(c => { %><a class="pill <%= cat === c.id ? 'on' : '' %>" href="/cua-hang?cat=<%= c.id %>"><%= t('tabs')[c.id] %></a><% }) %>
       </div>
       <input type="hidden" name="cat" value="<%= cat %>">
-      <label class="sort">Sắp xếp
+      <label class="sort"><%= t('sort') %>
         <select name="sort" data-autosubmit>
-          <option value="">Mặc định</option>
-          <option value="asc" <%= sort === 'asc' ? 'selected' : '' %>>Giá tăng dần</option>
-          <option value="desc" <%= sort === 'desc' ? 'selected' : '' %>>Giá giảm dần</option>
+          <option value=""><%= t('sortDefault') %></option>
+          <option value="asc" <%= sort === 'asc' ? 'selected' : '' %>><%= t('sortAsc') %></option>
+          <option value="desc" <%= sort === 'desc' ? 'selected' : '' %>><%= t('sortDesc') %></option>
         </select>
       </label>
     </form>
-    <% if (!list.length) { %><p class="empty">Chưa có sản phẩm trong mục này.</p><% } %>
+    <% if (!list.length) { %><p class="empty"><%= t('emptyCat') %></p><% } %>
     <div class="grid">
       <% list.forEach(p => { %><%- include('partials/card', { p }) %><% }) %>
     </div>

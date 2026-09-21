@@ -3,23 +3,24 @@
   <div class="wrap footer__grid">
     <div>
       <a class="logo" href="/">Nhật ký Kinie<span>♥</span></a>
-      <p>Biến những bức ảnh yêu thích thành nam châm xinh xắn – để kỷ niệm luôn ở ngay trên tủ lạnh.</p>
+      <p><%= t('footTag') %></p>
+      <img class="footer__logo" src="/img/logo.jpg" alt="Kinie Memory – Nhật ký Kinie" width="210" loading="lazy">
     </div>
     <div>
-      <h4>Cửa hàng</h4>
-      <% categories.forEach(c => { %><a href="/cua-hang?cat=<%= c.id %>"><%= c.name %></a><% }) %>
+      <h4><%= t('footShop') %></h4>
+      <a href="/bang-gia"><%= t('price') %></a>
+      <% categories.forEach(c => { %><a href="/cua-hang?cat=<%= c.id %>"><%= t('tabs')[c.id] %></a><% }) %>
     </div>
     <div>
-      <h4>Thông tin</h4>
-      <a href="/ve-kinie">Về Kinie</a>
-      <a href="/lien-he">Liên hệ</a>
-      <a href="/gio-hang">Giỏ hàng</a>
+      <h4><%= t('footInfo') %></h4>
+      <a href="/ve-kinie"><%= t('about') %></a>
+      <a href="/lien-he"><%= t('contact') %></a>
+      <a href="/gio-hang"><%= t('cart') %></a>
     </div>
     <div>
-      <h4>Kết nối</h4>
+      <h4><%= t('footConnect') %></h4>
       <a href="mailto:<%= site.email %>"><%= site.email %></a>
-      <a href="tel:<%= site.phone.replace(/\s/g,'') %>"><%= site.phone %></a>
-      <a href="<%= site.zalo %>" target="_blank" rel="noopener">Zalo</a>
+      <% site.phones.forEach(ph => { %><span class="fphone"><a href="tel:<%= ph.tel %>"><%= ph.label %></a><a href="<%= ph.zalo %>" target="_blank" rel="noopener">Zalo</a></span><% }) %>
       <a href="<%= site.instagram %>" target="_blank" rel="noopener">Instagram</a>
       <a href="<%= site.facebook %>" target="_blank" rel="noopener">Facebook</a>
     </div>

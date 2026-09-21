@@ -1,19 +1,19 @@
 <%- include('partials/header') %>
 <section class="sec">
   <div class="wrap narrow">
-    <p class="eyebrow">Liên hệ</p>
-    <h1 class="h2">Kể Kinie nghe ý tưởng của bạn</h1>
-    <% if (sent) { %><p class="ok" role="status">Cảm ơn bạn! Kinie đã nhận tin nhắn và sẽ phản hồi sớm.</p><% } %>
+    <p class="eyebrow"><%= t('contact') %></p>
+    <h1 class="h2"><%= t('contactTitle') %></h1>
+    <% if (sent) { %><p class="ok" role="status"><%= t('contactThanks') %></p><% } %>
     <% if (errors.length) { %><ul class="errors" role="alert"><% errors.forEach(e => { %><li><%= e %></li><% }) %></ul><% } %>
     <form method="post" action="/lien-he" class="form">
       <input type="hidden" name="_csrf" value="<%= csrf %>">
       <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <label>Tên<input name="name" value="<%= form.name || '' %>" required></label>
-      <label>Email<input name="email" type="email" value="<%= form.email || '' %>" required></label>
-      <label>Tin nhắn<textarea name="message" rows="5" required><%= form.message || '' %></textarea></label>
-      <button class="btn">Gửi tin nhắn</button>
+      <label><%= t('fMsgName') %><input name="name" value="<%= form.name || '' %>" required></label>
+      <label><%= t('fMsgEmail') %><input name="email" type="email" value="<%= form.email || '' %>" required></label>
+      <label><%= t('fMsg') %><textarea name="message" rows="5" required><%= form.message || '' %></textarea></label>
+      <button class="btn"><%= t('send') %></button>
     </form>
-    <p class="note">Hoặc nhắn nhanh: <a href="<%= site.zalo %>" target="_blank" rel="noopener">Zalo</a> · <a href="mailto:<%= site.email %>"><%= site.email %></a> · <%= site.phone %></p>
+    <p class="note"><%= t('quick') %> <a href="<%= site.zalo %>" target="_blank" rel="noopener">Zalo</a> · <a href="mailto:<%= site.email %>"><%= site.email %></a> · <% site.phones.forEach((ph, i) => { %><%= i ? ' · ' : '' %><a href="tel:<%= ph.tel %>"><%= ph.label %></a><% }) %></p>
   </div>
 </section>
 <%- include('partials/footer') %>
