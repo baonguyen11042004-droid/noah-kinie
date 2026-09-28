@@ -2,20 +2,21 @@
 <footer class="footer">
   <div class="wrap footer__grid">
     <div>
-      <a class="logo" href="/">Nhật ký Kinie<span>♥</span></a>
+      <a class="logo" href="<%= u('/') %>">Nhật ký Kinie<span>♥</span></a>
       <p><%= t('footTag') %></p>
       <img class="footer__logo" src="/img/logo.jpg" alt="Kinie Memory – Nhật ký Kinie" width="210" loading="lazy">
     </div>
     <div>
       <h4><%= t('footShop') %></h4>
-      <a href="/bang-gia"><%= t('price') %></a>
-      <% categories.forEach(c => { %><a href="/cua-hang?cat=<%= c.id %>"><%= t('tabs')[c.id] %></a><% }) %>
+      <a href="<%= u('/bang-gia') %>"><%= t('price') %></a>
+      <% categories.forEach(c => { %><a href="<%= u('/cua-hang') %>?cat=<%= c.id %>"><%= t('tabs')[c.id] %></a><% }) %>
     </div>
     <div>
       <h4><%= t('footInfo') %></h4>
-      <a href="/ve-kinie"><%= t('about') %></a>
-      <a href="/lien-he"><%= t('contact') %></a>
-      <a href="/gio-hang"><%= t('cart') %></a>
+      <a href="<%= u('/ve-kinie') %>"><%= t('about') %></a>
+      <a href="<%= u('/hoi-dap') %>"><%= t('faqNav') %></a>
+      <a href="<%= u('/lien-he') %>"><%= t('contact') %></a>
+      <a href="<%= u('/gio-hang') %>"><%= t('cart') %></a>
     </div>
     <div>
       <h4><%= t('footConnect') %></h4>

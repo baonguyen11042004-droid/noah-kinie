@@ -7,7 +7,7 @@
       <p><%= t('aboutP1') %></p>
       <p><%= t('aboutP2') %></p>
       <ul class="specs"><% t('aboutList').forEach(s => { %><li><%= s %></li><% }) %></ul>
-      <a class="btn" href="/bang-gia"><%= t('aboutCta') %></a>
+      <a class="btn" href="<%= u('/bang-gia') %>"><%= t('aboutCta') %></a>
     </div>
     <div class="about__art"><img src="/img/mascot.jpg" alt="<%= t('aboutAlt') %>" width="420" height="465" loading="lazy"></div>
   </div>

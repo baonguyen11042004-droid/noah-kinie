@@ -34,7 +34,7 @@
               <% if (p.oldPrice > p.price) { %><s><%= kfmt(p.oldPrice) %></s><% } %>
               <b><%= p.qty === 1 ? t('singlePrice', kfmt(p.price)) : kfmt(p.price) %></b>
             </span>
-            <form method="post" action="/gio-hang/them" class="prow__f">
+            <form method="post" action="<%= u('/gio-hang/them') %>" class="prow__f">
               <input type="hidden" name="_csrf" value="<%= csrf %>">
               <input type="hidden" name="id" value="<%= p.id %>">
               <button class="prow__b" aria-label="<%= t('addToCart') %>: <%= t('photos', p.qty) %>" title="<%= t('addToCart') %>"><%- include('partials/icon', { name: 'bag' }) %></button>

@@ -58,6 +58,7 @@ const site = {
   instagram: process.env.INSTAGRAM_URL || '#',
   facebook: process.env.FACEBOOK_URL || '#',
   freeShip: FREE_SHIP,
+  shipFee: SHIP_FEE,
 };
 // Nhóm giá; tên hiển thị theo ngôn ngữ lấy từ t('tabs')[id].
 const categories = [
@@ -88,13 +89,38 @@ function csrf(req) {
 }
 function checkCsrf(req, res, next) {
   if (req.body._csrf && req.body._csrf === req.session.csrf) return next();
-  res.status(403).render('error', { title: req.t('errSessionTitle'), message: req.t('errSession') });
+  res.status(403).render('error', { title: req.t('errSessionTitle'), message: req.t('errSession'), noindex: true });
 }
 
+// Ngôn ngữ nằm trong URL để Google lập chỉ mục được cả hai bản: /bang-gia (VI) và /en/bang-gia (EN).
+// Bỏ tiền tố /en ra khỏi req.url để các route bên dưới dùng chung.
 app.use((req, res, next) => {
-  const lang = LANGS.includes(req.session.lang) ? req.session.lang : 'vi';
-  req.lang = lang;
+  req.lang = 'vi';
+  if (/^\/en(\/|\?|$)/.test(req.url)) {
+    req.lang = 'en';
+    const rest = req.url.slice(3);
+    req.url = rest.startsWith('/') ? rest : '/' + rest;
+  }
+  next();
+});
+// Đường dẫn theo ngôn ngữ: u('/bang-gia') -> '/en/bang-gia' khi đang ở bản EN.
+const localize = (lang, p) => (lang === 'vi' ? p : p === '/' ? '/' + lang : '/' + lang + p);
+const baseUrl = (req) => (site.url || `${req.protocol}://${req.get('host')}`).replace(/\/$/, '');
+
+app.use((req, res, next) => {
+  const lang = req.lang;
+  const base = baseUrl(req);
   req.t = translator(lang);
+  req.u = (p) => localize(lang, p);
+  res.locals.u = req.u;
+  res.locals.base = base;
+  res.locals.alternates = LANGS.map((l) => ({ lang: l, href: base + localize(l, req.path) }));
+  res.locals.canonical = base + req.u(req.path);
+  res.locals.ogImage = base + '/img/logo.jpg';
+  res.locals.ogType = 'website';
+  // Giỏ hàng, thanh toán, admin: không đưa lên kết quả tìm kiếm.
+  res.locals.noindex = /^\/(gio-hang|thanh-toan|dat-hang-thanh-cong|admin)(\/|$)/.test(req.path);
+  res.locals.jsonLd = [];
   res.locals.lang = lang;
   res.locals.t = req.t;
   res.locals.langs = LANGS;
@@ -131,38 +157,63 @@ app.get('/art/:id.svg', (req, res) => {
   res.type('image/svg+xml').set('Cache-Control', 'public, max-age=86400').send(artSvg(p || { hue: 350, category: 'polaroid' }));
 });
 
-// ---------- pages ----------
-// Chuyển ngôn ngữ (VI/EN), rồi quay lại đúng trang đang xem.
-app.get('/ngon-ngu/:lang', (req, res) => {
-  if (LANGS.includes(req.params.lang)) req.session.lang = req.params.lang;
-  let back = '/';
-  try {
-    const u = new URL(req.get('referer') || '', 'http://x');
-    if (u.pathname.startsWith('/') && !u.pathname.startsWith('//') && !u.pathname.startsWith('/ngon-ngu')) back = u.pathname + u.search;
-  } catch { /* dùng '/' */ }
-  res.redirect(back);
+// ---------- structured data (JSON-LD) ----------
+const priceRange = () => {
+  const prices = db.get().products.map((p) => p.price);
+  return prices.length ? `${money(Math.min(...prices))} – ${money(Math.max(...prices))}` : undefined;
+};
+const storeLd = (req, base) => ({
+  '@context': 'https://schema.org', '@type': 'Store', '@id': base + '/#store',
+  name: 'Nhật ký Kinie', alternateName: 'Kinie Memory', url: base + req.u('/'),
+  description: req.t('descHome'), image: base + '/img/logo.jpg', logo: base + '/img/logo.jpg',
+  email: site.email, telephone: site.phones.map((p) => p.tel), priceRange: priceRange(),
+  address: { '@type': 'PostalAddress', addressCountry: 'VN' },
+  sameAs: [site.instagram, site.facebook].filter((x) => x && x !== '#'),
 });
+const crumbLd = (base, items) => ({
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: items.map(([name, url], i) => ({ '@type': 'ListItem', position: i + 1, name, item: base + url })),
+});
+
+// ---------- pages ----------
+// Link cũ chuyển ngôn ngữ bằng session: chuyển sang URL mới.
+app.get('/ngon-ngu/:lang', (req, res) => res.redirect(301, localize(LANGS.includes(req.params.lang) ? req.params.lang : 'vi', '/')));
 
 app.get('/', (req, res) => {
   const products = db.get().products;
   const quick = ['p6', 'p20', 'p50'].map((id) => products.find((p) => p.id === id)).filter(Boolean);
-  res.render('index', { title: req.t('homeTitle'), quick });
+  const base = res.locals.base;
+  res.locals.jsonLd.push(storeLd(req, base), {
+    '@context': 'https://schema.org', '@type': 'WebSite', name: 'Nhật ký Kinie', url: base + req.u('/'), inLanguage: req.t('htmlLang'),
+  });
+  res.render('index', { title: req.t('seoHome'), desc: req.t('descHome'), quick });
 });
 
 app.get('/bang-gia', (req, res) => {
   const all = db.get().products;
   const groups = categories.map((c) => ({ id: c.id, rows: all.filter((p) => p.category === c.id).sort((a, b) => a.qty - b.qty) }));
-  res.render('price', { title: req.t('priceTitle'), groups });
+  res.locals.jsonLd.push(crumbLd(res.locals.base, [[req.t('home'), req.u('/')], [req.t('price'), req.u('/bang-gia')]]));
+  res.render('price', { title: req.t('seoPrice'), desc: req.t('descPrice'), groups });
 });
 
 app.get('/cua-hang', (req, res) => {
-  const cat = str(req.query.cat, 20);
+  const cat = categories.some((c) => c.id === req.query.cat) ? req.query.cat : '';
   const sort = str(req.query.sort, 10);
   let list = [...db.get().products];
   if (cat) list = list.filter((p) => p.category === cat);
   if (sort === 'asc') list.sort((a, b) => a.price - b.price);
   if (sort === 'desc') list.sort((a, b) => b.price - a.price);
-  res.render('shop', { title: req.t('magnets'), list, cat, sort });
+  // Mỗi nhóm là một trang riêng (có ?cat=); các biến thể sắp xếp thì không cho lập chỉ mục.
+  const qs = cat ? '?cat=' + cat : '';
+  res.locals.canonical += qs;
+  res.locals.alternates.forEach((a) => { a.href += qs; });
+  res.locals.noindex = Boolean(sort);
+  const catName = cat ? req.t('tabs')[cat] : '';
+  res.render('shop', {
+    title: cat ? req.t('seoShopCat', catName) : req.t('seoShop'),
+    desc: cat ? req.t('descShopCat', catName) : req.t('descShop'),
+    list, cat, sort,
+  });
 });
 
 app.get('/san-pham/:slug', (req, res, next) => {
@@ -170,25 +221,59 @@ app.get('/san-pham/:slug', (req, res, next) => {
   const p = products.find((x) => x.slug === req.params.slug);
   if (!p) return next();
   const related = products.filter((x) => x.id !== p.id && x.category === p.category).slice(0, 3);
-  res.render('product', { title: req.t('comboOf', p.qty), p, related });
+  const base = res.locals.base;
+  const img = productImg(p);
+  if (p.image && !/\.svg$/i.test(p.image)) res.locals.ogImage = /^https?:/.test(img) ? img : base + img;
+  res.locals.ogType = 'product';
+  res.locals.jsonLd.push({
+    '@context': 'https://schema.org', '@type': 'Product',
+    name: req.t('comboOf', p.qty), sku: p.id, image: /^https?:/.test(img) ? img : base + img,
+    description: req.t('descProduct', p, money(p.price)),
+    brand: { '@type': 'Brand', name: 'Nhật ký Kinie' },
+    offers: {
+      '@type': 'Offer', url: res.locals.canonical, price: p.price, priceCurrency: 'VND',
+      availability: p.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      itemCondition: 'https://schema.org/NewCondition', seller: { '@id': base + '/#store' },
+    },
+  }, crumbLd(base, [[req.t('home'), req.u('/')], [req.t('magnets'), req.u('/cua-hang')], [req.t('photos', p.qty), req.u('/san-pham/' + p.slug)]]));
+  res.render('product', { title: req.t('seoProduct', p.qty), desc: req.t('descProduct', p, money(p.price)), p, related });
 });
 
-app.get('/ve-kinie', (req, res) => res.render('about', { title: req.t('about') }));
-app.get('/lien-he', (req, res) => res.render('contact', { title: req.t('contact'), sent: req.query.sent === '1', errors: [], form: {} }));
+app.get('/ve-kinie', (req, res) => {
+  res.locals.jsonLd.push(storeLd(req, res.locals.base));
+  res.render('about', { title: req.t('seoAbout'), desc: req.t('descAbout') });
+});
+
+app.get('/hoi-dap', (req, res) => {
+  const minPrice = Math.min(...db.get().products.filter((p) => p.qty === 1).map((p) => p.price));
+  const faq = req.t('faq', money(Number.isFinite(minPrice) ? minPrice : 29000), money(FREE_SHIP), money(SHIP_FEE));
+  res.locals.jsonLd.push({
+    '@context': 'https://schema.org', '@type': 'FAQPage',
+    mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+  }, crumbLd(res.locals.base, [[req.t('home'), req.u('/')], [req.t('faqNav'), req.u('/hoi-dap')]]));
+  res.render('faq', { title: req.t('seoFaq'), desc: req.t('descFaq'), faq });
+});
+
+const contactPage = (req, extra) => ({ title: req.t('seoContact'), desc: req.t('descContact'), sent: false, errors: [], form: {}, ...extra });
+app.get('/lien-he', (req, res) => {
+  const sent = req.query.sent === '1';
+  if (sent) res.locals.noindex = true;
+  res.render('contact', contactPage(req, { sent }));
+});
 
 app.post('/lien-he', formLimiter, checkCsrf, async (req, res) => {
   const form = { name: str(req.body.name, 80), email: str(req.body.email, 120), message: str(req.body.message, 2000) };
-  if (str(req.body.website)) return res.redirect('/lien-he?sent=1'); // honeypot
+  if (str(req.body.website)) return res.redirect(req.u('/lien-he') + '?sent=1'); // honeypot
   const errors = [];
   if (!form.name) errors.push(req.t('vName'));
   if (!/^\S+@\S+\.\S+$/.test(form.email)) errors.push(req.t('vEmail'));
   if (form.message.length < 5) errors.push(req.t('vMsg'));
-  if (errors.length) return res.status(400).render('contact', { title: req.t('contact'), sent: false, errors, form });
+  if (errors.length) return res.status(400).render('contact', contactPage(req, { errors, form }));
   const s = db.get();
   s.messages.unshift({ ...form, at: new Date().toISOString() });
   db.save();
   notify('Nhật ký Kinie – tin nhắn mới', `${form.name} <${form.email}>\n\n${form.message}`);
-  res.redirect('/lien-he?sent=1');
+  res.redirect(req.u('/lien-he') + '?sent=1');
 });
 
 // ---------- cart ----------
@@ -198,12 +283,12 @@ app.post('/gio-hang/them', checkCsrf, (req, res) => {
   const id = str(req.body.id, 60);
   const qty = Math.min(20, Math.max(1, parseInt(req.body.qty, 10) || 1));
   const p = db.get().products.find((x) => x.id === id);
-  if (!p) return res.redirect('/cua-hang');
+  if (!p) return res.redirect(req.u('/cua-hang'));
   const cart = req.session.cart || [];
   const line = cart.find((l) => l.id === id);
   if (line) line.qty = Math.min(20, line.qty + qty); else cart.push({ id, qty });
   req.session.cart = cart;
-  res.redirect(req.body.next === 'checkout' ? '/thanh-toan' : '/gio-hang');
+  res.redirect(req.u(req.body.next === 'checkout' ? '/thanh-toan' : '/gio-hang'));
 });
 
 app.post('/gio-hang/cap-nhat', checkCsrf, (req, res) => {
@@ -212,19 +297,19 @@ app.post('/gio-hang/cap-nhat', checkCsrf, (req, res) => {
   let cart = req.session.cart || [];
   cart = qty <= 0 ? cart.filter((l) => l.id !== id) : cart.map((l) => (l.id === id ? { ...l, qty: Math.min(20, qty) } : l));
   req.session.cart = cart;
-  res.redirect('/gio-hang');
+  res.redirect(req.u('/gio-hang'));
 });
 
 // ---------- checkout ----------
 app.get('/thanh-toan', (req, res) => {
   const cart = cartOf(req);
-  if (!cart.items.length) return res.redirect('/gio-hang');
+  if (!cart.items.length) return res.redirect(req.u('/gio-hang'));
   res.render('checkout', { title: req.t('checkoutTitle'), cart, errors: [], form: {} });
 });
 
 app.post('/thanh-toan', formLimiter, checkCsrf, async (req, res) => {
   const cart = cartOf(req);
-  if (!cart.items.length) return res.redirect('/gio-hang');
+  if (!cart.items.length) return res.redirect(req.u('/gio-hang'));
   const form = {
     name: str(req.body.name, 80), phone: str(req.body.phone, 20), email: str(req.body.email, 120),
     address: str(req.body.address, 250), note: str(req.body.note, 500),
@@ -249,12 +334,12 @@ app.post('/thanh-toan', formLimiter, checkCsrf, async (req, res) => {
   req.session.lastOrder = code;
   notify(`Nhật ký Kinie – đơn mới ${code}`, `${form.name} – ${form.phone}\n${form.address}\nTổng: ${money(order.total)} (${form.payment})\n` +
     order.items.map((i) => `- ${i.name} x${i.qty}`).join('\n'));
-  res.redirect('/dat-hang-thanh-cong');
+  res.redirect(req.u('/dat-hang-thanh-cong'));
 });
 
 app.get('/dat-hang-thanh-cong', (req, res) => {
   const order = db.get().orders.find((o) => o.code === req.session.lastOrder);
-  if (!order) return res.redirect('/');
+  if (!order) return res.redirect(req.u('/'));
   res.render('success', {
     title: req.t('successTitle'), order,
     bank: { name: process.env.BANK_NAME || '', account: process.env.BANK_ACCOUNT || '', holder: process.env.BANK_HOLDER || '' },
@@ -323,15 +408,32 @@ app.post('/admin/products/:id/delete', requireAdmin, checkCsrf, (req, res) => {
 });
 
 // ---------- seo + errors ----------
-app.get('/robots.txt', (req, res) => res.type('text/plain').send(`User-agent: *\nDisallow: /admin\nSitemap: ${site.url}/sitemap.xml\n`));
+app.get('/robots.txt', (req, res) => res.type('text/plain').send(
+  `User-agent: *\nDisallow: /admin\nDisallow: /en/admin\nDisallow: /ngon-ngu/\n\nSitemap: ${baseUrl(req)}/sitemap.xml\n`));
+
+// Mỗi trang có cả bản VI và EN, khai báo cặp hreflang cho Google.
 app.get('/sitemap.xml', (req, res) => {
-  const urls = ['', '/bang-gia', '/cua-hang', '/ve-kinie', '/lien-he', ...db.get().products.map((p) => '/san-pham/' + p.slug)];
-  res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map((u) => `<url><loc>${site.url}${u}</loc></url>`).join('')}</urlset>`);
+  const base = baseUrl(req);
+  const pages = [
+    ['/', '1.0'], ['/bang-gia', '0.9'], ['/cua-hang', '0.8'],
+    ...categories.map((c) => ['/cua-hang?cat=' + c.id, '0.7']),
+    ['/hoi-dap', '0.7'], ['/ve-kinie', '0.6'], ['/lien-he', '0.5'],
+    ...db.get().products.map((p) => ['/san-pham/' + p.slug, '0.6']),
+  ];
+  const loc = (l, p) => { const [path, q] = p.split('?'); return base + localize(l, path) + (q ? '?' + q.replace(/&/g, '&amp;') : ''); };
+  const links = (p) => LANGS.map((l) => `<xhtml:link rel="alternate" hreflang="${l}" href="${loc(l, p)}"/>`).join('') +
+    `<xhtml:link rel="alternate" hreflang="x-default" href="${loc('vi', p)}"/>`;
+  const body = pages.flatMap(([p, pr]) => LANGS.map((l) => `<url><loc>${loc(l, p)}</loc>${links(p)}<priority>${pr}</priority></url>`)).join('');
+  res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${body}</urlset>`);
 });
 
-app.use((req, res) => res.status(404).render('error', { title: req.t('errNotFoundTitle'), message: req.t('errNotFound') }));
+app.use((req, res) => {
+  res.locals.noindex = true;
+  res.status(404).render('error', { title: req.t('errNotFoundTitle'), message: req.t('errNotFound') });
+});
 app.use((err, req, res, next) => {
   console.error(err);
+  res.locals.noindex = true;
   res.status(500).render('error', { title: req.t('errServerTitle'), message: req.t('errServer') });
 });
 

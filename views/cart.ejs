@@ -4,14 +4,14 @@
     <h1 class="h2"><%= t('cartTitle') %></h1>
     <% if (!cart.items.length) { %>
       <p class="empty"><%= t('cartEmpty') %></p>
-      <a class="btn" href="/bang-gia"><%= t('shopNow') %></a>
+      <a class="btn" href="<%= u('/bang-gia') %>"><%= t('shopNow') %></a>
     <% } else { %>
       <ul class="lines">
         <% cart.items.forEach(i => { %>
         <li class="line">
           <img src="<%= productImg(i.product) %>" alt="" width="80" height="80">
-          <div class="line__n"><a href="/san-pham/<%= i.product.slug %>"><%= t('comboOf', i.product.qty) %></a><span><%= money(i.product.price) %></span></div>
-          <form method="post" action="/gio-hang/cap-nhat" class="qty">
+          <div class="line__n"><a href="<%= u('/san-pham/' + i.product.slug) %>"><%= t('comboOf', i.product.qty) %></a><span><%= money(i.product.price) %></span></div>
+          <form method="post" action="<%= u('/gio-hang/cap-nhat') %>" class="qty">
             <input type="hidden" name="_csrf" value="<%= csrf %>"><input type="hidden" name="id" value="<%= i.product.id %>">
             <input type="number" name="qty" value="<%= i.qty %>" min="0" max="20" aria-label="<%= t('qtyLabel') %>">
             <button class="btn btn--ghost btn--sm"><%= t('update') %></button>
@@ -25,7 +25,7 @@
         <p><span><%= t('shipping') %></span><span><%= cart.shipping ? money(cart.shipping) : t('free') %></span></p>
         <% if (cart.shipping) { %><p class="note"><%= t('freeshipHint', money(site.freeShip - cart.subtotal)) %></p><% } %>
         <p class="sum__t"><span><%= t('totalFull') %></span><span><%= money(cart.total) %></span></p>
-        <a class="btn btn--block" href="/thanh-toan"><%= t('checkoutGo') %></a>
+        <a class="btn btn--block" href="<%= u('/thanh-toan') %>"><%= t('checkoutGo') %></a>
       </div>
     <% } %>
   </div>

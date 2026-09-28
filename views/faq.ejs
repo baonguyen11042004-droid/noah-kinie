@@ -1,0 +1,25 @@
+<%- include('partials/header') %>
+<section class="sec">
+  <div class="wrap narrow">
+    <p class="crumb"><a href="<%= u('/') %>"><%= t('crumbHome') %></a> / <%= t('faqNav') %></p>
+    <p class="eyebrow"><%= t('faqEyebrow') %></p>
+    <h1 class="h2"><%= t('faqTitle') %></h1>
+    <p class="lead"><%= t('faqSub') %></p>
+    <div class="faq">
+      <% faq.forEach(([q, a], i) => { %>
+      <details <%= i === 0 ? 'open' : '' %>>
+        <summary><h2 class="faq__q"><%= q %></h2></summary>
+        <p><%= a %></p>
+      </details>
+      <% }) %>
+    </div>
+    <div class="cta mt">
+      <div><h2><%= t('faqMore') %></h2><p><%= t('ctaBody') %></p></div>
+      <div class="hero__cta">
+        <a class="btn btn--zalo" href="<%= site.zalo %>" target="_blank" rel="noopener"><%- include('partials/icon', { name: 'chat' }) %><%= t('zaloCta') %></a>
+        <a class="btn btn--ghost" href="<%= u('/bang-gia') %>"><%= t('aboutCta') %></a>
+      </div>
+    </div>
+  </div>
+</section>
+<%- include('partials/footer') %>

@@ -36,3 +36,12 @@ Cần gói có **Node.js Web Apps** (Business Web Hosting, Cloud, hoặc VPS).
 - Cookie giỏ hàng dùng `secure` khi `NODE_ENV=production`, nên site phải chạy HTTPS.
 - Muốn dùng ảnh thật: chép ảnh vào `public/img/`, rồi điền `/img/ten-anh.jpg` vào ô "Ảnh" của sản phẩm trong admin.
 - Muốn nhận email khi có đơn: điền `SMTP_*` và `NOTIFY_TO`.
+- Chạy thử trên máy (http://localhost) thì đặt `NODE_ENV=development`, nếu không giỏ hàng sẽ báo "Phiên hết hạn".
+
+## SEO
+- Bản tiếng Việt ở `/...`, bản tiếng Anh ở `/en/...`; mỗi trang có `canonical` và `hreflang` trỏ sang bản còn lại.
+- `SITE_URL` phải là tên miền thật (vd `https://kinie.vn`): dùng cho canonical, `og:url`, `sitemap.xml`, `robots.txt`.
+- Tiêu đề và mô tả từng trang nằm ở các khoá `seo*` / `desc*` trong `lib/i18n.js`; nội dung hỏi đáp ở khoá `faq`.
+- Dữ liệu có cấu trúc (JSON-LD): `Store` (trang chủ, Về Kinie), `Product` (trang sản phẩm), `FAQPage` (`/hoi-dap`), `BreadcrumbList`.
+- Giỏ hàng, thanh toán, admin, trang lỗi và các biến thể sắp xếp (`?sort=`) có `noindex`.
+- Sau khi deploy: khai báo `https://<tên-miền>/sitemap.xml` trong Google Search Console, kiểm tra JSON-LD bằng Rich Results Test.

@@ -262,6 +262,18 @@ small{color:var(--ink2)}
 .theme .i-moon{display:none}
 :root[data-theme=dark] .theme .i-sun{display:none}
 :root[data-theme=dark] .theme .i-moon{display:block}
+/* hỏi đáp */
+.mt-s{margin-top:1.6rem}
+.faq{display:grid;gap:12px;margin-top:24px}
+.faq details{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:4px 20px}
+.faq details[open]{border-color:var(--blush);box-shadow:var(--shadow)}
+.faq summary{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;list-style:none;padding:14px 0}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:'+';flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--peach);color:var(--rose-d);font-weight:900}
+.faq details[open] summary::after{content:'–'}
+.faq__q{font-family:var(--sans);font-size:1.02rem;font-weight:800;text-transform:none;letter-spacing:0;margin:0}
+.faq details p{color:var(--ink2);padding:0 0 16px}
+.faq details{transition:background-color .25s,border-color .25s}
 body,.nav,.card,.cat,.sum,.line,.pedit,.tbl,blockquote,input,textarea,select{transition:background-color .25s,color .25s,border-color .25s}
 @media (max-width:1000px){.menu{gap:16px}.logo{font-size:1.3rem}}
 @media (max-width:900px){

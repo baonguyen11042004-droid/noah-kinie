@@ -4,7 +4,7 @@
     <h1 class="h2"><%= t('checkoutTitle') %></h1>
     <% if (errors.length) { %><ul class="errors" role="alert"><% errors.forEach(e => { %><li><%= e %></li><% }) %></ul><% } %>
     <div class="co">
-      <form method="post" action="/thanh-toan" class="form">
+      <form method="post" action="<%= u('/thanh-toan') %>" class="form">
         <input type="hidden" name="_csrf" value="<%= csrf %>">
         <label><%= t('fName') %><input name="name" value="<%= form.name || '' %>" required autocomplete="name"></label>
         <div class="row2">

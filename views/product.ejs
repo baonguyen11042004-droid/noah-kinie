@@ -1,9 +1,9 @@
 <%- include('partials/header') %>
 <section class="sec">
   <div class="wrap">
-    <p class="crumb"><a href="/"><%= t('crumbHome') %></a> / <a href="/cua-hang"><%= t('magnets') %></a> / <%= t('photos', p.qty) %></p>
+    <p class="crumb"><a href="<%= u('/') %>"><%= t('crumbHome') %></a> / <a href="<%= u('/cua-hang') %>"><%= t('magnets') %></a> / <%= t('photos', p.qty) %></p>
     <div class="pd">
-      <div class="pd__img"><img src="<%= productImg(p) %>" alt="<%= t('comboOf', p.qty) %>" width="600" height="600"></div>
+      <div class="pd__img"><img src="<%= productImg(p) %>" alt="<%= t('prodAlt', p) %>" width="600" height="600"></div>
       <div class="pd__info">
         <% if (p.hot) { %><span class="chip chip--static"><%= t('hot') %></span><% } %>
         <h1 class="h2"><%= t('comboOf', p.qty) %></h1>
@@ -11,14 +11,14 @@
         <p class="note"><%= t('approx', Math.round(p.price / p.qty / 1000), p.qty) %></p>
         <% if (p.freeship || p.gift) { %><p class="tags"><% if (p.gift) { %><span class="tag"><%- include('partials/icon', { name: 'gift' }) %><%= t('gift', p.gift) %></span><% } %><% if (p.freeship) { %><span class="tag"><%- include('partials/icon', { name: 'truck' }) %><%= t('freeship') %></span><% } %></p><% } %>
         <p class="lead"><%= t('prodBody') %></p>
-        <form method="post" action="/gio-hang/them" class="buy">
+        <form method="post" action="<%= u('/gio-hang/them') %>" class="buy">
           <input type="hidden" name="_csrf" value="<%= csrf %>">
           <input type="hidden" name="id" value="<%= p.id %>">
           <label><%= t('qtyLabel') %> <input type="number" name="qty" value="1" min="1" max="20"></label>
           <button class="btn" <%= p.stock < 1 ? 'disabled' : '' %>><%= p.stock < 1 ? t('soldOut') : t('addToCart') %></button>
           <button class="btn btn--ghost" name="next" value="checkout" <%= p.stock < 1 ? 'disabled' : '' %>><%= t('buyNow') %></button>
         </form>
-        <p class="note"><%= t('prodNote') %></p>
+        <p class="note"><%= t('prodNote') %> <a class="link" href="<%= u('/hoi-dap') %>"><%= t('faqLink') %></a></p>
         <ul class="specs"><% t('specList', p).forEach(s => { %><li><%= s %></li><% }) %></ul>
         <a class="btn btn--zalo btn--sm" href="<%= site.zalo %>" target="_blank" rel="noopener"><%- include('partials/icon', { name: 'chat' }) %><%= t('zaloLong') %></a>
       </div>

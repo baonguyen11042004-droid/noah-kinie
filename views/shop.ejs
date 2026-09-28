@@ -3,10 +3,10 @@
   <div class="wrap">
     <p class="eyebrow"><%= t('shopEyebrow') %></p>
     <h1 class="h2"><%= t('shopTitle') %></h1>
-    <form class="filters" method="get" action="/cua-hang">
+    <form class="filters" method="get" action="<%= u('/cua-hang') %>">
       <div class="pills">
-        <a class="pill <%= !cat ? 'on' : '' %>" href="/cua-hang"><%= t('all') %></a>
-        <% categories.forEach(c => { %><a class="pill <%= cat === c.id ? 'on' : '' %>" href="/cua-hang?cat=<%= c.id %>"><%= t('tabs')[c.id] %></a><% }) %>
+        <a class="pill <%= !cat ? 'on' : '' %>" href="<%= u('/cua-hang') %>"><%= t('all') %></a>
+        <% categories.forEach(c => { %><a class="pill <%= cat === c.id ? 'on' : '' %>" href="<%= u('/cua-hang') %>?cat=<%= c.id %>"><%= t('tabs')[c.id] %></a><% }) %>
       </div>
       <input type="hidden" name="cat" value="<%= cat %>">
       <label class="sort"><%= t('sort') %>

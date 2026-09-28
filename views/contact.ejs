@@ -5,7 +5,7 @@
     <h1 class="h2"><%= t('contactTitle') %></h1>
     <% if (sent) { %><p class="ok" role="status"><%= t('contactThanks') %></p><% } %>
     <% if (errors.length) { %><ul class="errors" role="alert"><% errors.forEach(e => { %><li><%= e %></li><% }) %></ul><% } %>
-    <form method="post" action="/lien-he" class="form">
+    <form method="post" action="<%= u('/lien-he') %>" class="form">
       <input type="hidden" name="_csrf" value="<%= csrf %>">
       <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
       <label><%= t('fMsgName') %><input name="name" value="<%= form.name || '' %>" required></label>
@@ -14,6 +14,7 @@
       <button class="btn"><%= t('send') %></button>
     </form>
     <p class="note"><%= t('quick') %> <a href="<%= site.zalo %>" target="_blank" rel="noopener">Zalo</a> · <a href="mailto:<%= site.email %>"><%= site.email %></a> · <% site.phones.forEach((ph, i) => { %><%= i ? ' · ' : '' %><a href="tel:<%= ph.tel %>"><%= ph.label %></a><% }) %></p>
+    <p class="note"><a class="link" href="<%= u('/hoi-dap') %>"><%= t('faqLink') %></a></p>
   </div>
 </section>
 <%- include('partials/footer') %>
