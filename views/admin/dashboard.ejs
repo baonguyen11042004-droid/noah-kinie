@@ -2,7 +2,7 @@
 <% const labels = { new: 'Mới', confirmed: 'Đã xác nhận', shipping: 'Đang giao', done: 'Hoàn thành', cancelled: 'Đã huỷ' }; %>
 <section class="sec"><div class="wrap">
   <div class="sec__head">
-    <h1 class="h2">Quản trị Nhật ký Kinie</h1>
+    <h1 class="h2">Quản trị Kinie</h1>
     <form method="post" action="/admin/logout"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--ghost btn--sm">Đăng xuất</button></form>
   </div>
   <div class="stats">
@@ -19,7 +19,7 @@
     <tr>
       <td><%= o.code %><br><small><%= new Date(o.createdAt).toLocaleString('vi-VN') %></small></td>
       <td><%= o.name %><br><small><%= o.phone %></small><br><small><%= o.address %></small><% if (o.note) { %><br><small>“<%= o.note %>”</small><% } %></td>
-      <td><% o.items.forEach(i => { %><%= i.name %> ×<%= i.qty %><br><% }) %></td>
+      <td><% o.items.forEach(i => { %><%= i.name %> ×<%= i.qty %><br><small>Ảnh: <% if (i.photos) { %><a class="link" href="<%= i.photos %>" target="_blank" rel="noopener noreferrer nofollow">mở link ↗</a><% } else { %>gửi qua Zalo<% } %></small><br><% }) %></td>
       <td><%= money(o.total) %></td>
       <td><%= o.payment === 'bank' ? 'Chuyển khoản' : 'COD' %></td>
       <td><form method="post" action="/admin/orders/<%= o.code %>/status">

@@ -1,0 +1,6 @@
+<article class="post-card">
+  <p class="post-card__d"><%= new Date(post.date).toLocaleDateString('vi-VN') %></p>
+  <h3><a href="/blog/<%= post.slug %>"><%= post.title %></a></h3>
+  <p><%= post.desc %></p>
+  <a class="link" href="/blog/<%= post.slug %>"><%= t('readMore') %></a>
+</article>

@@ -10,6 +10,18 @@
   document.querySelectorAll('[data-autosubmit]').forEach(function (el) {
     el.addEventListener('change', function () { el.form.submit(); });
   });
+  // Bước gửi ảnh: chỉ bắt buộc nhập link khi khách chọn "dán link album".
+  var link = document.querySelector('[data-photo-link]');
+  var modes = document.querySelectorAll('[data-photo-mode]');
+  function syncPhoto() {
+    var useLink = document.querySelector('[data-photo-mode][value=link]').checked;
+    link.hidden = !useLink;
+    link.querySelector('input').required = useLink;
+  }
+  if (link && modes.length) {
+    modes.forEach(function (m) { m.addEventListener('change', syncPhoto); });
+    syncPhoto();
+  }
   document.querySelectorAll('form[data-confirm]').forEach(function (f) {
     f.addEventListener('submit', function (e) {
       if (!window.confirm(f.getAttribute('data-confirm'))) e.preventDefault();

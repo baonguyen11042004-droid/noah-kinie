@@ -1,0 +1,42 @@
+<%- include('partials/header') %>
+<section class="sec">
+  <div class="wrap narrow">
+    <p class="crumb"><a href="/"><%= t('crumbHome') %></a> / <%= l.h1 %></p>
+    <p class="eyebrow"><%= t('occasionEyebrow') %> · <%= l.nav %></p>
+    <h1 class="h2"><%= l.h1 %></h1>
+    <p class="lead"><%= l.intro %></p>
+    <div class="hero__cta">
+      <a class="btn" href="/bang-gia"><%- include('partials/icon', { name: 'bag' }) %><%= t('aboutCta') %></a>
+      <a class="btn btn--zalo" href="<%= site.zalo %>" target="_blank" rel="noopener"><%- include('partials/icon', { name: 'chat' }) %><%= t('zaloCta') %></a>
+    </div>
+    <div class="prose">
+      <% l.sections.forEach(([h, p, list]) => { %>
+      <h2><%= h %></h2>
+      <p><%= p %></p>
+      <% if (list) { %><ul><% list.forEach(li => { %><li><%= li %></li><% }) %></ul><% } %>
+      <% }) %>
+    </div>
+  </div>
+  <div class="wrap">
+    <h2 class="h2 mt center">Combo gợi ý</h2>
+    <div class="grid"><% combos.forEach(p => { %><%- include('partials/card', { p }) %><% }) %></div>
+  </div>
+  <div class="wrap narrow">
+    <% if (l.faq.length) { %>
+    <h2 class="h2 mt"><%= t('faqNav') %></h2>
+    <div class="faq">
+      <% l.faq.forEach(([q, a]) => { %><details><summary><h3 class="faq__q"><%= q %></h3></summary><p><%= a %></p></details><% }) %>
+    </div>
+    <p class="mt-s"><a class="link" href="/hoi-dap"><%= t('faqLink') %></a></p>
+    <% } %>
+    <h2 class="h2 mt"><%= t('occasionTitle') %></h2>
+    <ul class="occ occ--sm">
+      <% others.forEach(o => { %><li><a href="/<%= o.slug %>"><b><%= o.nav %></b><span><%= o.h1 %></span></a></li><% }) %>
+    </ul>
+    <div class="cta mt">
+      <div><h2><%= t('ctaTitle') %></h2><p><%= t('ctaBody') %></p></div>
+      <a class="btn btn--zalo" href="<%= site.zalo %>" target="_blank" rel="noopener"><%- include('partials/icon', { name: 'chat' }) %><%= t('zaloCta') %></a>
+    </div>
+  </div>
+</section>
+<%- include('partials/footer') %>

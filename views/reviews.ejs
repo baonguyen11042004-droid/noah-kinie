@@ -1,0 +1,12 @@
+<%- include('partials/header') %>
+<section class="sec">
+  <div class="wrap">
+    <p class="crumb"><a href="/"><%= t('crumbHome') %></a> / <%= t('reviewsNav') %></p>
+    <p class="eyebrow"><%= t('reviewsEyebrow') %></p>
+    <h1 class="h2"><%= t('reviewsTitle') %></h1>
+    <p class="lead"><%= t('reviewsSub') %></p>
+    <div class="mt-s"><%- include('partials/reviews', { list: reviews }) %></div>
+    <p class="center mt-s"><a class="btn btn--ghost" href="<%= site.tiktok %>" target="_blank" rel="noopener"><%= t('reviewsTiktok') %></a></p>
+  </div>
+</section>
+<%- include('partials/footer') %>

@@ -3,42 +3,44 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><%= title ? title + ' | Nhật ký Kinie' : 'Nhật ký Kinie – ' + t('homeTitle') %></title>
+  <title><%= title ? title + ' | Kinie' : 'Kinie – ' + t('homeTitle') %></title>
   <meta name="description" content="<%= desc %>">
   <% if (noindex) { %><meta name="robots" content="noindex, follow"><% } else { %>
   <link rel="canonical" href="<%= canonical %>">
   <% alternates.forEach(a => { %><link rel="alternate" hreflang="<%= a.lang %>" href="<%= a.href %>">
   <% }) %><link rel="alternate" hreflang="x-default" href="<%= alternates.find(a => a.lang === 'vi').href %>">
   <% } %>
-  <meta property="og:site_name" content="Nhật ký Kinie">
+  <meta property="og:site_name" content="Kinie">
   <meta property="og:type" content="<%= ogType %>">
-  <meta property="og:title" content="<%= title || 'Nhật ký Kinie' %>">
+  <meta property="og:title" content="<%= title || 'Kinie' %>">
   <meta property="og:description" content="<%= desc %>">
   <meta property="og:url" content="<%= canonical %>">
   <meta property="og:image" content="<%= ogImage %>">
-  <meta property="og:image:alt" content="Kinie Memory – Nhật ký Kinie">
+  <meta property="og:image:alt" content="Logo Kinie – ảnh nam châm handmade">
   <meta property="og:locale" content="<%= t('ogLocale') %>">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#e8558a">
   <% jsonLd.forEach(ld => { %><script type="application/ld+json"><%- JSON.stringify(ld).replace(/</g, '\\u003c') %></script>
   <% }) %>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700;900&family=Caveat:wght@600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css?v=20260928">
+  <link rel="stylesheet" href="/css/style.css?v=20261009">
   <script src="/js/theme.js"></script>
 </head>
 <body>
 <a class="skip" href="#main"><%= t('skip') %></a>
 <header class="nav">
   <div class="wrap nav__in">
-    <a class="logo" href="<%= u('/') %>" aria-label="<%= t('homeAria') %>">Nhật ký Kinie<span>♥</span></a>
+    <a class="logo" href="<%= u('/') %>" aria-label="<%= t('homeAria') %>"><img src="/img/logo-256.jpg" alt="" width="44" height="44">Kinie</a>
     <nav class="menu" id="menu" aria-label="<%= t('mainMenu') %>">
       <a href="<%= u('/') %>" class="<%= path === '/' ? 'on' : '' %>"><%= t('home') %></a>
       <a href="<%= u('/bang-gia') %>" class="<%= path === '/bang-gia' ? 'on' : '' %>"><%= t('price') %></a>
       <a href="<%= u('/cua-hang') %>" class="<%= path.startsWith('/cua-hang') || path.startsWith('/san-pham') ? 'on' : '' %>"><%= t('magnets') %></a>
       <a href="<%= u('/ve-kinie') %>" class="<%= path === '/ve-kinie' ? 'on' : '' %>"><%= t('about') %></a>
+      <a href="<%= u('/hoi-dap') %>" class="<%= path === '/hoi-dap' ? 'on' : '' %>"><%= t('faqNav') %></a>
       <a href="<%= u('/lien-he') %>" class="<%= path === '/lien-he' ? 'on' : '' %>"><%= t('contact') %></a>
     </nav>
     <div class="nav__r">

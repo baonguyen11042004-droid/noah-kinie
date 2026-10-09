@@ -9,6 +9,9 @@ const nodemailer = require('nodemailer');
 const db = require('./lib/db');
 const { artSvg } = require('./lib/art');
 const { LANGS, translator } = require('./lib/i18n');
+const landings = require('./data/landings');
+const posts = require('./data/blog');
+const reviews = require('./data/reviews');
 
 const app = express();
 const isProd = process.env.NODE_ENV === 'production';
@@ -21,6 +24,12 @@ app.set('trust proxy', 1);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.disable('x-powered-by');
+
+// Gộp www về tên miền chính (www.kinie.online -> kinie.online) để Google không coi là hai trang trùng nhau.
+app.use((req, res, next) => {
+  if (!req.hostname.startsWith('www.')) return next();
+  res.redirect(301, `${req.protocol}://${req.hostname.slice(4)}${req.originalUrl}`);
+});
 
 app.use(helmet({
   contentSecurityPolicy: {
@@ -46,7 +55,9 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: isProd ? '7d' :
 const money = (n) => new Intl.NumberFormat('vi-VN').format(n) + 'đ';
 const site = {
   name: 'Kinie',
-  url: process.env.SITE_URL || '',
+  // Tên miền chính dùng cho canonical, sitemap, robots. Trên server luôn là kinie.online kể cả khi quên đặt SITE_URL,
+  // để www.kinie.online không sinh ra bản sitemap/robots thứ hai.
+  url: process.env.SITE_URL || (isProd ? 'https://kinie.online' : ''),
   // Liên hệ thật của shop (cố định trong mã, không đọc từ .env để tránh bị số mẫu đè lên).
   email: 'baonguyen.11042004@gmail.com',
   phones: [
@@ -55,6 +66,7 @@ const site = {
   ],
   phone: '0862 328 336 · 0834 231 021',
   zalo: 'https://zalo.me/0862328336',
+  tiktok: 'https://www.tiktok.com/@nhatkykinie',
   instagram: process.env.INSTAGRAM_URL || '#',
   facebook: process.env.FACEBOOK_URL || '#',
   freeShip: FREE_SHIP,
@@ -71,13 +83,16 @@ const productImg = (p) => p.image || `/art/${p.id}.svg`;
 // 29000 -> '29k', 1421000 -> '1.421k'
 const kfmt = (n) => new Intl.NumberFormat('vi-VN').format(Math.round(n / 1000)) + 'k';
 
+// Mỗi dòng giỏ hàng: { id, qty, photos } – photos là link album ảnh của khách, rỗng = khách gửi ảnh qua Zalo sau.
+const MAX_LINES = 6; // giỏ hàng nằm trong cookie (~4 KB), giới hạn số dòng để link ảnh không làm tràn cookie
+const PHOTO_LINK = /^https?:\/\/\S+$/i;
 function cartOf(req) {
   const products = db.get().products;
   const items = [];
-  for (const line of req.session.cart || []) {
+  (req.session.cart || []).forEach((line, index) => {
     const p = products.find((x) => x.id === line.id);
-    if (p) items.push({ product: p, qty: line.qty, total: p.price * line.qty });
-  }
+    if (p) items.push({ index, product: p, qty: line.qty, photos: line.photos || '', total: p.price * line.qty });
+  });
   const subtotal = items.reduce((s, i) => s + i.total, 0);
   const shipping = !items.length || subtotal >= FREE_SHIP ? 0 : SHIP_FEE;
   return { items, subtotal, shipping, total: subtotal + shipping, count: items.reduce((s, i) => s + i.qty, 0) };
@@ -116,7 +131,7 @@ app.use((req, res, next) => {
   res.locals.base = base;
   res.locals.alternates = LANGS.map((l) => ({ lang: l, href: base + localize(l, req.path) }));
   res.locals.canonical = base + req.u(req.path);
-  res.locals.ogImage = base + '/img/logo.jpg';
+  res.locals.ogImage = base + '/img/og-kinie.jpg';
   res.locals.ogType = 'website';
   // Giỏ hàng, thanh toán, admin: không đưa lên kết quả tìm kiếm.
   res.locals.noindex = /^\/(gio-hang|thanh-toan|dat-hang-thanh-cong|admin)(\/|$)/.test(req.path);
@@ -129,6 +144,7 @@ app.use((req, res, next) => {
   res.locals.money = money;
   res.locals.categories = categories;
   res.locals.productImg = productImg;
+  res.locals.landings = landings;
   res.locals.csrf = csrf(req);
   res.locals.cartCount = cartOf(req).count;
   res.locals.path = req.path;
@@ -164,12 +180,18 @@ const priceRange = () => {
 };
 const storeLd = (req, base) => ({
   '@context': 'https://schema.org', '@type': 'Store', '@id': base + '/#store',
-  name: 'Nhật ký Kinie', alternateName: 'Kinie Memory', url: base + req.u('/'),
+  name: 'Kinie', alternateName: ['Nhật ký Kinie', 'Kinie Memory'], url: base + req.u('/'),
   description: req.t('descHome'), image: base + '/img/logo.jpg', logo: base + '/img/logo.jpg',
   email: site.email, telephone: site.phones.map((p) => p.tel), priceRange: priceRange(),
   address: { '@type': 'PostalAddress', addressCountry: 'VN' },
-  sameAs: [site.instagram, site.facebook].filter((x) => x && x !== '#'),
+  sameAs: [site.tiktok, site.instagram, site.facebook].filter((x) => x && x !== '#'),
 });
+// Trang chỉ có bản tiếng Việt (trang theo dịp, blog, đánh giá): /en/... chuyển về bản VI, hreflang chỉ khai báo VI.
+function viOnly(req, res) {
+  if (req.lang !== 'vi') { res.redirect(301, req.path); return false; }
+  res.locals.alternates = res.locals.alternates.filter((a) => a.lang === 'vi');
+  return true;
+}
 const crumbLd = (base, items) => ({
   '@context': 'https://schema.org', '@type': 'BreadcrumbList',
   itemListElement: items.map(([name, url], i) => ({ '@type': 'ListItem', position: i + 1, name, item: base + url })),
@@ -184,9 +206,9 @@ app.get('/', (req, res) => {
   const quick = ['p6', 'p20', 'p50'].map((id) => products.find((p) => p.id === id)).filter(Boolean);
   const base = res.locals.base;
   res.locals.jsonLd.push(storeLd(req, base), {
-    '@context': 'https://schema.org', '@type': 'WebSite', name: 'Nhật ký Kinie', url: base + req.u('/'), inLanguage: req.t('htmlLang'),
+    '@context': 'https://schema.org', '@type': 'WebSite', name: 'Kinie', alternateName: 'Nhật ký Kinie', url: base + req.u('/'), inLanguage: req.t('htmlLang'),
   });
-  res.render('index', { title: req.t('seoHome'), desc: req.t('descHome'), quick });
+  res.render('index', { title: req.t('seoHome'), desc: req.t('descHome'), quick, reviews: reviews.slice(0, 3), latest: posts.slice(0, 3) });
 });
 
 app.get('/bang-gia', (req, res) => {
@@ -217,9 +239,14 @@ app.get('/cua-hang', (req, res) => {
 });
 
 app.get('/san-pham/:slug', (req, res, next) => {
-  const products = db.get().products;
-  const p = products.find((x) => x.slug === req.params.slug);
+  const p = db.get().products.find((x) => x.slug === req.params.slug);
   if (!p) return next();
+  productPage(req, res, p);
+});
+
+// Trang sản phẩm; extra = { errors, form } khi bước gửi ảnh nhập sai.
+function productPage(req, res, p, extra = {}) {
+  const products = db.get().products;
   const related = products.filter((x) => x.id !== p.id && x.category === p.category).slice(0, 3);
   const base = res.locals.base;
   const img = productImg(p);
@@ -229,19 +256,74 @@ app.get('/san-pham/:slug', (req, res, next) => {
     '@context': 'https://schema.org', '@type': 'Product',
     name: req.t('comboOf', p.qty), sku: p.id, image: /^https?:/.test(img) ? img : base + img,
     description: req.t('descProduct', p, money(p.price)),
-    brand: { '@type': 'Brand', name: 'Nhật ký Kinie' },
+    brand: { '@type': 'Brand', name: 'Kinie' },
     offers: {
       '@type': 'Offer', url: res.locals.canonical, price: p.price, priceCurrency: 'VND',
       availability: p.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       itemCondition: 'https://schema.org/NewCondition', seller: { '@id': base + '/#store' },
     },
   }, crumbLd(base, [[req.t('home'), req.u('/')], [req.t('magnets'), req.u('/cua-hang')], [req.t('photos', p.qty), req.u('/san-pham/' + p.slug)]]));
-  res.render('product', { title: req.t('seoProduct', p.qty), desc: req.t('descProduct', p, money(p.price)), p, related });
-});
+  res.status(extra.errors ? 400 : 200).render('product', {
+    title: req.t('seoProduct', p.qty), desc: req.t('descProduct', p, money(p.price)), p, related,
+    errors: [], form: { mode: 'link', photos: '' }, ...extra,
+  });
+}
 
 app.get('/ve-kinie', (req, res) => {
-  res.locals.jsonLd.push(storeLd(req, res.locals.base));
+  res.locals.jsonLd.push(storeLd(req, res.locals.base),
+    crumbLd(res.locals.base, [[req.t('home'), req.u('/')], [req.t('about'), req.u('/ve-kinie')]]));
   res.render('about', { title: req.t('seoAbout'), desc: req.t('descAbout') });
+});
+
+// ---------- trang theo dịp, blog, đánh giá (chỉ tiếng Việt) ----------
+const pickProducts = (ids) => ids.map((id) => db.get().products.find((p) => p.id === id)).filter(Boolean);
+
+landings.forEach((l) => {
+  app.get('/' + l.slug, (req, res) => {
+    if (!viOnly(req, res)) return;
+    const base = res.locals.base;
+    res.locals.jsonLd.push(crumbLd(base, [[req.t('home'), '/'], [l.h1, '/' + l.slug]]));
+    if (l.faq.length) {
+      res.locals.jsonLd.push({
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        mainEntity: l.faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+      });
+    }
+    res.render('landing', { title: l.title, desc: l.desc, l, combos: pickProducts(l.combos), others: landings.filter((x) => x !== l) });
+  });
+});
+
+app.get('/blog', (req, res) => {
+  if (!viOnly(req, res)) return;
+  res.locals.jsonLd.push(crumbLd(res.locals.base, [[req.t('home'), '/'], ['Blog', '/blog']]));
+  res.render('blog', {
+    title: 'Blog Kinie – ý tưởng quà tặng và ảnh nam châm',
+    desc: 'Blog của Kinie: ý tưởng quà tặng, cách chọn ảnh để in, cách làm và trang trí tủ lạnh bằng ảnh nam châm.',
+    posts,
+  });
+});
+
+app.get('/blog/:slug', (req, res, next) => {
+  const post = posts.find((x) => x.slug === req.params.slug);
+  if (!post) return next();
+  if (!viOnly(req, res)) return;
+  const base = res.locals.base;
+  res.locals.ogType = 'article';
+  res.locals.jsonLd.push({
+    '@context': 'https://schema.org', '@type': 'BlogPosting', headline: post.title, description: post.desc,
+    datePublished: post.date, dateModified: post.date, inLanguage: 'vi', mainEntityOfPage: base + '/blog/' + post.slug,
+    image: base + '/img/og-kinie.jpg', author: { '@type': 'Organization', name: 'Kinie' },
+    publisher: { '@type': 'Organization', name: 'Kinie', logo: { '@type': 'ImageObject', url: base + '/img/logo.jpg' } },
+  }, crumbLd(base, [[req.t('home'), '/'], ['Blog', '/blog'], [post.title, '/blog/' + post.slug]]));
+  res.render('post', { title: post.title, desc: post.desc, post, more: posts.filter((x) => x !== post).slice(0, 3) });
+});
+
+app.get('/danh-gia', (req, res) => {
+  if (!viOnly(req, res)) return;
+  // Chưa có đánh giá thật thì không cho Google lập chỉ mục trang trống.
+  if (!reviews.length) res.locals.noindex = true;
+  res.locals.jsonLd.push(crumbLd(res.locals.base, [[req.t('home'), '/'], [req.t('reviewsNav'), '/danh-gia']]));
+  res.render('reviews', { title: req.t('seoReviews'), desc: req.t('descReviews'), reviews });
 });
 
 app.get('/hoi-dap', (req, res) => {
@@ -272,30 +354,39 @@ app.post('/lien-he', formLimiter, checkCsrf, async (req, res) => {
   const s = db.get();
   s.messages.unshift({ ...form, at: new Date().toISOString() });
   db.save();
-  notify('Nhật ký Kinie – tin nhắn mới', `${form.name} <${form.email}>\n\n${form.message}`);
+  notify('Kinie – tin nhắn mới', `${form.name} <${form.email}>\n\n${form.message}`);
   res.redirect(req.u('/lien-he') + '?sent=1');
 });
 
 // ---------- cart ----------
 app.get('/gio-hang', (req, res) => res.render('cart', { title: req.t('cartTitle'), cart: cartOf(req) }));
 
+// Thêm vào giỏ chỉ đi từ trang sản phẩm, sau bước gửi ảnh (link album hoặc hẹn gửi qua Zalo).
 app.post('/gio-hang/them', checkCsrf, (req, res) => {
   const id = str(req.body.id, 60);
-  const qty = Math.min(20, Math.max(1, parseInt(req.body.qty, 10) || 1));
   const p = db.get().products.find((x) => x.id === id);
   if (!p) return res.redirect(req.u('/cua-hang'));
+  const mode = req.body.mode === 'zalo' ? 'zalo' : req.body.mode === 'link' ? 'link' : '';
+  if (!mode) return res.redirect(req.u('/san-pham/' + p.slug)); // form cũ chưa có bước gửi ảnh
+  const photos = mode === 'link' ? str(req.body.photos, 500) : '';
+  const form = { mode, photos };
+  if (mode === 'link' && !PHOTO_LINK.test(photos)) return productPage(req, res, p, { errors: [req.t('vPhotoLink')], form });
   const cart = req.session.cart || [];
-  const line = cart.find((l) => l.id === id);
-  if (line) line.qty = Math.min(20, line.qty + qty); else cart.push({ id, qty });
+  const line = cart.find((l) => l.id === id && (l.photos || '') === photos);
+  if (line) line.qty = Math.min(20, line.qty + 1);
+  else if (cart.length >= MAX_LINES) return productPage(req, res, p, { errors: [req.t('cartFull')], form });
+  else cart.push({ id, qty: 1, photos });
   req.session.cart = cart;
   res.redirect(req.u(req.body.next === 'checkout' ? '/thanh-toan' : '/gio-hang'));
 });
 
 app.post('/gio-hang/cap-nhat', checkCsrf, (req, res) => {
-  const id = str(req.body.id, 60);
+  const i = parseInt(req.body.i, 10);
   const qty = parseInt(req.body.qty, 10) || 0;
-  let cart = req.session.cart || [];
-  cart = qty <= 0 ? cart.filter((l) => l.id !== id) : cart.map((l) => (l.id === id ? { ...l, qty: Math.min(20, qty) } : l));
+  const cart = req.session.cart || [];
+  if (cart[i]) {
+    if (qty <= 0) cart.splice(i, 1); else cart[i].qty = Math.min(20, qty);
+  }
   req.session.cart = cart;
   res.redirect(req.u('/gio-hang'));
 });
@@ -325,15 +416,15 @@ app.post('/thanh-toan', formLimiter, checkCsrf, async (req, res) => {
   const code = db.nextOrderCode();
   const order = {
     code, status: 'new', createdAt: new Date().toISOString(), ...form,
-    items: cart.items.map((i) => ({ id: i.product.id, name: i.product.name, price: i.product.price, qty: i.qty })),
+    items: cart.items.map((i) => ({ id: i.product.id, name: i.product.name, price: i.product.price, qty: i.qty, photos: i.photos })),
     subtotal: cart.subtotal, shipping: cart.shipping, total: cart.total,
   };
   db.get().orders.unshift(order);
   db.save();
   req.session.cart = [];
   req.session.lastOrder = code;
-  notify(`Nhật ký Kinie – đơn mới ${code}`, `${form.name} – ${form.phone}\n${form.address}\nTổng: ${money(order.total)} (${form.payment})\n` +
-    order.items.map((i) => `- ${i.name} x${i.qty}`).join('\n'));
+  notify(`Kinie – đơn mới ${code}`, `${form.name} – ${form.phone}\n${form.address}\nTổng: ${money(order.total)} (${form.payment})\n` +
+    order.items.map((i) => `- ${i.name} x${i.qty} | Ảnh: ${i.photos || 'gửi qua Zalo'}`).join('\n'));
   res.redirect(req.u('/dat-hang-thanh-cong'));
 });
 
@@ -411,7 +502,7 @@ app.post('/admin/products/:id/delete', requireAdmin, checkCsrf, (req, res) => {
 app.get('/robots.txt', (req, res) => res.type('text/plain').send(
   `User-agent: *\nDisallow: /admin\nDisallow: /en/admin\nDisallow: /ngon-ngu/\n\nSitemap: ${baseUrl(req)}/sitemap.xml\n`));
 
-// Mỗi trang có cả bản VI và EN, khai báo cặp hreflang cho Google.
+// Trang song ngữ: khai báo cặp hreflang VI/EN. Trang theo dịp, blog, đánh giá: chỉ bản VI.
 app.get('/sitemap.xml', (req, res) => {
   const base = baseUrl(req);
   const pages = [
@@ -420,10 +511,16 @@ app.get('/sitemap.xml', (req, res) => {
     ['/hoi-dap', '0.7'], ['/ve-kinie', '0.6'], ['/lien-he', '0.5'],
     ...db.get().products.map((p) => ['/san-pham/' + p.slug, '0.6']),
   ];
+  const viPages = [
+    ...landings.map((l) => ['/' + l.slug, '0.8']),
+    ['/blog', '0.6'], ...posts.map((p) => ['/blog/' + p.slug, '0.6', p.date]),
+    ...(reviews.length ? [['/danh-gia', '0.6']] : []),
+  ];
   const loc = (l, p) => { const [path, q] = p.split('?'); return base + localize(l, path) + (q ? '?' + q.replace(/&/g, '&amp;') : ''); };
   const links = (p) => LANGS.map((l) => `<xhtml:link rel="alternate" hreflang="${l}" href="${loc(l, p)}"/>`).join('') +
     `<xhtml:link rel="alternate" hreflang="x-default" href="${loc('vi', p)}"/>`;
-  const body = pages.flatMap(([p, pr]) => LANGS.map((l) => `<url><loc>${loc(l, p)}</loc>${links(p)}<priority>${pr}</priority></url>`)).join('');
+  const body = pages.flatMap(([p, pr]) => LANGS.map((l) => `<url><loc>${loc(l, p)}</loc>${links(p)}<priority>${pr}</priority></url>`)).join('') +
+    viPages.map(([p, pr, d]) => `<url><loc>${base + p}</loc>${d ? `<lastmod>${d}</lastmod>` : ''}<priority>${pr}</priority></url>`).join('');
   res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${body}</urlset>`);
 });
 
@@ -438,4 +535,4 @@ app.use((err, req, res, next) => {
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Nhật ký Kinie chạy tại http://localhost:${port}`));
+app.listen(port, () => console.log(`Kinie chạy tại http://localhost:${port}`));

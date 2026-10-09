@@ -9,10 +9,7 @@
     <p class="price"><%= money(p.price) %><% if (p.oldPrice > p.price) { %> <s><%= money(p.oldPrice) %></s><% } %></p>
     <p class="card__per">≈ <%= Math.round(p.price / p.qty / 1000) %><%= t('perPhoto') %></p>
     <% if (p.freeship || p.gift) { %><p class="tags"><% if (p.gift) { %><span class="tag"><%- include('icon', { name: 'gift' }) %><%= t('gift', p.gift) %></span><% } %><% if (p.freeship) { %><span class="tag"><%- include('icon', { name: 'truck' }) %><%= t('freeship') %></span><% } %></p><% } %>
-    <form method="post" action="<%= u('/gio-hang/them') %>">
-      <input type="hidden" name="_csrf" value="<%= csrf %>">
-      <input type="hidden" name="id" value="<%= p.id %>">
-      <button class="btn btn--ghost btn--sm" <%= p.stock < 1 ? 'disabled' : '' %>><%= p.stock < 1 ? t('soldOut') : t('addToCart') %></button>
-    </form>
+    <% if (p.stock < 1) { %><button class="btn btn--ghost btn--sm card__go" disabled><%= t('soldOut') %></button>
+    <% } else { %><a class="btn btn--ghost btn--sm card__go" href="<%= u('/san-pham/' + p.slug) %>#dat-hang"><%= t('pickPhotos') %></a><% } %>
   </div>
 </article>

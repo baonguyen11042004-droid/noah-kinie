@@ -3,7 +3,7 @@
   <div class="wrap hero__in">
     <div class="hero__t">
       <span class="badge-soft"><%= t('handmadeBadge') %></span>
-      <h1><%= t('heroTitle1') %><br><em><%= t('heroTitle2') %></em></h1>
+      <h1><span class="h1-kw"><%= t('heroKw') %></span><%= t('heroTitle1') %><br><em><%= t('heroTitle2') %></em></h1>
       <p class="lead"><%= t('heroBody') %></p>
       <div class="hero__cta">
         <a class="btn" href="<%= u('/cua-hang') %>"><%- include('partials/icon', { name: 'bag' }) %><%= t('heroCta') %></a>
@@ -60,15 +60,38 @@
   </div>
 </section>
 
+<% if (lang === 'vi') { %>
 <section class="sec">
   <div class="wrap">
-    <p class="eyebrow center"><%= t('quotesEyebrow') %></p>
-    <h2 class="center"><%= t('quotesTitle') %></h2>
-    <div class="quotes">
-      <% t('quotes').forEach(q => { %><blockquote>“<%= q[0] %>”<cite>— <%= q[1] %></cite></blockquote><% }) %>
-    </div>
+    <p class="eyebrow center"><%= t('occasionEyebrow') %></p>
+    <h2 class="center"><%= t('occasionTitle') %></h2>
+    <ul class="occ">
+      <% landings.forEach(l => { %><li><a href="/<%= l.slug %>"><b><%= l.nav %></b><span><%= l.h1 %></span></a></li><% }) %>
+    </ul>
   </div>
 </section>
+<% } %>
+
+<section class="sec sec--tint">
+  <div class="wrap">
+    <p class="eyebrow center"><%= t('reviewsEyebrow') %></p>
+    <h2 class="center"><%= t('reviewsTitle') %></h2>
+    <%- include('partials/reviews', { list: reviews }) %>
+    <p class="center mt-s">
+      <% if (reviews.length && lang === 'vi') { %><a class="link" href="/danh-gia"><%= t('reviewsAll') %></a>
+      <% } else { %><a class="btn btn--ghost" href="<%= site.tiktok %>" target="_blank" rel="noopener"><%= t('reviewsTiktok') %></a><% } %>
+    </p>
+  </div>
+</section>
+
+<% if (lang === 'vi' && latest.length) { %>
+<section class="sec">
+  <div class="wrap">
+    <div class="sec__head"><div><p class="eyebrow"><%= t('blogEyebrow') %></p><h2><%= t('blogLatest') %></h2></div><a class="link" href="/blog"><%= t('viewAll') %></a></div>
+    <div class="posts"><% latest.forEach(post => { %><%- include('partials/post-card', { post }) %><% }) %></div>
+  </div>
+</section>
+<% } %>
 
 <section class="sec">
   <div class="wrap cta">

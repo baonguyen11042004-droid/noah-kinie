@@ -1,0 +1,12 @@
+<%- include('partials/header') %>
+<section class="sec">
+  <div class="wrap">
+    <p class="crumb"><a href="/"><%= t('crumbHome') %></a> / Blog</p>
+    <p class="eyebrow"><%= t('blogEyebrow') %></p>
+    <h1 class="h2">Blog Kinie</h1>
+    <p class="lead">Ý tưởng quà tặng, cách chọn ảnh để in và cách trang trí tủ lạnh bằng ảnh nam châm.</p>
+    <div class="posts mt-s"><% posts.forEach(post => { %><%- include('partials/post-card', { post }) %><% }) %></div>
+    <p class="mt-s"><a class="link" href="/hoi-dap"><%= t('faqLink') %></a></p>
+  </div>
+</section>
+<%- include('partials/footer') %>

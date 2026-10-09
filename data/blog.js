@@ -1,0 +1,108 @@
+// Bài blog (chỉ bản tiếng Việt). Mỗi bài nhắm một từ khoá trong keyword map v4.
+// body: mảng khối [tiêu đề H2, đoạn văn, (tuỳ chọn) danh sách]. link: trang Kinie nên trỏ tới cuối bài.
+module.exports = [
+  {
+    slug: 'qua-20-10',
+    kw: 'quà 20/10 cho mẹ',
+    date: '2026-10-09',
+    title: 'Quà 20/10 cho mẹ, người yêu, cô giáo: 8 gợi ý ý nghĩa mà không tốn kém',
+    desc: 'Gợi ý quà 20/10 cho mẹ, cho người yêu, cho vợ và cô giáo: món quà nhỏ, ý nghĩa, hợp túi tiền – trong đó có ảnh nam châm in từ ảnh của chính người nhận.',
+    intro: '20/10 là dịp để nói lời cảm ơn với những người phụ nữ quanh mình. Quà không cần đắt, chỉ cần cho thấy bạn hiểu và nhớ đến người nhận. Dưới đây là vài gợi ý theo từng người.',
+    body: [
+      ['Quà 20/10 cho mẹ', 'Mẹ thường không cần thêm đồ, mẹ cần thấy con cái nhớ đến mình. Vài món mẹ hay thích:', [
+        'Bộ ảnh cả nhà in thành ảnh nam châm, dán ngay lên tủ lạnh mẹ mở mỗi ngày.',
+        'Một bữa cơm do chính bạn nấu, hoặc đưa mẹ đi ăn món mẹ thích.',
+        'Đồ dùng chăm sóc sức khoẻ nhỏ: gối tựa lưng, máy massage cầm tay.',
+      ]],
+      ['Quà 20/10 cho người yêu, cho vợ', 'Với người yêu, quà gắn với kỷ niệm của hai người luôn được nhớ lâu hơn:', [
+        'Bộ 6–9 ảnh nam châm những lần đi chơi, kèm thiệp viết tay.',
+        'Một buổi hẹn ở nơi lần đầu hai người gặp nhau.',
+        'Hoa và một món nhỏ cô ấy từng nhắc là thích.',
+      ]],
+      ['Quà 20/10 cho cô giáo', 'Cả lớp có thể góp ảnh chung, in thành bộ ảnh nam châm tặng cô – rẻ hơn nhiều so với quà đắt tiền mà cô sẽ nhớ lâu. Combo 20 ảnh đủ mỗi bạn một tấm và được free ship.'],
+      ['Quà 20/10 cho đồng nghiệp, nhân viên', 'Nếu công ty tặng quà cho nhiều người, ảnh team in thành nam châm là món quà nhỏ, dễ phát, giá mỗi ảnh còn khoảng 19–20k ở gói lớn.'],
+      ['Đặt ảnh nam châm kịp 20/10', 'Kinie giao trong khoảng 2–4 ngày, nên bạn đặt sớm vài ngày trước 20/10. Chọn combo, dán link album ảnh ngay khi đặt để Kinie làm luôn, không phải chờ gửi ảnh.'],
+    ],
+    link: ['/anh-nam-cham-qua-tang', 'Xem gợi ý in ảnh nam châm làm quà tặng →'],
+  },
+  {
+    slug: 'cach-lam-anh-nam-cham-dan-tu-lanh',
+    kw: 'cách làm ảnh nam châm dán tủ lạnh',
+    date: '2026-10-09',
+    title: 'Cách làm ảnh nam châm dán tủ lạnh tại nhà (và khi nào nên đặt in)',
+    desc: 'Hướng dẫn cách làm ảnh nam châm dán tủ lạnh tại nhà từng bước, cần chuẩn bị gì, ưu nhược điểm – và khi nào nên đặt in để ảnh bền, chống nước.',
+    intro: 'Muốn có vài tấm ảnh dán tủ lạnh mà không mất nhiều tiền? Bạn hoàn toàn tự làm được ở nhà. Bài này hướng dẫn từng bước, kèm vài lưu ý để ảnh dán lâu hơn.',
+    body: [
+      ['Cần chuẩn bị gì?', 'Hầu hết đều mua được ở nhà sách hoặc shop văn phòng phẩm:', [
+        'Ảnh đã in (in ở tiệm ảnh hoặc máy in màu ở nhà).',
+        'Tấm nam châm dẻo có sẵn lớp keo một mặt.',
+        'Kéo hoặc dao rọc giấy, thước kẻ.',
+        'Màng ép plastic hoặc băng keo trong khổ lớn để bảo vệ mặt ảnh.',
+      ]],
+      ['Các bước làm ảnh nam châm', 'Làm lần lượt như sau:', [
+        'Cắt ảnh theo kích thước muốn dán, ví dụ 6,5 × 8 cm.',
+        'Phủ mặt ảnh bằng màng ép hoặc băng keo trong để ảnh đỡ thấm nước.',
+        'Bóc lớp giấy keo của tấm nam châm, dán mặt sau ảnh lên, miết đều từ giữa ra ngoài cho hết bọt khí.',
+        'Cắt nam châm theo mép ảnh, bo nhẹ 4 góc để đỡ bị bong.',
+      ]],
+      ['Ưu và nhược điểm khi tự làm', 'Tự làm rẻ và vui, nhưng ảnh giấy thường mau xuống màu, mép dễ bong, gặp hơi nước trong bếp lâu ngày có thể bị phồng. Mặt ảnh dán băng keo cũng dễ trầy và bám bụi.'],
+      ['Khi nào nên đặt in?', 'Nếu bạn làm quà tặng, cần nhiều ảnh, hoặc muốn ảnh dán bền nhiều năm, đặt in sẽ đỡ công hơn. Ở Kinie, ảnh được in 6 màu, phủ 5 lớp bảo vệ chống nước và chống trầy, gắn tay lên nam châm dẻo dày 3 mm – từ 29k/ảnh, rẻ dần khi đặt nhiều.'],
+    ],
+    link: ['/lam-anh-nam-cham', 'Đặt làm ảnh nam châm theo yêu cầu →'],
+  },
+  {
+    slug: 'qua-ky-niem-ngay-yeu-nhau',
+    kw: 'quà kỷ niệm ngày yêu nhau',
+    date: '2026-10-09',
+    title: 'Quà kỷ niệm ngày yêu nhau: gợi ý cho 100 ngày, 1 năm, 1000 ngày',
+    desc: 'Gợi ý quà kỷ niệm ngày yêu nhau theo từng mốc 100 ngày, 1 năm, 1000 ngày: quà tự làm, quà trải nghiệm và bộ ảnh nam châm kể lại hành trình của hai bạn.',
+    intro: 'Mỗi mốc kỷ niệm là một dịp để nhìn lại quãng đường hai người đã đi cùng nhau. Món quà ý nghĩa nhất thường là thứ gợi lại những kỷ niệm đó.',
+    body: [
+      ['Kỷ niệm 100 ngày yêu nhau', 'Mới 100 ngày, quà nhỏ mà tinh tế là đủ:', [
+        'Bộ 6 ảnh nam châm những buổi hẹn đầu tiên.',
+        'Một lá thư tay kể lại lần đầu gặp.',
+        'Dẫn người ấy quay lại quán đầu tiên hai người hẹn hò.',
+      ]],
+      ['Kỷ niệm 1 năm', 'Một năm có 12 tháng, mỗi tháng chọn một ảnh đẹp nhất in thành ảnh nam châm, thêm vài tấm đặc biệt như sinh nhật, chuyến đi đầu tiên. Combo 15 ảnh là vừa đủ.'],
+      ['Kỷ niệm 1000 ngày', 'Gần ba năm là cả một hành trình. Combo 20 ảnh kể lại từng chặng, kèm một buổi đi chơi xa hoặc một bữa tối thật đặc biệt.'],
+      ['Mẹo chọn quà kỷ niệm', 'Hãy nghĩ người ấy sẽ dùng món quà ở đâu. Quà được nhìn thấy mỗi ngày, như ảnh trên tủ lạnh hay bàn làm việc, sẽ nhắc người ấy nhớ đến bạn lâu hơn món quà cất trong tủ.'],
+    ],
+    link: ['/anh-nam-cham-couple', 'In ảnh nam châm cặp đôi →'],
+  },
+  {
+    slug: 'qua-tang-ban-gai-sinh-nhat',
+    kw: 'quà tặng bạn gái sinh nhật',
+    date: '2026-10-09',
+    title: 'Quà tặng bạn gái sinh nhật: ý tưởng độc đáo, ý nghĩa',
+    desc: 'Ý tưởng quà tặng bạn gái sinh nhật độc đáo, ý nghĩa và hợp túi tiền: quà tự làm, quà trải nghiệm, bộ ảnh nam châm in từ ảnh của hai bạn.',
+    intro: 'Chọn quà sinh nhật cho bạn gái khó nhất ở chỗ làm sao cho khác những năm trước. Dưới đây là vài ý tưởng dựa trên kỷ niệm của hai người.',
+    body: [
+      ['Quà gắn với kỷ niệm', 'Những món quà này không mua sẵn được, nên luôn độc đáo:', [
+        'Bộ 9 ảnh nam châm: mỗi tấm là một kỷ niệm trong năm qua.',
+        'Một cuốn sổ ghi lại những điều bạn thích ở cô ấy.',
+        'Video ngắn ghép từ ảnh và lời chúc của bạn bè.',
+      ]],
+      ['Quà trải nghiệm', 'Một ngày đi chơi do bạn lên kế hoạch, một lớp học làm bánh hay làm gốm cho hai người, hoặc vé xem concert của ca sĩ cô ấy thích.'],
+      ['Quà cho bạn gái mới quen', 'Mới quen thì nên chọn quà nhẹ nhàng, không quá đắt: hoa, một cuốn sách, hoặc vài tấm ảnh nam châm từ những lần đi chơi chung.'],
+      ['Gói quà sao cho đẹp', 'Món quà nhỏ sẽ đẹp hơn khi đi kèm một tấm thiệp viết tay. Với ảnh nam châm, bạn có thể dán sẵn vài tấm lên tấm bìa màu để tặng.'],
+    ],
+    link: ['/anh-nam-cham-qua-tang', 'In ảnh nam châm làm quà tặng →'],
+  },
+  {
+    slug: 'trang-tri-tu-lanh-bang-anh',
+    kw: 'dán ảnh lên tủ lạnh',
+    date: '2026-10-09',
+    title: 'Dán ảnh lên tủ lạnh: 6 cách trang trí tủ lạnh bằng ảnh thật xinh',
+    desc: 'Cách dán ảnh lên tủ lạnh và trang trí tủ lạnh bằng ảnh nam châm: xếp lưới, theo chủ đề, theo thời gian – gọn gàng mà vẫn đầy kỷ niệm.',
+    intro: 'Cửa tủ lạnh là nơi cả nhà nhìn thấy nhiều nhất mỗi ngày. Dán ảnh lên đó là cách đơn giản để căn bếp có thêm câu chuyện. Vài cách xếp ảnh để tủ lạnh gọn mà vẫn xinh:',
+    body: [
+      ['1. Xếp lưới ngay ngắn', 'Ảnh cùng kích thước (như 6,5 × 8 cm) xếp thành lưới 3 × 3 hoặc 2 × 3 trông gọn gàng nhất, hợp với tủ lạnh màu trơn.'],
+      ['2. Theo chủ đề', 'Mỗi cánh tủ một chủ đề: cánh trên là các chuyến đi, cánh dưới là ảnh của bé, hay ảnh bạn bè.'],
+      ['3. Theo dòng thời gian', 'Xếp ảnh từ trái qua phải theo thời gian: các tháng tuổi của con, từng năm yêu nhau, từng lớp học.'],
+      ['4. Một góc nhỏ thay vì cả cửa', 'Nếu thích tủ lạnh gọn, chỉ dành một góc cố định cho 3–6 ảnh và thay ảnh mới theo mùa.'],
+      ['5. Dùng ảnh nam châm thay băng keo', 'Dán ảnh giấy bằng băng keo dễ để lại vết keo và làm ảnh cong mép. Ảnh nam châm gỡ ra, đổi chỗ dễ dàng, không để lại vết trên tủ.'],
+      ['6. Để chừa khoảng trống', 'Chừa khoảng trống giữa các nhóm ảnh để mắt dễ nhìn, tủ lạnh không bị rối.'],
+    ],
+    link: ['/cua-hang', 'Xem các combo ảnh nam châm →'],
+  },
+];

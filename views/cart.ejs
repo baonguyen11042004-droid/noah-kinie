@@ -10,11 +10,16 @@
         <% cart.items.forEach(i => { %>
         <li class="line">
           <img src="<%= productImg(i.product) %>" alt="" width="80" height="80">
-          <div class="line__n"><a href="<%= u('/san-pham/' + i.product.slug) %>"><%= t('comboOf', i.product.qty) %></a><span><%= money(i.product.price) %></span></div>
+          <div class="line__n">
+            <a href="<%= u('/san-pham/' + i.product.slug) %>"><%= t('comboOf', i.product.qty) %><%= i.qty > 1 ? ' × ' + i.qty : '' %></a>
+            <span><%= money(i.product.price) %></span>
+            <span class="line__ph"><%= t('photosLabel') %>:
+              <% if (i.photos) { %><a href="<%= i.photos %>" target="_blank" rel="noopener noreferrer nofollow"><%= t('openLink') %> ↗</a>
+              <% } else { %><%= t('photosZalo') %><% } %></span>
+          </div>
           <form method="post" action="<%= u('/gio-hang/cap-nhat') %>" class="qty">
-            <input type="hidden" name="_csrf" value="<%= csrf %>"><input type="hidden" name="id" value="<%= i.product.id %>">
-            <input type="number" name="qty" value="<%= i.qty %>" min="0" max="20" aria-label="<%= t('qtyLabel') %>">
-            <button class="btn btn--ghost btn--sm"><%= t('update') %></button>
+            <input type="hidden" name="_csrf" value="<%= csrf %>"><input type="hidden" name="i" value="<%= i.index %>"><input type="hidden" name="qty" value="0">
+            <button class="btn btn--ghost btn--sm"><%= t('remove') %></button>
           </form>
           <strong><%= money(i.total) %></strong>
         </li>

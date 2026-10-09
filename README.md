@@ -1,4 +1,4 @@
-# Nhật ký Kinie – website ảnh nam châm
+# Kinie – website ảnh nam châm
 
 Express + EJS, không cần bước build. Dữ liệu (sản phẩm, đơn hàng, tin nhắn) lưu trong `data/db.json`.
 
@@ -44,4 +44,7 @@ Cần gói có **Node.js Web Apps** (Business Web Hosting, Cloud, hoặc VPS).
 - Tiêu đề và mô tả từng trang nằm ở các khoá `seo*` / `desc*` trong `lib/i18n.js`; nội dung hỏi đáp ở khoá `faq`.
 - Dữ liệu có cấu trúc (JSON-LD): `Store` (trang chủ, Về Kinie), `Product` (trang sản phẩm), `FAQPage` (`/hoi-dap`), `BreadcrumbList`.
 - Giỏ hàng, thanh toán, admin, trang lỗi và các biến thể sắp xếp (`?sort=`) có `noindex`.
+- Trang theo dịp (`data/landings.js`), blog (`data/blog.js`) và đánh giá (`data/reviews.js`) chỉ có bản tiếng Việt; `/en/...` của chúng chuyển về bản VI. Từ khoá từng trang theo `seo/SS8-Kinie-Keyword-Map-kinie.online-v4.xlsx`.
+- Đánh giá: chỉ thêm đánh giá thật vào `data/reviews.js`. Khi còn trống, `/danh-gia` để noindex và không nằm trong sitemap.
+- Khi `NODE_ENV=production` mà chưa đặt `SITE_URL`, site tự dùng `https://kinie.online`.
 - Sau khi deploy: khai báo `https://<tên-miền>/sitemap.xml` trong Google Search Console, kiểm tra JSON-LD bằng Rich Results Test.

@@ -1,0 +1,14 @@
+<% if (!list.length) { %>
+<p class="lead center rev-empty"><%= t('reviewsEmpty') %></p>
+<% } else { %>
+<div class="quotes">
+  <% list.forEach(r => { %>
+  <figure class="rev">
+    <% if (r.image) { %><img src="<%= r.image %>" alt="Ảnh khách nhận hàng – <%= r.name %>" width="400" height="400" loading="lazy"><% } %>
+    <p class="rev__stars" aria-label="<%= r.stars %>/5"><%= '★'.repeat(r.stars) %><%= '☆'.repeat(5 - r.stars) %></p>
+    <blockquote>“<%= r.text %>”</blockquote>
+    <figcaption><b><%= r.name %></b> · <%= r.source %></figcaption>
+  </figure>
+  <% }) %>
+</div>
+<% } %>

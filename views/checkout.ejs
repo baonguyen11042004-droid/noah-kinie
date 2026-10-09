@@ -22,7 +22,7 @@
       </form>
       <aside class="sum">
         <h3><%= t('yourOrder') %></h3>
-        <% cart.items.forEach(i => { %><p><span><%= t('comboOf', i.product.qty) %> × <%= i.qty %></span><span><%= money(i.total) %></span></p><% }) %>
+        <% cart.items.forEach(i => { %><p><span><%= t('comboOf', i.product.qty) %> × <%= i.qty %><small class="sum__ph"><%= t('photosLabel') %>: <%= i.photos ? t('photoLinkLabel') : t('photosZalo') %></small></span><span><%= money(i.total) %></span></p><% }) %>
         <p><span><%= t('shipShort') %></span><span><%= cart.shipping ? money(cart.shipping) : t('free') %></span></p>
         <p class="sum__t"><span><%= t('total') %></span><span><%= money(cart.total) %></span></p>
       </aside>

@@ -1,0 +1,158 @@
+// Trang đích SEO theo dịp / nhu cầu (chỉ bản tiếng Việt). Mỗi trang nhắm một từ khoá chính trong keyword map v4
+// (seo/SS8-Kinie-Keyword-Map-kinie.online-v4.xlsx), để các trang không tranh từ khoá với nhau.
+// Mỗi section: [tiêu đề H2, đoạn văn, (tuỳ chọn) danh sách gạch đầu dòng].
+// combos: id sản phẩm gợi ý (xem data/seed.js). faq: [câu hỏi, trả lời].
+module.exports = [
+  {
+    slug: 'lam-anh-nam-cham',
+    nav: 'Làm theo yêu cầu',
+    kw: 'in ảnh nam châm theo yêu cầu',
+    title: 'Làm ảnh nam châm theo yêu cầu – in từ ảnh của bạn',
+    desc: 'Dịch vụ in ảnh nam châm theo yêu cầu: gửi ảnh qua link hoặc Zalo, Kinie in 6 màu, phủ 5 lớp, gắn nam châm dẻo 3 mm bằng tay. Từ 29k/ảnh, giao 2–4 ngày.',
+    h1: 'Làm ảnh nam châm theo yêu cầu',
+    intro: 'Bạn có ảnh, Kinie làm phần còn lại. Mỗi tấm ảnh nam châm 6,5 × 8 cm được in từ chính ảnh bạn gửi, chỉnh màu, căn khung rồi gắn tay lên nam châm dẻo dày 3 mm để dán tủ lạnh, cửa sổ hay bảng từ.',
+    sections: [
+      ['Dịch vụ in ảnh nam châm của Kinie gồm những gì?', 'Bạn chỉ cần chọn số ảnh và gửi ảnh. Kinie lo toàn bộ phần còn lại:', [
+        'Xem từng ảnh, cân màu và căn khung cho vừa khổ 6,5 × 8 cm.',
+        'In 6 màu, phủ 5 lớp bảo vệ chống nước, chống trầy.',
+        'Cắt tay, gắn nam châm dẻo dày 3 mm, kiểm tra trước khi đóng gói.',
+        'Giao tận nơi trong khoảng 2–4 ngày, thanh toán COD hoặc chuyển khoản.',
+      ]],
+      ['Gửi ảnh thế nào?', 'Khi chọn combo, bạn dán link album Google Drive, Google Photos hoặc iCloud ngay ở bước "Gửi ảnh của bạn" (nhớ bật quyền "Bất kỳ ai có đường liên kết"). Nếu ảnh còn nằm trong điện thoại, chọn "gửi qua Zalo" – Kinie nhắn bạn ngay sau khi đặt.'],
+      ['Ảnh thế nào thì in đẹp?', 'Ảnh chụp bằng điện thoại đời mới là đủ nét cho khổ 6,5 × 8 cm. Ưu tiên ảnh đủ sáng, không bị mờ, người hoặc vật chính nằm gần giữa khung. Ảnh ngang vẫn in được, Kinie sẽ căn lại phần quan trọng nhất và hỏi lại bạn nếu cần cắt nhiều.'],
+      ['Làm ảnh nam châm dán tủ lạnh tự làm hay đặt in?', 'Tự làm ở nhà thì rẻ nhưng ảnh giấy dễ bong, dễ thấm nước và phai màu. Đặt in ở Kinie, ảnh được phủ 5 lớp bảo vệ nên lau được bằng khăn ẩm và giữ màu lâu, giá từ 29k/ảnh và rẻ dần khi đặt nhiều.'],
+    ],
+    combos: ['p6', 'p20', 'p50'],
+    faq: [
+      ['In ảnh nam châm theo yêu cầu mất bao lâu?', 'Thường giao tận nơi trong 2–4 ngày. Với đơn từ 100 ảnh, Kinie báo thời gian làm cụ thể trước khi bạn đặt.'],
+      ['Có in được ảnh chụp màn hình hay ảnh cũ không?', 'Được, nhưng ảnh có độ phân giải thấp sẽ kém nét hơn. Bạn cứ gửi, Kinie xem trước và báo nếu ảnh khó in đẹp.'],
+    ],
+  },
+  {
+    slug: 'anh-nam-cham-qua-tang',
+    nav: 'Quà tặng',
+    kw: 'in ảnh nam châm làm quà tặng',
+    title: 'In ảnh nam châm làm quà tặng – quà kỷ niệm từ 29k',
+    desc: 'Gợi ý in ảnh nam châm làm quà tặng sinh nhật, kỷ niệm, tân gia, 20/10: ảnh của chính người nhận, làm tay từng chiếc, từ 29k/ảnh, giao 2–4 ngày.',
+    h1: 'In ảnh nam châm làm quà tặng',
+    intro: 'Một món quà nhỏ nhưng được nhìn thấy mỗi ngày: những tấm ảnh của chính người nhận, gắn trên cửa tủ lạnh. Ảnh nam châm Kinie hợp cho sinh nhật, ngày kỷ niệm, tân gia hay những dịp như 20/10, 8/3.',
+    sections: [
+      ['Vì sao ảnh nam châm là món quà dễ thương?', 'Quà tặng ảnh thường bị cất vào ngăn kéo. Ảnh nam châm thì được dán lên tủ lạnh, nơi cả nhà đi qua mỗi ngày, nên kỷ niệm luôn ở trước mắt.', [
+        'Mang dấu ấn riêng: in từ ảnh của hai người, của nhóm bạn, của gia đình.',
+        'Giá mềm: từ 29k/ảnh, bộ 6 ảnh khoảng 20k/ảnh.',
+        'Gọn nhẹ, dễ gửi xa, không lo vỡ như khung kính.',
+      ]],
+      ['Gợi ý quà theo từng dịp', 'Mỗi dịp hợp với một cách chọn ảnh khác nhau:', [
+        'Sinh nhật: 9 ảnh của người nhận qua từng năm, xếp ô 3 × 3.',
+        'Kỷ niệm ngày yêu: mỗi tháng bên nhau một ảnh – combo 15 hoặc 20 ảnh.',
+        'Tân gia: ảnh cả nhà, ảnh ngôi nhà mới để dán ngay lên tủ lạnh mới.',
+        '20/10, 8/3: bộ ảnh của mẹ, của vợ, của cô giáo cùng cả lớp.',
+      ]],
+      ['Chọn bao nhiêu ảnh?', 'Tặng một người thì 6–9 ảnh là vừa một góc tủ lạnh. Tặng cả nhóm bạn, chọn combo 20 ảnh để được free ship rồi chia mỗi người vài tấm. Cần gợi ý, nhắn Kinie qua Zalo, gửi ảnh để Kinie chọn giúp.'],
+    ],
+    combos: ['p6', 'p9', 'p20'],
+    faq: [
+      ['Kinie có giao thẳng đến người nhận không?', 'Có. Bạn ghi địa chỉ người nhận ở bước thanh toán và ghi chú "quà tặng" để Kinie lưu ý khi đóng gói.'],
+    ],
+  },
+  {
+    slug: 'anh-nam-cham-couple',
+    nav: 'Cặp đôi',
+    kw: 'in ảnh nam châm cặp đôi',
+    title: 'In ảnh nam châm cặp đôi – quà kỷ niệm ngày yêu nhau',
+    desc: 'In ảnh nam châm cặp đôi làm quà kỷ niệm 100 ngày, 1 năm, 1000 ngày yêu nhau, Valentine, 20/10. Ảnh của hai bạn, làm tay từng chiếc, từ 29k/ảnh.',
+    h1: 'In ảnh nam châm cặp đôi',
+    intro: 'Những tấm ảnh hai bạn chụp cùng nhau xứng đáng được nhìn thấy mỗi ngày, không chỉ nằm trong điện thoại. In thành ảnh nam châm, dán lên tủ lạnh, bàn học hay góc làm việc – một món quà kỷ niệm nhỏ mà ý nghĩa.',
+    sections: [
+      ['Quà kỷ niệm ngày yêu nhau theo từng mốc', 'Mỗi mốc kỷ niệm hợp với một bộ ảnh:', [
+        '100 ngày yêu: bộ 6 ảnh những buổi hẹn đầu tiên.',
+        '1 năm: 12 tháng, mỗi tháng một ảnh – chọn combo 15 ảnh để thêm vài tấm đặc biệt.',
+        '1000 ngày: combo 20 ảnh kể lại cả hành trình, kèm free ship.',
+        'Valentine, 20/10: 3–9 ảnh kèm một tấm thiệp viết tay.',
+      ]],
+      ['Chọn ảnh couple thế nào cho đẹp?', 'Chọn những ảnh có câu chuyện: lần đầu đi chơi xa, buổi hẹn mưa, ảnh chụp vội mà cả hai cùng cười. Trộn ảnh chụp đẹp và ảnh đời thường để bộ ảnh tự nhiên hơn. Ảnh selfie chụp gần vẫn in đẹp ở khổ 6,5 × 8 cm.'],
+      ['Gửi ảnh bí mật thế nào?', 'Bạn gom ảnh vào một album Google Drive riêng rồi dán link khi đặt, hoặc gửi qua Zalo. Kinie giao tới địa chỉ bạn ghi, có thể là địa chỉ của người ấy.'],
+    ],
+    combos: ['p6', 'p15', 'p20'],
+    faq: [],
+  },
+  {
+    slug: 'anh-nam-cham-dam-cuoi',
+    nav: 'Đám cưới',
+    kw: 'in ảnh nam châm đám cưới',
+    title: 'In ảnh nam châm đám cưới – quà cảm ơn khách mời',
+    desc: 'In ảnh nam châm đám cưới làm quà cảm ơn khách mời hoặc lưu giữ ảnh cưới. Combo 50–200 ảnh có quà tặng và free ship, giá chỉ khoảng 19k/ảnh ở gói lớn.',
+    h1: 'In ảnh nam châm đám cưới',
+    intro: 'Ảnh cưới thường nằm trong album dày cất trên kệ. In vài tấm đẹp nhất thành ảnh nam châm để dán tủ lạnh, hoặc làm quà cảm ơn khách mời – món quà nhỏ, dễ mang về, và khách sẽ nhìn thấy mỗi ngày.',
+    sections: [
+      ['Quà cưới ảnh nam châm cho khách mời', 'Với đám cưới đông khách, combo lớn giúp giá mỗi ảnh giảm rõ:', [
+        'Combo 50 ảnh: tặng 2 ảnh, free ship.',
+        'Combo 100 ảnh: tặng 3 ảnh, free ship.',
+        'Combo 200 ảnh: tặng 5 ảnh, free ship, khoảng 19k/ảnh.',
+      ]],
+      ['Chuẩn bị ảnh thế nào?', 'Bạn có thể dùng một ảnh cưới cho tất cả khách, hoặc chọn nhiều ảnh khác nhau. Nếu muốn có tên cô dâu chú rể và ngày cưới trên ảnh, bạn thiết kế sẵn rồi gửi file, Kinie in đúng file bạn gửi. Gom ảnh vào một thư mục Google Drive và dán link khi đặt.'],
+      ['Đặt sớm bao lâu?', 'Đơn từ 100 ảnh cần thêm thời gian làm tay. Bạn nhắn Kinie qua Zalo trước ngày cưới để Kinie báo thời gian hoàn thành, tránh sát ngày.'],
+    ],
+    combos: ['p50', 'p100', 'p200'],
+    faq: [],
+  },
+  {
+    slug: 'anh-nam-cham-em-be',
+    nav: 'Em bé',
+    kw: 'in ảnh nam châm em bé',
+    title: 'In ảnh nam châm em bé – ảnh đầy tháng, thôi nôi, tháng tuổi',
+    desc: 'In ảnh nam châm em bé theo tháng tuổi, đầy tháng, thôi nôi: lưu lại từng giai đoạn lớn lên của con trên tủ lạnh. Từ 29k/ảnh, làm tay, giao 2–4 ngày.',
+    h1: 'In ảnh nam châm em bé',
+    intro: 'Con lớn nhanh lắm. Mỗi tháng một tấm ảnh nam châm trên tủ lạnh là cách đơn giản để cả nhà nhìn thấy con thay đổi từng ngày, và ông bà ở xa cũng có ảnh cháu để ngắm.',
+    sections: [
+      ['Ảnh tháng tuổi của bé', 'Bộ 12 tháng đầu đời là bộ ảnh được nhiều bố mẹ chọn nhất. Chọn combo 15 ảnh để có đủ 12 tháng cộng vài ảnh đặc biệt như ngày về nhà, lần đầu biết lẫy, biết đi.'],
+      ['Quà đầy tháng, thôi nôi', 'Ảnh nam châm của bé là món quà hợp để gửi ông bà, cô dì chú bác sau tiệc đầy tháng hay thôi nôi:', [
+        'In một ảnh đẹp nhất thành nhiều bản để tặng họ hàng.',
+        'Combo 29 ảnh trở lên được tặng thêm ảnh và free ship.',
+        'Kinie giao tận nơi, có thể gửi thẳng tới nhà ông bà.',
+      ]],
+      ['An toàn khi có trẻ nhỏ', 'Ảnh nam châm nhỏ, nên dán ở chỗ cao ngoài tầm tay bé và không để bé ngậm hay cầm chơi, như với mọi đồ vật nhỏ trong nhà.'],
+    ],
+    combos: ['p9', 'p15', 'p29'],
+    faq: [],
+  },
+  {
+    slug: 'anh-nam-cham-du-lich',
+    nav: 'Du lịch',
+    kw: 'in ảnh nam châm du lịch',
+    title: 'In ảnh nam châm du lịch – nam châm lưu niệm từ ảnh của bạn',
+    desc: 'In ảnh chuyến đi thành nam châm lưu niệm: Đà Lạt, Đà Nẵng, Hội An hay nước ngoài. Ảnh của chính bạn thay vì nam châm mua sẵn, từ 29k/ảnh, làm tay từng chiếc.',
+    h1: 'In ảnh nam châm du lịch',
+    intro: 'Nam châm lưu niệm mua ở điểm đến thì ai cũng giống ai. In chính ảnh chuyến đi của bạn thành nam châm tủ lạnh, mỗi tấm là một kỷ niệm chỉ bạn mới có.',
+    sections: [
+      ['Bộ sưu tập nam châm theo điểm đến', 'Mỗi chuyến đi chọn vài tấm đẹp nhất, lâu dần tủ lạnh thành tấm bản đồ những nơi bạn từng đến:', [
+        'Chuyến đi ngắn: 3–6 ảnh – cảnh đẹp, món ăn, ảnh cả nhóm.',
+        'Chuyến đi dài: combo 15–20 ảnh kể lại từng ngày.',
+        'Đi cùng nhóm bạn: combo 20 ảnh free ship, chia mỗi người vài tấm.',
+      ]],
+      ['Chọn ảnh du lịch để in', 'Ảnh có người và cảnh trong cùng một khung thường đẹp nhất ở khổ nhỏ. Ảnh phong cảnh rộng nên chọn tấm có điểm nhấn rõ (ngọn núi, cây cầu, quán cà phê) để khi thu nhỏ vẫn dễ nhận ra.'],
+    ],
+    combos: ['p6', 'p15', 'p20'],
+    faq: [],
+  },
+  {
+    slug: 'anh-nam-cham-su-kien',
+    nav: 'Sự kiện & doanh nghiệp',
+    kw: 'in ảnh nam châm sự kiện',
+    title: 'In ảnh nam châm sự kiện, quà tặng doanh nghiệp số lượng lớn',
+    desc: 'In ảnh nam châm số lượng lớn cho sự kiện, quà 20/10 cho nhân viên, quà tặng khách hàng. Gói 100–200 ảnh có quà tặng, free ship, khoảng 19k/ảnh.',
+    h1: 'In ảnh nam châm cho sự kiện và doanh nghiệp',
+    intro: 'Một tấm ảnh nam châm in từ khoảnh khắc của chính sự kiện là món quà khách mang về và dán lên tủ lạnh, thay vì bỏ quên trong túi quà. Kinie nhận in số lượng lớn cho sự kiện, công ty và shop làm quà tặng.',
+    sections: [
+      ['Dùng ảnh nam châm cho dịp nào?', 'Một vài cách doanh nghiệp và ban tổ chức hay dùng:', [
+        'Quà 20/10, 8/3 cho nhân viên: ảnh team, ảnh từng người.',
+        'Sự kiện, hội thảo, tiệc cuối năm: ảnh khách tham dự.',
+        'Quà tặng khách hàng: ảnh sản phẩm hoặc thiết kế có logo của bạn.',
+      ]],
+      ['Gói số lượng lớn', 'Combo 100 ảnh tặng 3 ảnh, combo 200 ảnh tặng 5 ảnh, đều free ship. Bạn tự thiết kế ảnh có logo hoặc thông điệp rồi gửi file, Kinie in đúng file bạn gửi.'],
+      ['Thời gian làm', 'Mỗi ảnh được cắt và gắn nam châm bằng tay, nên đơn lớn cần thêm thời gian. Nhắn Kinie qua Zalo với số lượng và ngày cần nhận để được báo thời gian hoàn thành trước khi đặt.'],
+    ],
+    combos: ['p50', 'p100', 'p200'],
+    faq: [],
+  },
+];

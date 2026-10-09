@@ -2,7 +2,7 @@
 <section class="sec pricing">
   <div class="wrap">
     <div class="pricing__head">
-      <img class="pricing__logo" src="/img/logo.jpg" alt="Kinie Memory – Nhật ký Kinie" width="200" height="137">
+      <img class="pricing__logo" src="/img/logo.webp" alt="Logo Kinie – ảnh nam châm handmade" width="180" height="180">
       <div class="center">
         <p class="eyebrow"><%= t('priceEyebrow') %></p>
         <h1 class="h2"><%= t('priceTitle') %></h1>
@@ -34,11 +34,7 @@
               <% if (p.oldPrice > p.price) { %><s><%= kfmt(p.oldPrice) %></s><% } %>
               <b><%= p.qty === 1 ? t('singlePrice', kfmt(p.price)) : kfmt(p.price) %></b>
             </span>
-            <form method="post" action="<%= u('/gio-hang/them') %>" class="prow__f">
-              <input type="hidden" name="_csrf" value="<%= csrf %>">
-              <input type="hidden" name="id" value="<%= p.id %>">
-              <button class="prow__b" aria-label="<%= t('addToCart') %>: <%= t('photos', p.qty) %>" title="<%= t('addToCart') %>"><%- include('partials/icon', { name: 'bag' }) %></button>
-            </form>
+            <a class="prow__b" href="<%= u('/san-pham/' + p.slug) %>#dat-hang" aria-label="<%= t('pickPhotos') %>: <%= t('photos', p.qty) %>" title="<%= t('pickPhotos') %>"><%- include('partials/icon', { name: 'bag' }) %></a>
           </li>
           <% }) %>
         </ul>

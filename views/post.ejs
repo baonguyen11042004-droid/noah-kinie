@@ -1,0 +1,30 @@
+<%- include('partials/header') %>
+<article class="sec">
+  <div class="wrap narrow">
+    <p class="crumb"><a href="/"><%= t('crumbHome') %></a> / <a href="/blog">Blog</a></p>
+    <p class="post-card__d"><time datetime="<%= post.date %>"><%= new Date(post.date).toLocaleDateString('vi-VN') %></time> · Kinie</p>
+    <h1 class="h2"><%= post.title %></h1>
+    <p class="lead"><%= post.intro %></p>
+    <div class="prose">
+      <% post.body.forEach(([h, p, list]) => { %>
+      <h2><%= h %></h2>
+      <p><%= p %></p>
+      <% if (list) { %><ul><% list.forEach(li => { %><li><%= li %></li><% }) %></ul><% } %>
+      <% }) %>
+    </div>
+    <div class="cta mt">
+      <div><h2><%= t('ctaTitle') %></h2><p><%= t('ctaBody') %></p></div>
+      <div class="hero__cta">
+        <a class="btn" href="<%= post.link[0] %>"><%= post.link[1] %></a>
+        <a class="btn btn--zalo" href="<%= site.zalo %>" target="_blank" rel="noopener"><%- include('partials/icon', { name: 'chat' }) %><%= t('zaloCta') %></a>
+      </div>
+    </div>
+  </div>
+  <% if (more.length) { %>
+  <div class="wrap">
+    <h2 class="h2 mt"><%= t('blogLatest') %></h2>
+    <div class="posts"><% more.forEach(m => { %><%- include('partials/post-card', { post: m }) %><% }) %></div>
+  </div>
+  <% } %>
+</article>
+<%- include('partials/footer') %>

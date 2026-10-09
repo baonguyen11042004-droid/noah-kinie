@@ -2,19 +2,24 @@
 <footer class="footer">
   <div class="wrap footer__grid">
     <div>
-      <a class="logo" href="<%= u('/') %>">Nhật ký Kinie<span>♥</span></a>
+      <a class="logo" href="<%= u('/') %>"><img src="/img/logo-256.jpg" alt="" width="44" height="44" loading="lazy">Kinie</a>
       <p><%= t('footTag') %></p>
-      <img class="footer__logo" src="/img/logo.jpg" alt="Kinie Memory – Nhật ký Kinie" width="210" loading="lazy">
+      <img class="footer__logo" src="/img/logo.webp" alt="Logo Kinie – ảnh nam châm handmade" width="180" height="180" loading="lazy">
     </div>
     <div>
       <h4><%= t('footShop') %></h4>
       <a href="<%= u('/bang-gia') %>"><%= t('price') %></a>
       <% categories.forEach(c => { %><a href="<%= u('/cua-hang') %>?cat=<%= c.id %>"><%= t('tabs')[c.id] %></a><% }) %>
+      <% if (lang === 'vi') { %>
+      <h4 class="mt-xs"><%= t('footOccasion') %></h4>
+      <% landings.forEach(l => { %><a href="/<%= l.slug %>"><%= l.nav %></a><% }) %>
+      <% } %>
     </div>
     <div>
       <h4><%= t('footInfo') %></h4>
       <a href="<%= u('/ve-kinie') %>"><%= t('about') %></a>
       <a href="<%= u('/hoi-dap') %>"><%= t('faqNav') %></a>
+      <% if (lang === 'vi') { %><a href="/blog"><%= t('blogNav') %></a><a href="/danh-gia"><%= t('reviewsNav') %></a><% } %>
       <a href="<%= u('/lien-he') %>"><%= t('contact') %></a>
       <a href="<%= u('/gio-hang') %>"><%= t('cart') %></a>
     </div>
@@ -22,11 +27,12 @@
       <h4><%= t('footConnect') %></h4>
       <a href="mailto:<%= site.email %>"><%= site.email %></a>
       <% site.phones.forEach(ph => { %><span class="fphone"><a href="tel:<%= ph.tel %>"><%= ph.label %></a><a href="<%= ph.zalo %>" target="_blank" rel="noopener">Zalo</a></span><% }) %>
-      <a href="<%= site.instagram %>" target="_blank" rel="noopener">Instagram</a>
-      <a href="<%= site.facebook %>" target="_blank" rel="noopener">Facebook</a>
+      <a href="<%= site.tiktok %>" target="_blank" rel="noopener">TikTok @nhatkykinie</a>
+      <% if (site.instagram !== '#') { %><a href="<%= site.instagram %>" target="_blank" rel="noopener">Instagram</a><% } %>
+      <% if (site.facebook !== '#') { %><a href="<%= site.facebook %>" target="_blank" rel="noopener">Facebook</a><% } %>
     </div>
   </div>
-  <p class="footer__c">© <%= new Date().getFullYear() %> Nhật ký Kinie. Made with ♥</p>
+  <p class="footer__c">© <%= new Date().getFullYear() %> Kinie. Made with ♥</p>
 </footer>
 <script src="/js/app.js" defer></script>
 </body>
