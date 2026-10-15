@@ -12,7 +12,8 @@
  *
  * Cài (một lần, xem README của web kinie):
  *  1. Mở Sheet > Tiện ích mở rộng > Apps Script, dán file này, Lưu.
- *  2. Chạy hàm caiDat, bấm Cho phép. Hộp thoại hiện MÃ BÍ MẬT -> dán vào ORDERS_HOOK_SECRET trên Hostinger.
+ *  2. Chạy hàm caiDat, bấm Cho phép. MÃ BÍ MẬT hiện trong Nhật ký thực thi (hoặc Project Settings > Script Properties > SECRET,
+ *     hoặc menu Kinie > Xem mã bí mật trong Sheet) -> dán vào ORDERS_HOOK_SECRET trên Hostinger.
  *  3. Triển khai > Tùy chọn triển khai mới > Ứng dụng web. Thực thi với tư cách: Tôi. Ai có quyền truy cập: Bất kỳ ai.
  *     Chép URL ứng dụng web -> dán vào ORDERS_HOOK_URL trên Hostinger.
  *  4. Vào /admin, bấm "Gửi lại tất cả đơn sang Sheet" để đưa các đơn cũ sang.
@@ -67,7 +68,11 @@ function caiDat() {
     .forEach((t) => ScriptApp.deleteTrigger(t));
   ScriptApp.newTrigger('khiSua').forSpreadsheet(ss).onEdit().create();
 
-  xemMaBiMat();
+  // Không mở hộp thoại ở đây: hộp thoại hiện bên tab Sheet, chạy từ trình chỉnh sửa sẽ đứng chờ tới hết 6 phút.
+  // Mã bí mật ghi vào Nhật ký thực thi; xem lại bằng menu Kinie > Xem mã bí mật.
+  console.log('Đã cài xong. Mã bí mật (ORDERS_HOOK_SECRET): ' + p.getProperty('SECRET') +
+    ' | Gmail báo đơn: ' + p.getProperty('NOTIFY_EMAIL'));
+  ss.toast('Đã cài xong. Xem mã bí mật ở menu Kinie > Xem mã bí mật.', 'Kinie', 8);
 }
 
 function xemMaBiMat() {
