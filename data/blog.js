@@ -40,7 +40,7 @@ module.exports = [
         'Màng ép plastic hoặc băng keo trong khổ lớn để bảo vệ mặt ảnh.',
       ]],
       ['Các bước làm ảnh nam châm', 'Làm lần lượt như sau:', [
-        'Cắt ảnh theo kích thước muốn dán, ví dụ 6,5 × 8 cm.',
+        'Cắt ảnh theo kích thước muốn dán, ví dụ 5,5 × 8 cm.',
         'Phủ mặt ảnh bằng màng ép hoặc băng keo trong để ảnh đỡ thấm nước.',
         'Bóc lớp giấy keo của tấm nam châm, dán mặt sau ảnh lên, miết đều từ giữa ra ngoài cho hết bọt khí.',
         'Cắt nam châm theo mép ảnh, bo nhẹ 4 góc để đỡ bị bong.',
@@ -96,7 +96,7 @@ module.exports = [
     desc: 'Cách dán ảnh lên tủ lạnh và trang trí tủ lạnh bằng ảnh nam châm: xếp lưới, theo chủ đề, theo thời gian – gọn gàng mà vẫn đầy kỷ niệm.',
     intro: 'Cửa tủ lạnh là nơi cả nhà nhìn thấy nhiều nhất mỗi ngày. Dán ảnh lên đó là cách đơn giản để căn bếp có thêm câu chuyện. Vài cách xếp ảnh để tủ lạnh gọn mà vẫn xinh:',
     body: [
-      ['1. Xếp lưới ngay ngắn', 'Ảnh cùng kích thước (như 6,5 × 8 cm) xếp thành lưới 3 × 3 hoặc 2 × 3 trông gọn gàng nhất, hợp với tủ lạnh màu trơn.'],
+      ['1. Xếp lưới ngay ngắn', 'Ảnh cùng kích thước (như 5,5 × 8 cm) xếp thành lưới 3 × 3 hoặc 2 × 3 trông gọn gàng nhất, hợp với tủ lạnh màu trơn.'],
       ['2. Theo chủ đề', 'Mỗi cánh tủ một chủ đề: cánh trên là các chuyến đi, cánh dưới là ảnh của bé, hay ảnh bạn bè.'],
       ['3. Theo dòng thời gian', 'Xếp ảnh từ trái qua phải theo thời gian: các tháng tuổi của con, từng năm yêu nhau, từng lớp học.'],
       ['4. Một góc nhỏ thay vì cả cửa', 'Nếu thích tủ lạnh gọn, chỉ dành một góc cố định cho 3–6 ảnh và thay ảnh mới theo mùa.'],

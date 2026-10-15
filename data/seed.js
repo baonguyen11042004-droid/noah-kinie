@@ -1,4 +1,4 @@
-// Bảng giá thật của shop: một sản phẩm duy nhất là ảnh nam châm 6,5 x 8 cm, dày 3 mm, tính giá theo số ảnh.
+// Bảng giá thật của shop: một sản phẩm duy nhất là ảnh nam châm 5,5 x 8 cm, dày 3 mm, tính giá theo số ảnh.
 // Mỗi dòng là một gói (qty = số ảnh). Sau khi chạy lần đầu, dữ liệu được lưu vào data/db.json và sửa qua /admin.
 // "image" để trống -> site tự vẽ ảnh minh hoạ; điền URL/đường dẫn (vd /img/abc.jpg) để dùng ảnh thật.
 // Giá tính bằng đồng: 29000 = 29k.
