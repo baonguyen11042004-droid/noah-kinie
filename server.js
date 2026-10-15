@@ -555,6 +555,12 @@ const safeEq = (a, b) => {
   const x = Buffer.from(a), y = Buffer.from(b);
   return x.length === y.length && crypto.timingSafeEqual(x, y);
 };
+// Thông báo một lần (hiện ở lần tải trang kế tiếp rồi xoá).
+const takeFlash = (req, key) => {
+  const v = req.session.flash && req.session.flash[key];
+  if (v) req.session.flash = null;
+  return v || '';
+};
 const requireAdmin = (req, res, next) => (req.session.admin ? next() : res.redirect('/admin/login'));
 const loginLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 10 });
 
@@ -570,7 +576,7 @@ app.get('/admin', requireAdmin, (req, res) => {
   res.render('admin/dashboard', {
     title: 'Admin – Tổng quan', orders: s.orders, products: s.products, messages: s.messages,
     savedOf: (uid) => photos.slots(uid).length, labels: STATUS,
-    sheet: { enabled: sheet.enabled(), last: sheet.last, result: str(req.query.sheet, 5) },
+    sheet: { enabled: sheet.enabled(), last: sheet.last, result: takeFlash(req, 'sheet') },
     // Doanh thu chỉ tính đơn đã nhận tiền (không tính đơn chờ chuyển khoản hoặc đã huỷ).
     revenue: s.orders.filter((o) => !['unpaid', 'cancelled'].includes(o.status)).reduce((n, o) => n + o.total, 0),
   });
@@ -590,7 +596,8 @@ app.post('/admin/orders/:code/status', requireAdmin, checkCsrf, (req, res) => {
 // Gửi lại toàn bộ đơn sang Sheet: dùng lần đầu nối Sheet, hoặc khi lần gửi trước bị lỗi.
 app.post('/admin/sheet/sync', requireAdmin, checkCsrf, async (req, res) => {
   const ok = await sheet.send({ event: 'sync', orders: db.get().orders.map(sheetRow) });
-  res.redirect('/admin?sheet=' + (ok ? 'ok' : 'err'));
+  req.session.flash = { sheet: ok ? 'ok' : 'err' }; // báo kết quả trong trang, giữ đường dẫn /admin gọn
+  res.redirect('/admin');
 });
 
 // Google Sheet -> web: CEO đổi cột Trạng thái trên Sheet, Apps Script gọi vào đây (xác thực bằng ORDERS_HOOK_SECRET).
