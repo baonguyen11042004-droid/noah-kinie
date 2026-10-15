@@ -1,5 +1,4 @@
 <%- include('../partials/header') %>
-<% const labels = { unpaid: 'Chờ thanh toán', paid: 'Đã nhận tiền', new: 'Mới (đơn cũ)', confirmed: 'Đã xác nhận', shipping: 'Đang giao', done: 'Hoàn thành', cancelled: 'Đã huỷ' }; %>
 <section class="sec"><div class="wrap">
   <div class="sec__head">
     <h1 class="h2">Quản trị Kinie</h1>
@@ -10,6 +9,18 @@
     <div><b><%= money(revenue) %></b>Doanh thu</div>
     <div><b><%= products.length %></b>Sản phẩm</div>
     <div><b><%= messages.length %></b>Tin nhắn</div>
+  </div>
+
+  <div class="box">
+    <b>Google Sheet đơn hàng:</b>
+    <% if (!sheet.enabled) { %>chưa nối (thiếu ORDERS_HOOK_URL / ORDERS_HOOK_SECRET trên Hostinger – xem README).
+    <% } else { %>
+      <% if (sheet.result === 'ok') { %>đã gửi toàn bộ đơn sang Sheet.
+      <% } else if (sheet.result === 'err' || sheet.last.ok === false) { %><span class="warn">lần gửi gần nhất bị lỗi: <%= sheet.last.error %></span>
+      <% } else if (sheet.last.ok) { %>đang đồng bộ (lần gửi gần nhất <%= new Date(sheet.last.at).toLocaleString('vi-VN') %>).
+      <% } else { %>đã nối, chưa gửi đơn nào từ lần khởi động này.<% } %>
+      <form method="post" action="/admin/sheet/sync" class="inline"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn--ghost btn--sm">Gửi lại tất cả đơn sang Sheet</button></form>
+    <% } %>
   </div>
 
   <h2 class="h3">Đơn hàng</h2>

@@ -42,6 +42,17 @@ Cần gói có **Node.js Web Apps** (Business Web Hosting, Cloud, hoặc VPS).
 - Ảnh lưu ở `data/uploads/<mã>/` trên ổ server (đã nằm trong `.gitignore`): **sao lưu cùng `data/db.json`**. Ảnh của giỏ hàng bỏ dở được tự xoá sau 3 ngày; ảnh của đơn hàng không tự xoá.
 - Chỉ nhận chuyển khoản trước 100%. Trang đặt hàng thành công hiện mã QR VietQR có sẵn số tiền và mã đơn: cần đặt `BANK_ID` (mã ngân hàng VietQR, vd `VCB`, `MB`, `TCB`), `BANK_ACCOUNT`, `BANK_HOLDER`. Đơn mới ở trạng thái "Chờ thanh toán"; khi tiền về, đổi sang "Đã nhận tiền" trong `/admin`.
 - In: trong `/admin`, bấm **In khung A4** ở từng đơn (6 tấm/tờ, đúng vị trí khung in). In tỉ lệ 100%, lề Không, bật In hình nền.
+
+## Google Sheet đơn hàng + Gmail báo đơn (2 chiều)
+Mã Apps Script: `apps-script/don-hang.gs`. Đơn mới và mỗi lần đổi trạng thái trong `/admin` được ghi vào Sheet; đơn mới gửi Gmail báo; đổi cột **Trạng thái** trên Sheet thì `/admin` đổi theo. Từ Sheet chỉ đổi được trạng thái. Sheet chứa thông tin khách và doanh thu: để riêng, chỉ CEO xem.
+1. Tạo Google Sheet mới tên "Đơn hàng Kinie" → **Tiện ích mở rộng → Apps Script** → xoá mã mẫu, dán toàn bộ `apps-script/don-hang.gs` → Lưu.
+2. Chọn hàm `caiDat` → **Chạy** → cấp quyền (Google hỏi quyền sửa Sheet, gửi mail, kết nối ra ngoài). Hộp thoại hiện **mã bí mật**.
+3. **Triển khai → Tùy chọn triển khai mới → Ứng dụng web**: Thực thi với tư cách **Tôi**, Ai có quyền truy cập **Bất kỳ ai** → chép **URL ứng dụng web**.
+4. Hostinger → Biến môi trường: `ORDERS_HOOK_URL` = URL ứng dụng web, `ORDERS_HOOK_SECRET` = mã bí mật → Áp dụng thay đổi.
+5. Vào `/admin` → **Gửi lại tất cả đơn sang Sheet** (đưa đơn cũ sang, kiểm tra kết nối).
+- Gmail báo đơn gửi tới tài khoản chạy script; đổi ở Apps Script → Project Settings → Script Properties → `NOTIFY_EMAIL`. Giới hạn của Google: 100 thư/ngày.
+- Sửa `don-hang.gs` sau khi đã triển khai: **Triển khai → Quản lý bản triển khai → sửa → Phiên bản mới** (URL giữ nguyên).
+- Chữ trạng thái trên Sheet phải trùng `STATUS` trong `server.js`.
 - Chạy thử trên máy (http://localhost) thì đặt `NODE_ENV=development`, nếu không giỏ hàng sẽ báo "Phiên hết hạn".
 
 ## SEO

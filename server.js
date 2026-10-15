@@ -8,6 +8,7 @@ const cookieSession = require('cookie-session');
 const nodemailer = require('nodemailer');
 const db = require('./lib/db');
 const photos = require('./lib/photos');
+const sheet = require('./lib/sheet');
 const { artSvg } = require('./lib/art');
 const { LANGS, translator } = require('./lib/i18n');
 const landings = require('./data/landings');
@@ -109,6 +110,25 @@ function cartOf(req, withPhotos = false) {
   const shipping = !items.length || subtotal >= FREE_SHIP ? 0 : SHIP_FEE;
   return { items, subtotal, shipping, total: subtotal + shipping, count: items.reduce((s, i) => s + i.qty, 0) };
 }
+// Trạng thái đơn: khoá lưu trong db -> tên hiển thị ở /admin và trên Google Sheet (hai nơi phải trùng chữ).
+const STATUS = {
+  unpaid: 'Chờ thanh toán', paid: 'Đã nhận tiền', confirmed: 'Đã xác nhận', shipping: 'Đang giao',
+  done: 'Hoàn thành', cancelled: 'Đã huỷ', new: 'Mới (đơn cũ)',
+};
+const statusKey = (v) => {
+  const s = String(v ?? '').trim();
+  return STATUS[s] ? s : Object.keys(STATUS).find((k) => STATUS[k] === s) || '';
+};
+// Một dòng trên Google Sheet cho mỗi đơn.
+const sheetRow = (o) => ({
+  code: o.code, createdAt: o.createdAt, status: STATUS[o.status] || o.status,
+  name: o.name, phone: o.phone, email: o.email || '', address: o.address, note: o.note || '',
+  items: o.items.map((i) => `${i.name} ×${i.qty}`).join('; '),
+  photos: o.items.map((i) => (i.mode === 'frames' ? `${photos.slots(i.uid).length}/${i.frames} ảnh trong khung`
+    : i.photos ? 'link album' : 'gửi qua Zalo')).join('; '),
+  subtotal: o.subtotal, shipping: o.shipping, total: o.total,
+  printUrl: (site.url || 'https://kinie.online') + '/admin/orders/' + o.code + '/in',
+});
 const lineOf = (req) => (photos.isUid(req.params.uid) ? (req.session.cart || []).find((l) => l.uid === req.params.uid) : null);
 
 function csrf(req) {
@@ -498,6 +518,7 @@ app.post('/thanh-toan', formLimiter, checkCsrf, async (req, res) => {
   req.session.lastOrder = code;
   notify(`Kinie – đơn mới ${code} (chờ chuyển khoản)`, `${form.name} – ${form.phone}\n${form.address}\nTổng: ${money(order.total)}\n` +
     order.items.map((i) => `- ${i.name} | Ảnh: ${i.mode === 'frames' ? i.frames + ' ảnh đã vào khung' : i.photos || 'gửi qua Zalo'}`).join('\n'));
+  sheet.send({ event: 'new', order: sheetRow(order) }); // thêm dòng vào Sheet + Gmail báo đơn mới
   res.redirect(req.u('/dat-hang-thanh-cong'));
 });
 
@@ -548,7 +569,8 @@ app.get('/admin', requireAdmin, (req, res) => {
   const s = db.get();
   res.render('admin/dashboard', {
     title: 'Admin – Tổng quan', orders: s.orders, products: s.products, messages: s.messages,
-    savedOf: (uid) => photos.slots(uid).length,
+    savedOf: (uid) => photos.slots(uid).length, labels: STATUS,
+    sheet: { enabled: sheet.enabled(), last: sheet.last, result: str(req.query.sheet, 5) },
     // Doanh thu chỉ tính đơn đã nhận tiền (không tính đơn chờ chuyển khoản hoặc đã huỷ).
     revenue: s.orders.filter((o) => !['unpaid', 'cancelled'].includes(o.status)).reduce((n, o) => n + o.total, 0),
   });
@@ -556,9 +578,32 @@ app.get('/admin', requireAdmin, (req, res) => {
 
 app.post('/admin/orders/:code/status', requireAdmin, checkCsrf, (req, res) => {
   const o = db.get().orders.find((x) => x.code === req.params.code);
-  const allowed = ['unpaid', 'paid', 'new', 'confirmed', 'shipping', 'done', 'cancelled'];
-  if (o && allowed.includes(req.body.status)) { o.status = req.body.status; db.save(); }
+  const key = statusKey(req.body.status);
+  if (o && key && o.status !== key) {
+    o.status = key;
+    db.save();
+    sheet.send({ event: 'update', order: sheetRow(o) });
+  }
   res.redirect('/admin');
+});
+
+// Gửi lại toàn bộ đơn sang Sheet: dùng lần đầu nối Sheet, hoặc khi lần gửi trước bị lỗi.
+app.post('/admin/sheet/sync', requireAdmin, checkCsrf, async (req, res) => {
+  const ok = await sheet.send({ event: 'sync', orders: db.get().orders.map(sheetRow) });
+  res.redirect('/admin?sheet=' + (ok ? 'ok' : 'err'));
+});
+
+// Google Sheet -> web: CEO đổi cột Trạng thái trên Sheet, Apps Script gọi vào đây (xác thực bằng ORDERS_HOOK_SECRET).
+const sheetLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 300, standardHeaders: true, legacyHeaders: false });
+app.post('/api/sheet/status', sheetLimiter, express.json({ limit: '10kb' }), (req, res) => {
+  const b = req.body || {};
+  if (!sheet.checkSecret(b.secret)) return res.status(403).json({ ok: false, error: 'Sai mã bí mật' });
+  const o = db.get().orders.find((x) => x.code === str(b.code, 20));
+  if (!o) return res.status(404).json({ ok: false, error: 'Không có đơn ' + str(b.code, 20) + ' trên web' });
+  const key = statusKey(b.status);
+  if (!key) return res.status(400).json({ ok: false, error: 'Trạng thái không hợp lệ' });
+  if (o.status !== key) { o.status = key; db.save(); }
+  res.json({ ok: true, status: STATUS[key] });
 });
 
 // Trang in khung A4 của một đơn: ảnh khách đã cắt sẵn, xếp theo khung in chuyên dụng của Kinie.
@@ -608,7 +653,7 @@ app.post('/admin/products/:id/delete', requireAdmin, checkCsrf, (req, res) => {
 
 // ---------- seo + errors ----------
 app.get('/robots.txt', (req, res) => res.type('text/plain').send(
-  `User-agent: *\nDisallow: /admin\nDisallow: /en/admin\nDisallow: /ngon-ngu/\n\nSitemap: ${baseUrl(req)}/sitemap.xml\n`));
+  `User-agent: *\nDisallow: /admin\nDisallow: /en/admin\nDisallow: /api/\nDisallow: /ngon-ngu/\n\nSitemap: ${baseUrl(req)}/sitemap.xml\n`));
 
 // Trang song ngữ: khai báo cặp hreflang VI/EN. Trang theo dịp, blog, đánh giá: chỉ bản VI.
 app.get('/sitemap.xml', (req, res) => {
