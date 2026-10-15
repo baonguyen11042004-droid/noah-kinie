@@ -45,7 +45,7 @@ Cần gói có **Node.js Web Apps** (Business Web Hosting, Cloud, hoặc VPS).
 
 ## Google Sheet đơn hàng + Gmail báo đơn (2 chiều)
 Mã Apps Script: `apps-script/don-hang.gs`. Đơn mới và mỗi lần đổi trạng thái trong `/admin` được ghi vào Sheet; đơn mới gửi Gmail báo; đổi cột **Trạng thái** trên Sheet thì `/admin` đổi theo. Từ Sheet chỉ đổi được trạng thái. Sheet chứa thông tin khách và doanh thu: để riêng, chỉ CEO xem.
-1. Tạo Google Sheet mới tên "Đơn hàng Kinie" → **Tiện ích mở rộng → Apps Script** → xoá mã mẫu, dán toàn bộ `apps-script/don-hang.gs` → Lưu.
+1. Mở Google Sheet "Khách trên web Kinie" (đã tạo sẵn tab Đơn hàng) → **Tiện ích mở rộng → Apps Script** → xoá mã mẫu, dán toàn bộ `apps-script/don-hang.gs` → Lưu.
 2. Chọn hàm `caiDat` → **Chạy** → cấp quyền (Google hỏi quyền sửa Sheet, gửi mail, kết nối ra ngoài). Hộp thoại hiện **mã bí mật**.
 3. **Triển khai → Tùy chọn triển khai mới → Ứng dụng web**: Thực thi với tư cách **Tôi**, Ai có quyền truy cập **Bất kỳ ai** → chép **URL ứng dụng web**.
 4. Hostinger → Biến môi trường: `ORDERS_HOOK_URL` = URL ứng dụng web, `ORDERS_HOOK_SECRET` = mã bí mật → Áp dụng thay đổi.

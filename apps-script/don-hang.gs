@@ -1,5 +1,5 @@
 /**
- * ĐƠN HÀNG KINIE: nối Google Sheet với web kinie.online (Google Apps Script, gắn trong Sheet "Đơn hàng Kinie").
+ * ĐƠN HÀNG KINIE: nối Google Sheet với web kinie.online (Google Apps Script, gắn trong Sheet "Khách trên web Kinie").
  *
  * Cách hoạt động:
  *  - Web -> Sheet: mỗi đơn mới và mỗi lần đổi trạng thái trong /admin, web gửi đơn tới ứng dụng web của script này
