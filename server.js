@@ -7,6 +7,7 @@ const rateLimit = require('express-rate-limit');
 const cookieSession = require('cookie-session');
 const nodemailer = require('nodemailer');
 const db = require('./lib/db');
+const photos = require('./lib/photos');
 const { artSvg } = require('./lib/art');
 const { LANGS, translator } = require('./lib/i18n');
 const landings = require('./data/landings');
@@ -83,20 +84,32 @@ const productImg = (p) => p.image || `/art/${p.id}.svg`;
 // 29000 -> '29k', 1421000 -> '1.421k'
 const kfmt = (n) => new Intl.NumberFormat('vi-VN').format(Math.round(n / 1000)) + 'k';
 
-// Mỗi dòng giỏ hàng: { id, qty, photos } – photos là link album ảnh của khách, rỗng = khách gửi ảnh qua Zalo sau.
-const MAX_LINES = 6; // giỏ hàng nằm trong cookie (~4 KB), giới hạn số dòng để link ảnh không làm tràn cookie
-const PHOTO_LINK = /^https?:\/\/\S+$/i;
-function cartOf(req) {
+// Mỗi dòng giỏ hàng: { id, qty: 1, uid, mode } – một combo, ảnh của khách nằm ở data/uploads/<uid>/.
+// mode: 'frames' = khách tự thêm ảnh vào khung trên web, 'zalo' = gửi ảnh qua Zalo sau khi đặt.
+// Dòng cũ (trước khi có khung) có photos = link album.
+const MAX_LINES = 6; // giỏ hàng nằm trong cookie (~4 KB)
+const framesOf = (p) => p.qty + (p.gift || 0); // số khung = số ảnh của combo + ảnh tặng
+function cartOf(req, withPhotos = false) {
   const products = db.get().products;
   const items = [];
   (req.session.cart || []).forEach((line, index) => {
     const p = products.find((x) => x.id === line.id);
-    if (p) items.push({ index, product: p, qty: line.qty, photos: line.photos || '', total: p.price * line.qty });
+    if (!p) return;
+    const item = {
+      index, product: p, qty: line.qty, uid: line.uid || '', photos: line.photos || '',
+      mode: line.uid ? line.mode || 'frames' : line.photos ? 'link' : 'zalo', frames: framesOf(p), total: p.price * line.qty,
+    };
+    if (withPhotos) {
+      item.saved = item.uid ? photos.slots(item.uid).filter((s) => s < item.frames).length : 0;
+      item.ready = item.mode !== 'frames' || item.saved >= item.frames;
+    }
+    items.push(item);
   });
   const subtotal = items.reduce((s, i) => s + i.total, 0);
   const shipping = !items.length || subtotal >= FREE_SHIP ? 0 : SHIP_FEE;
   return { items, subtotal, shipping, total: subtotal + shipping, count: items.reduce((s, i) => s + i.qty, 0) };
 }
+const lineOf = (req) => (photos.isUid(req.params.uid) ? (req.session.cart || []).find((l) => l.uid === req.params.uid) : null);
 
 function csrf(req) {
   if (!req.session.csrf) req.session.csrf = crypto.randomBytes(16).toString('hex');
@@ -105,6 +118,12 @@ function csrf(req) {
 function checkCsrf(req, res, next) {
   if (req.body._csrf && req.body._csrf === req.session.csrf) return next();
   res.status(403).render('error', { title: req.t('errSessionTitle'), message: req.t('errSession'), noindex: true });
+}
+// Cho các yêu cầu fetch (tải ảnh lên): mã chống giả mạo nằm ở header.
+function checkCsrfHeader(req, res, next) {
+  const token = req.get('X-CSRF-Token');
+  if (token && token === req.session.csrf) return next();
+  res.status(403).json({ error: 'session' });
 }
 
 // Ngôn ngữ nằm trong URL để Google lập chỉ mục được cả hai bản: /bang-gia (VI) và /en/bang-gia (EN).
@@ -244,7 +263,7 @@ app.get('/san-pham/:slug', (req, res, next) => {
   productPage(req, res, p);
 });
 
-// Trang sản phẩm; extra = { errors, form } khi bước gửi ảnh nhập sai.
+// Trang sản phẩm; extra = { errors } khi không thêm được vào giỏ.
 function productPage(req, res, p, extra = {}) {
   const products = db.get().products;
   const related = products.filter((x) => x.id !== p.id && x.category === p.category).slice(0, 3);
@@ -264,8 +283,7 @@ function productPage(req, res, p, extra = {}) {
     },
   }, crumbLd(base, [[req.t('home'), req.u('/')], [req.t('magnets'), req.u('/cua-hang')], [req.t('photos', p.qty), req.u('/san-pham/' + p.slug)]]));
   res.status(extra.errors ? 400 : 200).render('product', {
-    title: req.t('seoProduct', p.qty), desc: req.t('descProduct', p, money(p.price)), p, related,
-    errors: [], form: { mode: 'link', photos: '' }, ...extra,
+    title: req.t('seoProduct', p.qty), desc: req.t('descProduct', p, money(p.price)), p, related, errors: [], ...extra,
   });
 }
 
@@ -359,52 +377,104 @@ app.post('/lien-he', formLimiter, checkCsrf, async (req, res) => {
 });
 
 // ---------- cart ----------
-app.get('/gio-hang', (req, res) => res.render('cart', { title: req.t('cartTitle'), cart: cartOf(req) }));
+app.get('/gio-hang', (req, res) => res.render('cart', { title: req.t('cartTitle'), cart: cartOf(req, true) }));
 
-// Thêm vào giỏ chỉ đi từ trang sản phẩm, sau bước gửi ảnh (link album hoặc hẹn gửi qua Zalo).
+// Thêm vào giỏ: mỗi lần thêm là một dòng riêng (một bộ ảnh riêng), rồi sang bước thêm ảnh vào khung.
 app.post('/gio-hang/them', checkCsrf, (req, res) => {
   const id = str(req.body.id, 60);
   const p = db.get().products.find((x) => x.id === id);
   if (!p) return res.redirect(req.u('/cua-hang'));
-  const mode = req.body.mode === 'zalo' ? 'zalo' : req.body.mode === 'link' ? 'link' : '';
-  if (!mode) return res.redirect(req.u('/san-pham/' + p.slug)); // form cũ chưa có bước gửi ảnh
-  const photos = mode === 'link' ? str(req.body.photos, 500) : '';
-  const form = { mode, photos };
-  if (mode === 'link' && !PHOTO_LINK.test(photos)) return productPage(req, res, p, { errors: [req.t('vPhotoLink')], form });
   const cart = req.session.cart || [];
-  const line = cart.find((l) => l.id === id && (l.photos || '') === photos);
-  if (line) line.qty = Math.min(20, line.qty + 1);
-  else if (cart.length >= MAX_LINES) return productPage(req, res, p, { errors: [req.t('cartFull')], form });
-  else cart.push({ id, qty: 1, photos });
+  if (cart.length >= MAX_LINES) return productPage(req, res, p, { errors: [req.t('cartFull')] });
+  const uid = photos.newUid();
+  cart.push({ id, qty: 1, uid, mode: 'frames' });
   req.session.cart = cart;
-  res.redirect(req.u(req.body.next === 'checkout' ? '/thanh-toan' : '/gio-hang'));
+  res.redirect(req.u('/gio-hang/anh/' + uid));
 });
 
 app.post('/gio-hang/cap-nhat', checkCsrf, (req, res) => {
   const i = parseInt(req.body.i, 10);
   const qty = parseInt(req.body.qty, 10) || 0;
   const cart = req.session.cart || [];
-  if (cart[i]) {
-    if (qty <= 0) cart.splice(i, 1); else cart[i].qty = Math.min(20, qty);
+  if (cart[i] && qty <= 0) {
+    const [removed] = cart.splice(i, 1);
+    if (removed.uid) photos.removeAll(removed.uid); // ảnh của dòng chưa thành đơn
   }
   req.session.cart = cart;
   res.redirect(req.u('/gio-hang'));
 });
 
+// ---------- thêm ảnh vào khung ----------
+app.get('/gio-hang/anh/:uid', (req, res, next) => {
+  const line = lineOf(req);
+  if (!line) return res.redirect(req.u('/gio-hang'));
+  const p = db.get().products.find((x) => x.id === line.id);
+  if (!p) return next();
+  const cart = req.session.cart;
+  res.render('frames', {
+    title: req.t('frTitle'), p, uid: line.uid, frames: framesOf(p), saved: photos.slots(line.uid),
+    zalo: line.mode === 'zalo', missing: req.query.thieu === '1', more: cart.length > 1,
+  });
+});
+
+app.get('/gio-hang/anh/:uid/:file', (req, res) => {
+  const file = lineOf(req) && photos.filePath(req.params.uid, req.params.file);
+  if (!file) return res.sendStatus(404);
+  res.set('Cache-Control', 'private, no-store').sendFile(file);
+});
+
+// Dự phòng: khách không tải được ảnh thì hẹn gửi qua Zalo sau khi đặt (khai báo trước route /:slot).
+app.post('/gio-hang/anh/:uid/zalo', checkCsrf, (req, res) => {
+  const line = lineOf(req);
+  if (line) { line.mode = 'zalo'; req.session.cart = [...req.session.cart]; }
+  res.redirect(req.u('/gio-hang'));
+});
+
+const uploadLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 1500, standardHeaders: true, legacyHeaders: false });
+const slotOf = (req, line) => {
+  const p = line && db.get().products.find((x) => x.id === line.id);
+  const slot = /^\d{1,3}$/.test(req.params.slot) ? parseInt(req.params.slot, 10) : -1;
+  return p && slot < framesOf(p) ? slot : -1;
+};
+app.post('/gio-hang/anh/:uid/:slot', uploadLimiter, checkCsrfHeader,
+  express.raw({ type: 'image/jpeg', limit: photos.MAX_BYTES }), (req, res) => {
+    const line = lineOf(req);
+    const slot = slotOf(req, line);
+    if (slot < 0) return res.status(404).json({ error: 'slot' });
+    if (!photos.isJpeg(req.body)) return res.status(400).json({ error: 'image' });
+    photos.save(line.uid, slot, req.body);
+    if (line.mode !== 'frames') { line.mode = 'frames'; req.session.cart = [...req.session.cart]; }
+    res.json({ saved: photos.slots(line.uid).length });
+  });
+app.delete('/gio-hang/anh/:uid/:slot', uploadLimiter, checkCsrfHeader, (req, res) => {
+  const line = lineOf(req);
+  const slot = slotOf(req, line);
+  if (slot < 0) return res.status(404).json({ error: 'slot' });
+  photos.remove(line.uid, slot);
+  res.json({ saved: photos.slots(line.uid).length });
+});
+
 // ---------- checkout ----------
+// Combo nào còn thiếu ảnh thì quay lại bước thêm ảnh của combo đó.
+const notReady = (cart) => cart.items.find((i) => !i.ready);
+
 app.get('/thanh-toan', (req, res) => {
-  const cart = cartOf(req);
+  const cart = cartOf(req, true);
   if (!cart.items.length) return res.redirect(req.u('/gio-hang'));
+  const todo = notReady(cart);
+  if (todo) return res.redirect(req.u('/gio-hang/anh/' + todo.uid) + '?thieu=1');
   res.render('checkout', { title: req.t('checkoutTitle'), cart, errors: [], form: {} });
 });
 
 app.post('/thanh-toan', formLimiter, checkCsrf, async (req, res) => {
-  const cart = cartOf(req);
+  const cart = cartOf(req, true);
   if (!cart.items.length) return res.redirect(req.u('/gio-hang'));
+  const todo = notReady(cart);
+  if (todo) return res.redirect(req.u('/gio-hang/anh/' + todo.uid) + '?thieu=1');
+  // Sản phẩm in theo ảnh riêng của khách nên chỉ nhận chuyển khoản trước 100%.
   const form = {
     name: str(req.body.name, 80), phone: str(req.body.phone, 20), email: str(req.body.email, 120),
-    address: str(req.body.address, 250), note: str(req.body.note, 500),
-    payment: req.body.payment === 'bank' ? 'bank' : 'cod',
+    address: str(req.body.address, 250), note: str(req.body.note, 500), payment: 'bank',
   };
   const errors = [];
   if (!form.name) errors.push(req.t('vFullName'));
@@ -415,26 +485,48 @@ app.post('/thanh-toan', formLimiter, checkCsrf, async (req, res) => {
 
   const code = db.nextOrderCode();
   const order = {
-    code, status: 'new', createdAt: new Date().toISOString(), ...form,
-    items: cart.items.map((i) => ({ id: i.product.id, name: i.product.name, price: i.product.price, qty: i.qty, photos: i.photos })),
+    code, key: crypto.randomBytes(8).toString('hex'), status: 'unpaid', createdAt: new Date().toISOString(), ...form,
+    items: cart.items.map((i) => ({
+      id: i.product.id, name: i.product.name, price: i.product.price, qty: i.qty,
+      mode: i.mode, uid: i.uid, frames: i.frames, photos: i.photos,
+    })),
     subtotal: cart.subtotal, shipping: cart.shipping, total: cart.total,
   };
   db.get().orders.unshift(order);
   db.save();
   req.session.cart = [];
   req.session.lastOrder = code;
-  notify(`Kinie – đơn mới ${code}`, `${form.name} – ${form.phone}\n${form.address}\nTổng: ${money(order.total)} (${form.payment})\n` +
-    order.items.map((i) => `- ${i.name} x${i.qty} | Ảnh: ${i.photos || 'gửi qua Zalo'}`).join('\n'));
+  notify(`Kinie – đơn mới ${code} (chờ chuyển khoản)`, `${form.name} – ${form.phone}\n${form.address}\nTổng: ${money(order.total)}\n` +
+    order.items.map((i) => `- ${i.name} | Ảnh: ${i.mode === 'frames' ? i.frames + ' ảnh đã vào khung' : i.photos || 'gửi qua Zalo'}`).join('\n'));
   res.redirect(req.u('/dat-hang-thanh-cong'));
+});
+
+// Mã QR chuyển khoản (VietQR) có sẵn số tiền và mã đơn. BANK_ID là mã ngân hàng theo VietQR (vd VCB, MB, TCB).
+const bank = {
+  id: process.env.BANK_ID || '', name: process.env.BANK_NAME || '',
+  account: process.env.BANK_ACCOUNT || '', holder: process.env.BANK_HOLDER || '',
+};
+const qrUrl = (o) => (bank.id && bank.account
+  ? `https://img.vietqr.io/image/${encodeURIComponent(bank.id)}-${encodeURIComponent(bank.account)}-compact2.png` +
+    `?amount=${o.total}&addInfo=${encodeURIComponent(o.code)}&accountName=${encodeURIComponent(bank.holder)}`
+  : '');
+const successPage = (req, res, order) => res.render('success', {
+  title: req.t('successTitle'), order, bank, qr: qrUrl(order),
+  link: order.key ? res.locals.base + req.u(`/don-hang/${order.code}/${order.key}`) : '',
 });
 
 app.get('/dat-hang-thanh-cong', (req, res) => {
   const order = db.get().orders.find((o) => o.code === req.session.lastOrder);
   if (!order) return res.redirect(req.u('/'));
-  res.render('success', {
-    title: req.t('successTitle'), order,
-    bank: { name: process.env.BANK_NAME || '', account: process.env.BANK_ACCOUNT || '', holder: process.env.BANK_HOLDER || '' },
-  });
+  successPage(req, res, order);
+});
+
+// Link riêng để khách mở lại thông tin chuyển khoản của đơn (mã đơn + khoá ngẫu nhiên).
+app.get('/don-hang/:code/:key', (req, res, next) => {
+  const order = db.get().orders.find((o) => o.code === req.params.code);
+  if (!order || !order.key || !safeEq(String(req.params.key), order.key)) return next();
+  res.locals.noindex = true;
+  successPage(req, res, order);
 });
 
 // ---------- admin ----------
@@ -456,15 +548,31 @@ app.get('/admin', requireAdmin, (req, res) => {
   const s = db.get();
   res.render('admin/dashboard', {
     title: 'Admin – Tổng quan', orders: s.orders, products: s.products, messages: s.messages,
-    revenue: s.orders.filter((o) => o.status !== 'cancelled').reduce((n, o) => n + o.total, 0),
+    savedOf: (uid) => photos.slots(uid).length,
+    // Doanh thu chỉ tính đơn đã nhận tiền (không tính đơn chờ chuyển khoản hoặc đã huỷ).
+    revenue: s.orders.filter((o) => !['unpaid', 'cancelled'].includes(o.status)).reduce((n, o) => n + o.total, 0),
   });
 });
 
 app.post('/admin/orders/:code/status', requireAdmin, checkCsrf, (req, res) => {
   const o = db.get().orders.find((x) => x.code === req.params.code);
-  const allowed = ['new', 'confirmed', 'shipping', 'done', 'cancelled'];
+  const allowed = ['unpaid', 'paid', 'new', 'confirmed', 'shipping', 'done', 'cancelled'];
   if (o && allowed.includes(req.body.status)) { o.status = req.body.status; db.save(); }
   res.redirect('/admin');
+});
+
+// Trang in khung A4 của một đơn: ảnh khách đã cắt sẵn, xếp theo khung in chuyên dụng của Kinie.
+app.get('/admin/orders/:code/in', requireAdmin, (req, res, next) => {
+  const o = db.get().orders.find((x) => x.code === req.params.code);
+  if (!o) return next();
+  const list = o.items.flatMap((i) => (i.uid ? photos.slots(i.uid).map((s) => `/admin/anh/${i.uid}/${photos.fileName(s)}`) : []));
+  res.render('admin/print', { title: 'In khung ' + o.code, order: o, list, noindex: true });
+});
+
+app.get('/admin/anh/:uid/:file', requireAdmin, (req, res) => {
+  const file = photos.filePath(req.params.uid, req.params.file);
+  if (!file) return res.sendStatus(404);
+  res.set('Cache-Control', 'private, max-age=3600').sendFile(file);
 });
 
 const slugify = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd')
@@ -533,6 +641,11 @@ app.use((err, req, res, next) => {
   res.locals.noindex = true;
   res.status(500).render('error', { title: req.t('errServerTitle'), message: req.t('errServer') });
 });
+
+// Dọn ảnh của giỏ hàng bỏ dở (không thành đơn) mỗi 12 giờ.
+const cleanupPhotos = () => photos.cleanup(new Set(db.get().orders.flatMap((o) => o.items.map((i) => i.uid).filter(Boolean))));
+cleanupPhotos();
+setInterval(cleanupPhotos, 12 * 60 * 60 * 1000).unref();
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Kinie chạy tại http://localhost:${port}`));

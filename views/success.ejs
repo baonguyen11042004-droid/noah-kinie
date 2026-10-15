@@ -3,17 +3,25 @@
   <div class="wrap narrow center">
     <img class="success__img" src="/img/mascot.jpg" alt="" width="140" height="155">
     <h1 class="h2"><%= t('thanksTitle') %></h1>
+    <% const paid = !['unpaid', 'cancelled'].includes(order.status); %>
     <% const b = t('thanksBody', order.code, order.phone); %>
-    <p class="lead"><%= b[0] %><strong><%= b[1] %></strong><%= b[2] %><strong><%= b[3] %></strong><%= b[4] %></p>
-    <% if (order.payment === 'bank') { %>
-    <div class="box">
+    <% if (paid) { %><p class="lead"><strong><%= order.code %></strong> · <%= t('paidNote') %></p>
+    <% } else { %><p class="lead"><%= b[0] %><strong><%= b[1] %></strong><%= b[2] %><strong><%= b[3] %></strong><%= b[4] %></p><% } %>
+    <% if (order.items.some(i => i.mode === 'zalo')) { %><p class="note"><%= t('thanksZalo') %></p><% } %>
+    <% if (!paid) { %>
+    <div class="box pay">
       <h3><%= t('bankInfo') %></h3>
+      <% if (qr) { %>
+      <img class="pay__qr" src="<%= qr %>" alt="<%= t('qrAlt') %> <%= order.code %>" width="300" height="300">
+      <p class="note"><%= t('qrHint') %></p>
+      <% } %>
       <p><%= t('bankName') %>: <b><%= bank.name %></b></p>
       <p><%= t('bankAcc') %>: <b><%= bank.account %></b></p>
       <p><%= t('bankHolder') %>: <b><%= bank.holder %></b></p>
       <p><%= t('amount') %>: <b><%= money(order.total) %></b></p>
       <p><%= t('content') %>: <b><%= order.code %></b></p>
     </div>
+    <% if (link) { %><p class="note"><%= t('orderLink') %><br><a class="link pay__link" href="<%= link %>"><%= link %></a></p><% } %>
     <% } %>
     <p><a class="btn" href="<%= u('/bang-gia') %>"><%= t('keepShopping') %></a></p>
   </div>

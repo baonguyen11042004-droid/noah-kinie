@@ -1,0 +1,35 @@
+<%- include('partials/header') %>
+<section class="sec">
+  <div class="wrap">
+    <p class="crumb"><a href="<%= u('/gio-hang') %>"><%= t('cartTitle') %></a> / <%= t('comboOf', p.qty) %></p>
+    <ol class="osteps osteps--top"><% t('orderSteps').forEach((s, i) => { %><li class="<%= i === 1 ? 'on' : i < 1 ? 'done' : '' %>"><b><%= i + 1 %></b><%= s %></li><% }) %></ol>
+    <h1 class="h2"><%= t('frTitle') %> · <%= t('comboOf', p.qty) %><%= p.gift ? ' + ' + t('gift', p.gift).toLowerCase() : '' %></h1>
+    <p class="lead"><%= t('frSub', frames) %></p>
+    <% if (missing) { %><ul class="errors" role="alert"><li><%= t('frMissing') %></li></ul><% } %>
+    <% if (zalo) { %><p class="box"><%= t('frZaloOn') %></p><% } %>
+
+    <div class="frx" id="frx" data-uid="<%= uid %>" data-frames="<%= frames %>" data-saved="<%= JSON.stringify(saved) %>"
+         data-csrf="<%= csrf %>" data-i18n="<%= JSON.stringify(t('frJs')) %>">
+      <div class="frx__bar">
+        <button type="button" class="btn" data-pick><%= t('frPick') %></button>
+        <input type="file" accept="image/*" multiple hidden data-file>
+        <span class="frx__prog" data-progress aria-live="polite"></span>
+      </div>
+      <p class="note"><%= t('frTip') %></p>
+      <p class="frx__msg" data-msg role="status" hidden></p>
+      <div class="frx__grid" data-grid></div>
+      <noscript><p class="errors">JavaScript is required to place photos. / Cần bật JavaScript để thêm ảnh.</p></noscript>
+    </div>
+
+    <div class="frx__foot">
+      <a class="btn" href="<%= u('/thanh-toan') %>" data-next aria-disabled="true"><%= t('frNext') %> →</a>
+      <a class="btn btn--ghost" href="<%= u(more ? '/gio-hang' : '/bang-gia') %>"><%= more ? t('frMore') : t('frShop') %></a>
+      <form method="post" action="<%= u('/gio-hang/anh/' + uid + '/zalo') %>">
+        <input type="hidden" name="_csrf" value="<%= csrf %>">
+        <button class="btn btn--zalo btn--sm"><%- include('partials/icon', { name: 'chat' }) %><%= t('frZalo') %></button>
+      </form>
+    </div>
+  </div>
+</section>
+<script src="/js/khung.js?v=20261015" defer></script>
+<%- include('partials/footer') %>

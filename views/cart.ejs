@@ -14,8 +14,9 @@
             <a href="<%= u('/san-pham/' + i.product.slug) %>"><%= t('comboOf', i.product.qty) %><%= i.qty > 1 ? ' × ' + i.qty : '' %></a>
             <span><%= money(i.product.price) %></span>
             <span class="line__ph"><%= t('photosLabel') %>:
-              <% if (i.photos) { %><a href="<%= i.photos %>" target="_blank" rel="noopener noreferrer nofollow"><%= t('openLink') %> ↗</a>
-              <% } else { %><%= t('photosZalo') %><% } %></span>
+              <% if (i.mode === 'link') { %><a href="<%= i.photos %>" target="_blank" rel="noopener noreferrer nofollow"><%= t('openLink') %> ↗</a>
+              <% } else if (i.mode === 'zalo') { %><%= t('photosZalo') %> · <a href="<%= u('/gio-hang/anh/' + i.uid) %>"><%= t('framesUpload') %></a>
+              <% } else { %><span class="<%= i.ready ? 'ok' : 'warn' %>"><%= t('framesCount', i.saved, i.frames) %></span> · <a href="<%= u('/gio-hang/anh/' + i.uid) %>"><%= t('framesEdit') %></a><% } %></span>
           </div>
           <form method="post" action="<%= u('/gio-hang/cap-nhat') %>" class="qty">
             <input type="hidden" name="_csrf" value="<%= csrf %>"><input type="hidden" name="i" value="<%= i.index %>"><input type="hidden" name="qty" value="0">
@@ -30,7 +31,10 @@
         <p><span><%= t('shipping') %></span><span><%= cart.shipping ? money(cart.shipping) : t('free') %></span></p>
         <% if (cart.shipping) { %><p class="note"><%= t('freeshipHint', money(site.freeShip - cart.subtotal)) %></p><% } %>
         <p class="sum__t"><span><%= t('totalFull') %></span><span><%= money(cart.total) %></span></p>
-        <a class="btn btn--block" href="<%= u('/thanh-toan') %>"><%= t('checkoutGo') %></a>
+        <% const todo = cart.items.find(i => !i.ready); %>
+        <% if (todo) { %><p class="note warn"><%= t('frMissing') %></p>
+        <a class="btn btn--block" href="<%= u('/gio-hang/anh/' + todo.uid) %>"><%= t('framesEdit') %></a>
+        <% } else { %><a class="btn btn--block" href="<%= u('/thanh-toan') %>"><%= t('checkoutGo') %></a><% } %>
       </div>
     <% } %>
   </div>

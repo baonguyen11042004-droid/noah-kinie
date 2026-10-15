@@ -1,5 +1,5 @@
 <%- include('../partials/header') %>
-<% const labels = { new: 'Mới', confirmed: 'Đã xác nhận', shipping: 'Đang giao', done: 'Hoàn thành', cancelled: 'Đã huỷ' }; %>
+<% const labels = { unpaid: 'Chờ thanh toán', paid: 'Đã nhận tiền', new: 'Mới (đơn cũ)', confirmed: 'Đã xác nhận', shipping: 'Đang giao', done: 'Hoàn thành', cancelled: 'Đã huỷ' }; %>
 <section class="sec"><div class="wrap">
   <div class="sec__head">
     <h1 class="h2">Quản trị Kinie</h1>
@@ -19,9 +19,13 @@
     <tr>
       <td><%= o.code %><br><small><%= new Date(o.createdAt).toLocaleString('vi-VN') %></small></td>
       <td><%= o.name %><br><small><%= o.phone %></small><br><small><%= o.address %></small><% if (o.note) { %><br><small>“<%= o.note %>”</small><% } %></td>
-      <td><% o.items.forEach(i => { %><%= i.name %> ×<%= i.qty %><br><small>Ảnh: <% if (i.photos) { %><a class="link" href="<%= i.photos %>" target="_blank" rel="noopener noreferrer nofollow">mở link ↗</a><% } else { %>gửi qua Zalo<% } %></small><br><% }) %></td>
+      <td><% o.items.forEach(i => { %><%= i.name %> ×<%= i.qty %><br><small>Ảnh:
+        <% if (i.mode === 'frames') { %><%= savedOf(i.uid) %>/<%= i.frames %> ảnh trong khung
+        <% } else if (i.photos) { %><a class="link" href="<%= i.photos %>" target="_blank" rel="noopener noreferrer nofollow">mở link ↗</a>
+        <% } else { %>gửi qua Zalo<% } %></small><br><% }) %>
+        <% if (o.items.some(i => i.uid && savedOf(i.uid))) { %><a class="btn btn--sm" href="/admin/orders/<%= o.code %>/in" target="_blank">In khung A4</a><% } %></td>
       <td><%= money(o.total) %></td>
-      <td><%= o.payment === 'bank' ? 'Chuyển khoản' : 'COD' %></td>
+      <td><%= o.payment === 'bank' ? 'Chuyển khoản' : 'COD' %><% if (o.status === 'unpaid') { %><br><small>Nội dung CK: <b><%= o.code %></b></small><% } %></td>
       <td><form method="post" action="/admin/orders/<%= o.code %>/status">
         <input type="hidden" name="_csrf" value="<%= csrf %>">
         <select name="status" data-autosubmit><% Object.keys(labels).forEach(k => { %><option value="<%= k %>" <%= o.status === k ? 'selected' : '' %>><%= labels[k] %></option><% }) %></select>

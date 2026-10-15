@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title><%= title %></title>
+<%
+  // Khung in chuyên dụng ảnh nam châm Kinie (theo file "Final Ảnh dọc"), đo trên tờ A4, đơn vị mm.
+  // Mỗi tờ 6 tấm: 2 cột × 3 hàng. Vùng ảnh nằm ngang 80 × 55 mm (ảnh dọc 55 × 80 xoay 90°, đầu ảnh quay sang phải).
+  const COLS = [14.55, 116.1], ROWS = [45.5, 129.55, 218.6];
+  const WIN = { w: 80, h: 55 };
+  // Đường cắt bát giác bao quanh vùng ảnh: 98,3 × 71,4 mm, vát góc 18,1 mm.
+  const OCT = { dx: -9.2, dy: -8.1, w: 98.3, h: 71.4, c: 18.1 };
+  const cells = ROWS.flatMap((y) => COLS.map((x) => ({ x, y })));
+  const per = cells.length;
+  const pages = Math.max(1, Math.ceil(list.length / per));
+  const octPts = [[OCT.c, 0], [OCT.w - OCT.c, 0], [OCT.w, OCT.c], [OCT.w, OCT.h - OCT.c], [OCT.w - OCT.c, OCT.h], [OCT.c, OCT.h], [0, OCT.h - OCT.c], [0, OCT.c]]
+    .map((p) => p.join(',')).join(' ');
+  const topText = 'Kinie ' + site.phones[1].tel, sideText = 'Kinie ' + site.phones[0].tel;
+%>
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9e6e2; font-family: Arial, sans-serif; color: #222; }
+  .bar { position: sticky; top: 0; z-index: 2; background: #fff; border-bottom: 1px solid #ccc; padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; font-size: 14px; }
+  .bar button { font-size: 14px; padding: 7px 14px; cursor: pointer; border-radius: 4px; border: 1px solid #8b1a1a; background: #8b1a1a; color: #fff; }
+  .bar small { color: #555; width: 100%; }
+  .pages { padding: 20px 0 40px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+  .page { position: relative; width: 210mm; height: 297mm; background: #fff; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
+  .oct { position: absolute; overflow: visible; }
+  .ph { position: absolute; width: 55mm; height: 80mm; transform: rotate(90deg); background: #fff; }
+  .ph img { display: block; width: 100%; height: 100%; }
+  .ph.empty { background: repeating-linear-gradient(45deg, #f2f2f2 0 6px, #e6e6e6 6px 12px); }
+  .tx { position: absolute; font-size: 2.3mm; line-height: 1; white-space: nowrap; transform: translate(-50%, -50%) rotate(var(--r)); }
+  .cut { position: absolute; top: 0; bottom: 0; left: 105.2mm; border-left: 0.25mm dotted #555; }
+  @media print {
+    body { background: #fff; }
+    .bar { display: none; }
+    .pages { padding: 0; gap: 0; display: block; }
+    .page { box-shadow: none; break-after: page; }
+    .ph.empty { background: none; }
+  }
+</style>
+</head>
+<body>
+<div class="bar">
+  <b>Đơn <%= order.code %></b>
+  <span><%= order.name %> · <%= order.phone %></span>
+  <span><%= list.length %> ảnh · <%= pages %> tờ A4 · <%= per %> tấm/tờ</span>
+  <button type="button" data-print>In</button>
+  <small>Khi in: Tỉ lệ 100% (Kích thước thực), Lề: Không, bật In hình nền. Ảnh đã được khách cắt sẵn đúng khung 55 × 80 mm ở 300 dpi.</small>
+</div>
+<div class="pages">
+<% for (let pg = 0; pg < pages; pg++) { %>
+  <div class="page">
+    <div class="cut"></div>
+    <% cells.forEach((c, k) => { const src = list[pg * per + k]; %>
+    <svg class="oct" style="left:<%= c.x + OCT.dx %>mm;top:<%= c.y + OCT.dy %>mm;width:<%= OCT.w %>mm;height:<%= OCT.h %>mm" viewBox="0 0 <%= OCT.w %> <%= OCT.h %>">
+      <polygon points="<%= octPts %>" fill="none" stroke="#111" stroke-width="0.25" stroke-dasharray="1.1 0.8"/>
+    </svg>
+    <div class="ph<%= src ? '' : ' empty' %>" style="left:<%= c.x + (WIN.w - 55) / 2 %>mm;top:<%= c.y + (WIN.h - 80) / 2 %>mm"><% if (src) { %><img src="<%= src %>" alt=""><% } %></div>
+    <span class="tx" style="left:<%= c.x + WIN.w / 2 %>mm;top:<%= c.y - 1.3 %>mm;--r:180deg"><%= topText %></span>
+    <span class="tx" style="left:<%= c.x + WIN.w + 1.8 %>mm;top:<%= c.y + WIN.h / 2 %>mm;--r:-90deg"><%= sideText %></span>
+    <% }) %>
+  </div>
+<% } %>
+</div>
+<script src="/js/app.js" defer></script>
+</body>
+</html>

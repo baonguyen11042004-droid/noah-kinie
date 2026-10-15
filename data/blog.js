@@ -21,7 +21,7 @@ module.exports = [
       ]],
       ['Quà 20/10 cho cô giáo', 'Cả lớp có thể góp ảnh chung, in thành bộ ảnh nam châm tặng cô – rẻ hơn nhiều so với quà đắt tiền mà cô sẽ nhớ lâu. Combo 20 ảnh đủ mỗi bạn một tấm và được free ship.'],
       ['Quà 20/10 cho đồng nghiệp, nhân viên', 'Nếu công ty tặng quà cho nhiều người, ảnh team in thành nam châm là món quà nhỏ, dễ phát, giá mỗi ảnh còn khoảng 19–20k ở gói lớn.'],
-      ['Đặt ảnh nam châm kịp 20/10', 'Kinie giao trong khoảng 2–4 ngày, nên bạn đặt sớm vài ngày trước 20/10. Chọn combo, dán link album ảnh ngay khi đặt để Kinie làm luôn, không phải chờ gửi ảnh.'],
+      ['Đặt ảnh nam châm kịp 20/10', 'Kinie giao trong khoảng 2–4 ngày, nên bạn đặt sớm vài ngày trước 20/10. Chọn combo, đặt ảnh vào khung ngay khi đặt và chuyển khoản để Kinie làm luôn, không phải chờ gửi ảnh.'],
     ],
     link: ['/anh-nam-cham-qua-tang', 'Xem gợi ý in ảnh nam châm làm quà tặng →'],
   },

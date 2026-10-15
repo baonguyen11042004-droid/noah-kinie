@@ -36,6 +36,12 @@ Cần gói có **Node.js Web Apps** (Business Web Hosting, Cloud, hoặc VPS).
 - Cookie giỏ hàng dùng `secure` khi `NODE_ENV=production`, nên site phải chạy HTTPS.
 - Muốn dùng ảnh thật: chép ảnh vào `public/img/`, rồi điền `/img/ten-anh.jpg` vào ô "Ảnh" của sản phẩm trong admin.
 - Muốn nhận email khi có đơn: điền `SMTP_*` và `NOTIFY_TO`.
+
+## Đặt hàng: thêm ảnh vào khung, chuyển khoản trước
+- Chọn combo → **Thêm ảnh vào khung** (`/gio-hang/anh/<mã>`) → thanh toán. Mỗi khung là vùng ảnh dọc 55 × 80 mm của khung in chuyên dụng ("Final Ảnh dọc"); trình duyệt cắt sẵn ảnh ở 300 dpi (650 × 945 px) rồi tải lên. Khách vẫn có thể chọn gửi ảnh qua Zalo.
+- Ảnh lưu ở `data/uploads/<mã>/` trên ổ server (đã nằm trong `.gitignore`): **sao lưu cùng `data/db.json`**. Ảnh của giỏ hàng bỏ dở được tự xoá sau 3 ngày; ảnh của đơn hàng không tự xoá.
+- Chỉ nhận chuyển khoản trước 100%. Trang đặt hàng thành công hiện mã QR VietQR có sẵn số tiền và mã đơn: cần đặt `BANK_ID` (mã ngân hàng VietQR, vd `VCB`, `MB`, `TCB`), `BANK_ACCOUNT`, `BANK_HOLDER`. Đơn mới ở trạng thái "Chờ thanh toán"; khi tiền về, đổi sang "Đã nhận tiền" trong `/admin`.
+- In: trong `/admin`, bấm **In khung A4** ở từng đơn (6 tấm/tờ, đúng vị trí khung in). In tỉ lệ 100%, lề Không, bật In hình nền.
 - Chạy thử trên máy (http://localhost) thì đặt `NODE_ENV=development`, nếu không giỏ hàng sẽ báo "Phiên hết hạn".
 
 ## SEO

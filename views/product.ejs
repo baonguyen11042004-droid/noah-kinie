@@ -16,17 +16,7 @@
         <form method="post" action="<%= u('/gio-hang/them') %>" class="photo-step" id="dat-hang">
           <input type="hidden" name="_csrf" value="<%= csrf %>">
           <input type="hidden" name="id" value="<%= p.id %>">
-          <fieldset>
-            <legend><%= t('photoStep') %></legend>
-            <label class="opt"><input type="radio" name="mode" value="link" data-photo-mode <%= form.mode !== 'zalo' ? 'checked' : '' %>> <%= t('photoModeLink') %></label>
-            <label class="photo-link" data-photo-link>
-              <span class="sr-only"><%= t('photoLinkLabel') %></span>
-              <input type="url" name="photos" value="<%= form.photos %>" placeholder="<%= t('photoLinkPh') %>" inputmode="url" maxlength="500" <%= form.mode !== 'zalo' ? 'required' : '' %>>
-              <small><%= t('photoHint') %></small>
-            </label>
-            <label class="opt"><input type="radio" name="mode" value="zalo" data-photo-mode <%= form.mode === 'zalo' ? 'checked' : '' %>> <%= t('photoModeZalo') %></label>
-          </fieldset>
-          <p class="photo-step__t"><%= t('buyStep') %></p>
+          <ol class="osteps"><% t('orderSteps').forEach((s, i) => { %><li class="<%= i === 0 ? 'on' : '' %>"><b><%= i + 1 %></b><%= s %></li><% }) %></ol>
           <div class="buy">
             <button class="btn" <%= p.stock < 1 ? 'disabled' : '' %>><%= p.stock < 1 ? t('soldOut') : t('addToCart') %></button>
             <button class="btn btn--ghost" name="next" value="checkout" <%= p.stock < 1 ? 'disabled' : '' %>><%= t('buyNow') %></button>
