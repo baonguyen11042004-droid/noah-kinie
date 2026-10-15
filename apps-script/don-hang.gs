@@ -216,16 +216,18 @@ function taoThongKe(ss) {
   const sh = ss.getSheetByName(CAU_HINH.TAB_THONG_KE) || ss.insertSheet(CAU_HINH.TAB_THONG_KE);
   sh.clear();
   const D = "'" + CAU_HINH.TAB_DON + "'!";
+  // Dấu ngăn tham số theo ngôn ngữ của Sheet: tiếng Việt (vi_VN) và các nước dùng dấu phẩy thập phân dùng ";".
+  const S = /^(en|ja|zh|ko|th|he|hi|ms|fil)/.test(ss.getSpreadsheetLocale()) ? ',' : ';';
   const cho = '"' + CAU_HINH.CHO_THANH_TOAN + '"', huy = '"' + CAU_HINH.DA_HUY + '"';
   const loc = "A is not null and C <> '" + CAU_HINH.CHO_THANH_TOAN + "' and C <> '" + CAU_HINH.DA_HUY + "'";
   sh.getRange('A1').setValue('Thống kê đơn hàng Kinie (tự tính từ tab Đơn hàng; doanh thu không gồm đơn chờ chuyển khoản và đơn đã huỷ)')
     .setFontWeight('bold');
   const tong = [
     ['Tổng số đơn', '=COUNTA(' + D + 'A2:A)'],
-    ['Đơn chờ chuyển khoản', '=COUNTIF(' + D + 'C2:C,' + cho + ')'],
-    ['Tiền đang chờ chuyển khoản', '=SUMIF(' + D + 'C2:C,' + cho + ',' + D + 'L2:L)'],
-    ['Đơn đã huỷ', '=COUNTIF(' + D + 'C2:C,' + huy + ')'],
-    ['Doanh thu đã nhận tiền', '=SUM(' + D + 'L2:L)-SUMIF(' + D + 'C2:C,' + cho + ',' + D + 'L2:L)-SUMIF(' + D + 'C2:C,' + huy + ',' + D + 'L2:L)'],
+    ['Đơn chờ chuyển khoản', '=COUNTIF(' + D + 'C2:C' + S + cho + ')'],
+    ['Tiền đang chờ chuyển khoản', '=SUMIF(' + D + 'C2:C' + S + cho + S + D + 'L2:L)'],
+    ['Đơn đã huỷ', '=COUNTIF(' + D + 'C2:C' + S + huy + ')'],
+    ['Doanh thu đã nhận tiền', '=SUM(' + D + 'L2:L)-SUMIF(' + D + 'C2:C' + S + cho + S + D + 'L2:L)-SUMIF(' + D + 'C2:C' + S + huy + S + D + 'L2:L)'],
   ];
   sh.getRange(3, 1, tong.length, 1).setValues(tong.map((r) => [r[0]]));
   sh.getRange(3, 2, tong.length, 1).setFormulas(tong.map((r) => [r[1]]));
@@ -233,11 +235,13 @@ function taoThongKe(ss) {
   sh.getRange('B7').setNumberFormat('#,##0"đ"');
 
   sh.getRange('A10').setValue('Theo tháng').setFontWeight('bold');
-  sh.getRange('A11').setFormula('=IFERROR(QUERY(' + D + 'A2:P,"select P, count(A), sum(L) where ' + loc +
-    " group by P order by P desc label P 'Tháng', count(A) 'Số đơn', sum(L) 'Doanh thu'\",0),\"Chưa có đơn đã nhận tiền\")");
+  // Dấu phẩy bên trong chuỗi truy vấn QUERY giữ nguyên; chỉ dấu ngăn tham số đổi theo S.
+  const rong = '"Chưa có đơn đã nhận tiền"';
+  sh.getRange('A11').setFormula('=IFERROR(QUERY(' + D + 'A2:P' + S + '"select P, count(A), sum(L) where ' + loc +
+    " group by P order by P desc label P 'Tháng', count(A) 'Số đơn', sum(L) 'Doanh thu'\"" + S + '0)' + S + rong + ')');
   sh.getRange('E10').setValue('Theo sản phẩm').setFontWeight('bold');
-  sh.getRange('E11').setFormula('=IFERROR(QUERY(' + D + 'A2:P,"select H, count(A), sum(L) where ' + loc +
-    " group by H order by count(A) desc label H 'Sản phẩm', count(A) 'Số đơn', sum(L) 'Doanh thu'\",0),\"Chưa có đơn đã nhận tiền\")");
+  sh.getRange('E11').setFormula('=IFERROR(QUERY(' + D + 'A2:P' + S + '"select H, count(A), sum(L) where ' + loc +
+    " group by H order by count(A) desc label H 'Sản phẩm', count(A) 'Số đơn', sum(L) 'Doanh thu'\"" + S + '0)' + S + rong + ')');
   sh.getRange('C11:C').setNumberFormat('#,##0"đ"');
   sh.getRange('G11:G').setNumberFormat('#,##0"đ"');
   sh.setColumnWidth(1, 220);
