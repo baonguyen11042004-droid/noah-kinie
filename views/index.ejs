@@ -19,7 +19,7 @@
         <img class="hero__mascot" src="/img/mascot.jpg" alt="<%= t('mascotAlt') %>" width="150" height="166">
       </div>
       <div class="hero__cards" aria-hidden="true">
-        <% ['l', 'm', 'r'].forEach(pos => { %><div class="mag mag--<%= pos %>"><span><%= t('yourPhoto') %><br><%= t('specs')[0][1] %></span></div><% }) %>
+        <% [['l', 'mau-em-be'], ['m', 'mau-cap-doi'], ['r', 'mau-gia-dinh']].forEach(([pos, img]) => { %><div class="mag mag--<%= pos %>"><img src="/img/sp/<%= img %>.webp" alt="" width="440" height="640"></div><% }) %>
       </div>
     </div>
   </div>

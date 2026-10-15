@@ -61,7 +61,7 @@ h2.h3{font-size:1.4rem;margin:2rem 0 .8rem;text-transform:none}
 .hero__mascot{width:150px;height:auto;border-radius:28px;border:4px solid var(--surface);box-shadow:var(--shadow)}
 .ribbon{background:var(--butter);color:var(--berry-d);font-weight:800;font-size:.95rem;padding:9px 34px;white-space:nowrap;transform:rotate(-6deg);clip-path:polygon(0 0,100% 0,95% 50%,100% 100%,0 100%,5% 50%);filter:drop-shadow(0 3px 0 rgba(126,27,43,.18))}
 .hero__cards{display:flex;align-items:flex-end;justify-content:center;gap:18px;padding-bottom:10px}
-.mag{display:grid;place-items:center;text-align:center;aspect-ratio:65/80;border-radius:20px;background:var(--panel);color:var(--ink2);font-weight:700;font-size:.85rem;line-height:1.4;box-shadow:0 4px 0 var(--row),0 16px 26px -8px rgba(201,58,110,.3);animation:float 6s ease-in-out infinite;overflow:hidden}
+.mag{display:grid;place-items:center;text-align:center;aspect-ratio:55/80;border-radius:8px;background:var(--panel);color:var(--ink2);font-weight:700;font-size:.85rem;line-height:1.4;box-shadow:0 4px 0 var(--row),0 16px 26px -8px rgba(201,58,110,.3);animation:float 6s ease-in-out infinite;overflow:hidden}
 .mag img{width:100%;height:100%;object-fit:cover}
 .mag--l{width:28%;transform:rotate(-6deg)}
 .mag--m{width:35%;transform:rotate(2deg);animation-delay:-2s}
@@ -308,7 +308,7 @@ body,.nav,.card,.cat,.sum,.line,.pedit,.tbl,blockquote,input,textarea,select{tra
 .logo{display:inline-flex;align-items:center;gap:10px}
 .logo img{width:44px;height:44px;border-radius:50%;flex:none}
 .h1-kw{display:block;font:800 clamp(.95rem,1.6vw,1.1rem)/1.3 var(--sans);letter-spacing:.04em;color:var(--rose-d);margin-bottom:.5rem}
-.about__art img{border-radius:50%;box-shadow:none;max-width:380px;margin-inline:auto}
+.about__art img{border-radius:var(--r);box-shadow:var(--shadow);max-width:380px;width:100%;height:auto;margin-inline:auto}
 .footer__logo{border-radius:50%}
 .pricing__logo{width:150px;border-radius:50%}
 .mt-xs{margin-top:1.2rem}
@@ -360,6 +360,13 @@ form.inline{display:inline-block;margin:6px 0 0 8px}
 .frx__foot form{margin-left:auto}
 .btn.is-off{opacity:.5;box-shadow:none;transform:none}
 @media (max-width:560px){.frx__grid{grid-template-columns:repeat(2,1fr)}.frx__foot form{margin-left:0}.frx__bar{top:56px}}
+
+/* ảnh đời thường ở trang sản phẩm */
+.pd__note{margin:8px 0 0;text-align:center;font-size:.82rem;color:var(--ink2)}
+.pd__life{margin:28px 0 0;display:grid;grid-template-columns:minmax(0,340px) 1fr;gap:22px;align-items:center}
+.pd__life img{width:100%;height:auto;border-radius:var(--r);box-shadow:var(--shadow)}
+.pd__life figcaption{color:var(--ink2);font-size:1rem;max-width:46ch}
+@media (max-width:560px){.pd__life{grid-template-columns:1fr}}
 
 /* thanh toán trước 100% */
 .paybox{background:var(--surface);border:1.5px dashed var(--blush);border-radius:var(--r);padding:14px 16px}

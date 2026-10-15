@@ -81,7 +81,14 @@ const categories = [
   { id: 'gia-dinh', name: 'Combo gia đình' },
 ];
 const str = (v, max = 200) => String(v ?? '').trim().slice(0, max);
-const productImg = (p) => p.image || `/art/${p.id}.svg`;
+// Ảnh sản phẩm: ảnh nhập trong admin, nếu không có thì ảnh combo public/img/sp/anh-nam-cham-<số ảnh>.webp, cuối cùng là hình vẽ.
+const comboImg = (qty) => `/img/sp/anh-nam-cham-${qty}.webp`;
+const comboImgSeen = new Map(); // nhớ kết quả kiểm tra file, khỏi đọc ổ đĩa mỗi lần
+const hasComboImg = (qty) => {
+  if (!comboImgSeen.has(qty)) comboImgSeen.set(qty, require('fs').existsSync(path.join(__dirname, 'public', comboImg(qty))));
+  return comboImgSeen.get(qty);
+};
+const productImg = (p) => p.image || (hasComboImg(p.qty) ? comboImg(p.qty) : `/art/${p.id}.svg`);
 // 29000 -> '29k', 1421000 -> '1.421k'
 const kfmt = (n) => new Intl.NumberFormat('vi-VN').format(Math.round(n / 1000)) + 'k';
 
@@ -289,7 +296,7 @@ function productPage(req, res, p, extra = {}) {
   const related = products.filter((x) => x.id !== p.id && x.category === p.category).slice(0, 3);
   const base = res.locals.base;
   const img = productImg(p);
-  if (p.image && !/\.svg$/i.test(p.image)) res.locals.ogImage = /^https?:/.test(img) ? img : base + img;
+  if (!/\.svg$/i.test(img)) res.locals.ogImage = /^https?:/.test(img) ? img : base + img;
   res.locals.ogType = 'product';
   res.locals.jsonLd.push({
     '@context': 'https://schema.org', '@type': 'Product',

@@ -3,7 +3,7 @@
   <div class="wrap">
     <p class="crumb"><a href="<%= u('/') %>"><%= t('crumbHome') %></a> / <a href="<%= u('/cua-hang') %>"><%= t('magnets') %></a> / <%= t('photos', p.qty) %></p>
     <div class="pd">
-      <div class="pd__img"><img src="<%= productImg(p) %>" alt="<%= t('prodAlt', p) %>" width="600" height="600"></div>
+      <div class="pd__img"><img src="<%= productImg(p) %>" alt="<%= t('prodAlt', p) %>" width="600" height="600"><p class="pd__note"><%= t('imgNote') %></p></div>
       <div class="pd__info">
         <% if (p.hot) { %><span class="chip chip--static"><%= t('hot') %></span><% } %>
         <h1 class="h2"><%= t('comboOf', p.qty) %></h1>
@@ -33,6 +33,10 @@
       <div class="feat"><span class="feat__i"><%- include('partials/icon', { name: di[i] }) %></span><div><h3><%= f[0] %></h3><p><%= f[1] %></p></div></div>
       <% }) %>
     </div>
+    <figure class="pd__life">
+      <img src="/img/sp/cam-tay.webp" alt="<%= t('handAlt') %>" width="900" height="1125" loading="lazy">
+      <figcaption><%= t('handCap') %></figcaption>
+    </figure>
     <% if (related.length) { %>
     <h2 class="h2 mt"><%= t('related') %></h2>
     <div class="grid"><% related.forEach(r => { %><%- include('partials/card', { p: r }) %><% }) %></div>
