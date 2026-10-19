@@ -254,6 +254,8 @@ app.get('/', (req, res) => {
   res.locals.jsonLd.push(storeLd(req, base), {
     '@context': 'https://schema.org', '@type': 'WebSite', name: 'Ảnh nam châm Kinie', alternateName: ['Kinie', 'Nhật ký Kinie'], url: base + req.u('/'), inLanguage: req.t('htmlLang'),
   });
+  // Tiêu đề trang chủ (bản VI) khớp tên site "Ảnh nam châm Kinie" khai báo cho Google.
+  if (req.lang === 'vi') res.locals.titleSuffix = 'Ảnh nam châm Kinie';
   res.render('index', { title: req.t('seoHome'), desc: req.t('descHome'), quick, reviews: reviews.slice(0, 3), latest: posts.slice(0, 3) });
 });
 

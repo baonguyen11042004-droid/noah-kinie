@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><%= title ? title + ' | Kinie' : 'Kinie – ' + t('homeTitle') %></title>
+  <title><%= title ? title + ' | ' + (locals.titleSuffix || 'Kinie') :'Kinie – ' + t('homeTitle') %></title>
   <meta name="description" content="<%= desc %>">
   <% if (noindex) { %><meta name="robots" content="noindex, follow"><% } else { %>
   <link rel="canonical" href="<%= canonical %>">
