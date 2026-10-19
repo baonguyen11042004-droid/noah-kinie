@@ -252,7 +252,7 @@ app.get('/', (req, res) => {
   const quick = ['p6', 'p20', 'p50'].map((id) => products.find((p) => p.id === id)).filter(Boolean);
   const base = res.locals.base;
   res.locals.jsonLd.push(storeLd(req, base), {
-    '@context': 'https://schema.org', '@type': 'WebSite', name: 'Kinie', alternateName: 'Nhật ký Kinie', url: base + req.u('/'), inLanguage: req.t('htmlLang'),
+    '@context': 'https://schema.org', '@type': 'WebSite', name: 'Ảnh nam châm Kinie', alternateName: ['Kinie', 'Nhật ký Kinie'], url: base + req.u('/'), inLanguage: req.t('htmlLang'),
   });
   res.render('index', { title: req.t('seoHome'), desc: req.t('descHome'), quick, reviews: reviews.slice(0, 3), latest: posts.slice(0, 3) });
 });

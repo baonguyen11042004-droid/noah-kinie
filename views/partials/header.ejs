@@ -10,7 +10,7 @@
   <% alternates.forEach(a => { %><link rel="alternate" hreflang="<%= a.lang %>" href="<%= a.href %>">
   <% }) %><link rel="alternate" hreflang="x-default" href="<%= alternates.find(a => a.lang === 'vi').href %>">
   <% } %>
-  <meta property="og:site_name" content="Kinie">
+  <meta property="og:site_name" content="Ảnh nam châm Kinie">
   <meta property="og:type" content="<%= ogType %>">
   <meta property="og:title" content="<%= title || 'Kinie' %>">
   <meta property="og:description" content="<%= desc %>">
