@@ -155,4 +155,93 @@ module.exports = [
     combos: ['p50', 'p100', 'p200'],
     faq: [],
   },
+  // ---------- trang khu vực (area: true): liệt kê ở mục "Giao tận nơi" của footer, không nằm trong "Theo dịp" ----------
+  // Chỉ ghi điều Kinie làm được thật: đặt online, giao tận nơi, phí ship chung toàn quốc. Không nhận có cửa hàng tại địa phương.
+  {
+    slug: 'in-anh-nam-cham-ha-noi',
+    area: true,
+    nav: 'Hà Nội',
+    kw: 'in ảnh nam châm hà nội',
+    title: 'In ảnh nam châm Hà Nội – đặt online, giao tận nơi từ 29k',
+    desc: 'In ảnh nam châm tủ lạnh cho khách Hà Nội: đặt online, tự đặt ảnh vào khung hoặc gửi qua Zalo, giao tận nơi các quận, huyện. Từ 29k/ảnh, free ship từ combo 20 ảnh.',
+    h1: 'In ảnh nam châm Hà Nội',
+    intro: 'Ở Hà Nội mà muốn in ảnh nam châm, bạn không cần đi tìm tiệm. Đặt trên kinie.online, gửi ảnh ngay từ điện thoại, Kinie in, cắt và gắn nam châm bằng tay rồi giao tận nhà bạn ở nội thành hay ngoại thành.',
+    sections: [
+      ['Đặt in ảnh nam châm ở Hà Nội thế nào?', 'Toàn bộ đơn hàng làm online, không phải đến cửa hàng:', [
+        'Chọn combo từ 1 đến 200 ảnh ở trang Bảng giá.',
+        'Đặt ảnh vào khung in ngay trên web, kéo chỉnh vị trí, xoay, phóng to cho vừa ý. Không tải được ảnh thì chọn gửi qua Zalo.',
+        'Chuyển khoản bằng mã QR có sẵn số tiền, Kinie bắt tay làm ngay.',
+        'Nhận hàng tại nhà, văn phòng hoặc ký túc xá, thường trong khoảng 2–4 ngày.',
+      ]],
+      ['Giao tận nơi các quận, huyện Hà Nội', 'Kinie giao tới mọi địa chỉ ở Hà Nội: Hoàn Kiếm, Ba Đình, Đống Đa, Hai Bà Trưng, Cầu Giấy, Thanh Xuân, Hà Đông, Long Biên, Tây Hồ, Nam Từ Liêm, Bắc Từ Liêm, Hoàng Mai và các huyện ngoại thành. Phí ship 25.000đ/đơn, miễn phí từ combo 20 ảnh.'],
+      ['Gợi ý ảnh để in cho người Hà Nội', 'Vài bộ ảnh khách hay chọn khi in ảnh nam châm:', [
+        'Hà Nội mùa thu: Hồ Gươm, phố cổ, những con đường lá vàng, mùa hoa sữa.',
+        'Ảnh kỷ yếu, ảnh tốt nghiệp ở trường để làm quà cho cả lớp.',
+        'Ảnh cả nhà dịp Tết, ảnh ông bà để dán tủ lạnh ở nhà mới.',
+        'Quà 20/10, 8/3 gửi thẳng đến người nhận ở quận khác, không phải tự đi giao.',
+      ]],
+      ['Ảnh nam châm Kinie có gì khác?', 'Mỗi tấm 5,5 × 8 cm được in 6 màu, phủ 5 lớp bảo vệ nên chống nước, chống trầy, lau được bằng khăn ẩm, rồi gắn tay lên nam châm dẻo dày 3 mm. Ảnh bám chắc tủ lạnh, gỡ ra đổi chỗ không để lại vết keo.'],
+    ],
+    combos: ['p6', 'p20', 'p50'],
+    faq: [
+      ['Phí ship in ảnh nam châm ở Hà Nội là bao nhiêu?', 'Phí ship 25.000đ/đơn, giống mọi tỉnh thành. Đơn từ 379.000đ (combo 20 ảnh trở lên) được miễn phí vận chuyển.'],
+      ['Có thanh toán khi nhận hàng được không?', 'Kinie nhận chuyển khoản trước 100% bằng mã QR, vì mỗi tấm ảnh được in riêng từ ảnh của bạn nên không nhận COD.'],
+    ],
+  },
+  {
+    slug: 'in-anh-nam-cham-tphcm',
+    area: true,
+    nav: 'TP.HCM',
+    kw: 'in ảnh nam châm tphcm',
+    title: 'In ảnh nam châm TP.HCM – đặt online, giao tận nơi từ 29k',
+    desc: 'In ảnh nam châm theo yêu cầu cho khách TP.HCM: đặt online, gửi ảnh từ điện thoại, giao tận nơi Quận 1, Quận 7, Gò Vấp, Thủ Đức… Từ 29k/ảnh, free ship từ combo 20 ảnh.',
+    h1: 'In ảnh nam châm TP.HCM',
+    intro: 'Sài Gòn bận rộn, nên in ảnh nam châm cũng nên nhanh gọn: đặt trên web, gửi ảnh từ điện thoại trong vài phút, Kinie làm tay từng tấm rồi giao tận nơi cho bạn ở bất kỳ quận nào.',
+    sections: [
+      ['In ảnh theo yêu cầu ở TP.HCM, không cần ra tiệm', 'Bạn làm hết mọi bước trên điện thoại:', [
+        'Chọn số ảnh: ảnh lẻ, combo tiết kiệm hoặc combo gia đình.',
+        'Đặt ảnh vào khung in 5,5 × 8 cm trên web, ảnh tự lưu nên có thể làm dần.',
+        'Chuyển khoản bằng mã QR, không cần nhập tay số tiền.',
+        'Nhận hàng tại nhà hoặc công ty, thường trong khoảng 2–4 ngày.',
+      ]],
+      ['Giao tận nơi mọi khu vực TP.HCM', 'Kinie giao tới Quận 1, Quận 3, Quận 7, Quận 10, Bình Thạnh, Phú Nhuận, Gò Vấp, Tân Bình, Tân Phú, Bình Tân, TP. Thủ Đức và các khu vực ngoại thành. Phí ship 25.000đ/đơn, miễn phí từ combo 20 ảnh.'],
+      ['Quà tặng in ảnh cho dân văn phòng', 'Nhiều khách ở TP.HCM đặt ảnh nam châm làm quà cho cả team:', [
+        'Quà 20/10, 8/3 cho đồng nghiệp: ảnh team, ảnh từng người.',
+        'Quà tiệc cuối năm, team building: combo 100–200 ảnh có ảnh tặng và free ship.',
+        'Quà tặng khách hàng: bạn tự thiết kế ảnh có logo, Kinie in đúng file bạn gửi.',
+      ]],
+      ['Chất lượng ảnh nam châm Kinie', 'Mỗi tấm in 6 màu, phủ 5 lớp bảo vệ nên không sợ hơi ẩm, chống trầy, giữ màu lâu; gắn tay lên nam châm dẻo dày 3 mm, bám chắc tủ lạnh, cửa sắt hay bảng từ ở văn phòng.'],
+    ],
+    combos: ['p9', 'p20', 'p100'],
+    faq: [
+      ['Phí ship in ảnh nam châm ở TP.HCM là bao nhiêu?', 'Phí ship 25.000đ/đơn, giống mọi tỉnh thành. Đơn từ 379.000đ (combo 20 ảnh trở lên) được miễn phí vận chuyển.'],
+      ['Đặt số lượng lớn cho công ty thì mất bao lâu?', 'Mỗi tấm được cắt và gắn tay, nên đơn từ 100 ảnh cần thêm thời gian. Bạn nhắn Kinie qua Zalo với số lượng và ngày cần nhận để được báo thời gian hoàn thành trước khi đặt.'],
+    ],
+  },
+  {
+    slug: 'in-anh-nam-cham-da-nang',
+    area: true,
+    nav: 'Đà Nẵng',
+    kw: 'in ảnh nam châm đà nẵng',
+    title: 'In ảnh nam châm Đà Nẵng – giao tận nơi, từ 29k/ảnh',
+    desc: 'In ảnh nam châm cho khách Đà Nẵng và du khách: in ảnh chuyến đi biển Mỹ Khê, cầu Rồng, Hội An thành nam châm lưu niệm. Đặt online, giao tận nơi, từ 29k/ảnh.',
+    h1: 'In ảnh nam châm Đà Nẵng',
+    intro: 'Dù bạn sống ở Đà Nẵng hay vừa có một chuyến du lịch ở đây, những tấm ảnh đẹp nhất xứng đáng được dán lên tủ lạnh. Đặt online trên kinie.online, Kinie in và giao tận nơi, kể cả khi bạn đã về nhà ở tỉnh khác.',
+    sections: [
+      ['Nam châm lưu niệm từ ảnh của chính bạn', 'Nam châm lưu niệm bán sẵn ở điểm du lịch thì ai cũng giống ai. In ảnh chuyến đi của bạn thì mỗi tấm là một kỷ niệm riêng:', [
+        'Biển Mỹ Khê lúc bình minh, cầu Rồng về đêm.',
+        'Bà Nà, bán đảo Sơn Trà, đèo Hải Vân.',
+        'Phố cổ Hội An ngay cạnh Đà Nẵng, đèn lồng và những góc tường vàng.',
+        'Ảnh cả nhóm bạn, ảnh gia đình trong chuyến nghỉ dưỡng.',
+      ]],
+      ['Giao tận nơi ở Đà Nẵng và về nhà sau chuyến đi', 'Kinie giao tới các quận Hải Châu, Thanh Khê, Sơn Trà, Ngũ Hành Sơn, Liên Chiểu, Cẩm Lệ và huyện Hòa Vang. Đi du lịch thì bạn ghi địa chỉ nhà mình, ảnh về tới nơi sau chuyến đi. Phí ship 25.000đ/đơn, miễn phí từ combo 20 ảnh.'],
+      ['Chọn bao nhiêu ảnh cho một chuyến đi?', 'Chuyến đi ngắn 2–3 ngày, bộ 6 ảnh là vừa một góc tủ lạnh. Chuyến đi dài hoặc đi cả nhóm, chọn combo 15–20 ảnh để kể lại từng ngày, chia mỗi người vài tấm.'],
+      ['Ảnh nam châm Kinie bền thế nào?', 'Mỗi tấm 5,5 × 8 cm in 6 màu, phủ 5 lớp bảo vệ nên chống nước, chống trầy, gắn tay lên nam châm dẻo dày 3 mm. Ảnh nhẹ, mỏng, không có kính nên gửi xa không lo vỡ.'],
+    ],
+    combos: ['p6', 'p15', 'p20'],
+    faq: [
+      ['Đang du lịch ở Đà Nẵng có đặt được không?', 'Được. Bạn đặt và gửi ảnh ngay trên điện thoại, ghi địa chỉ muốn nhận: khách sạn nếu còn ở lâu, hoặc nhà mình để nhận sau chuyến đi.'],
+      ['Phí ship in ảnh nam châm ở Đà Nẵng là bao nhiêu?', 'Phí ship 25.000đ/đơn, giống mọi tỉnh thành. Đơn từ 379.000đ (combo 20 ảnh trở lên) được miễn phí vận chuyển.'],
+    ],
+  },
 ];

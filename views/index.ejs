@@ -18,8 +18,8 @@
         <span class="ribbon"><%= t('ribbon') %></span>
         <img class="hero__mascot" src="/img/mascot.jpg" alt="<%= t('mascotAlt') %>" width="150" height="166">
       </div>
-      <div class="hero__cards" aria-hidden="true">
-        <% [['l', 'mau-em-be'], ['m', 'mau-cap-doi'], ['r', 'mau-gia-dinh']].forEach(([pos, img]) => { %><div class="mag mag--<%= pos %>"><img src="/img/sp/<%= img %>.webp" alt="" width="440" height="640"></div><% }) %>
+      <div class="hero__cards">
+        <% [['l', 'mau-em-be'], ['m', 'mau-cap-doi'], ['r', 'mau-gia-dinh']].forEach(([pos, img], i) => { %><div class="mag mag--<%= pos %>"><img src="/img/sp/<%= img %>.webp" alt="<%= t('heroAlts')[i] %>" width="440" height="640"></div><% }) %>
       </div>
     </div>
   </div>

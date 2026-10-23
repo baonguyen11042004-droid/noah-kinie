@@ -3,15 +3,16 @@
   <div class="wrap">
     <p class="crumb"><a href="<%= u('/') %>"><%= t('crumbHome') %></a> / <a href="<%= u('/cua-hang') %>"><%= t('magnets') %></a> / <%= t('photos', p.qty) %></p>
     <div class="pd">
-      <div class="pd__img"><img src="<%= productImg(p) %>" alt="<%= t('prodAlt', p) %>" width="600" height="600"><p class="pd__note"><%= t('imgNote') %></p></div>
+      <div class="pd__img"><img src="<%= productImg(p) %>" alt="<%= t('prodAlt', p) %>" width="600" height="600" fetchpriority="high"><p class="pd__note"><%= t('imgNote') %></p></div>
       <div class="pd__info">
         <% if (p.hot) { %><span class="chip chip--static"><%= t('hot') %></span><% } %>
-        <h1 class="h2"><%= t('comboOf', p.qty) %></h1>
+        <h1 class="h2"><%= t('seoProduct', p.qty) %></h1>
         <p class="price price--lg"><%= money(p.price) %><% if (p.oldPrice > p.price) { %> <s><%= money(p.oldPrice) %></s><% } %></p>
         <p class="note"><%= t('approx', Math.round(p.price / p.qty / 1000), p.qty) %></p>
         <% if (p.freeship || p.gift) { %><p class="tags"><% if (p.gift) { %><span class="tag"><%- include('partials/icon', { name: 'gift' }) %><%= t('gift', p.gift) %></span><% } %><% if (p.freeship) { %><span class="tag"><%- include('partials/icon', { name: 'truck' }) %><%= t('freeship') %></span><% } %></p><% } %>
         <% const d = t('prodDesc')[p.qty]; %>
         <p class="lead"><%= d || t('prodBody') %></p>
+        <% const more = t('prodMore')[p.qty]; if (more) { %><p><%= more %></p><% } %>
         <% if (errors.length) { %><ul class="errors" role="alert"><% errors.forEach(e => { %><li><%= e %></li><% }) %></ul><% } %>
         <form method="post" action="<%= u('/gio-hang/them') %>" class="photo-step" id="dat-hang">
           <input type="hidden" name="_csrf" value="<%= csrf %>">

@@ -13,6 +13,9 @@ const { artSvg } = require('./lib/art');
 const { LANGS, translator } = require('./lib/i18n');
 const landings = require('./data/landings');
 const posts = require('./data/blog');
+// Trang khu vực (area: true) đi chung route với trang theo dịp nhưng liệt kê riêng.
+const occasions = landings.filter((l) => !l.area);
+const areas = landings.filter((l) => l.area);
 const reviews = require('./data/reviews');
 
 const app = express();
@@ -178,6 +181,7 @@ app.use((req, res, next) => {
   res.locals.alternates = LANGS.map((l) => ({ lang: l, href: base + localize(l, req.path) }));
   res.locals.canonical = base + req.u(req.path);
   res.locals.ogImage = base + '/img/og-kinie.jpg';
+  res.locals.ogImageAlt = req.t('logoAlt');
   res.locals.ogType = 'website';
   // Giỏ hàng, thanh toán, admin: không đưa lên kết quả tìm kiếm.
   res.locals.noindex = /^\/(gio-hang|thanh-toan|dat-hang-thanh-cong|admin)(\/|$)/.test(req.path);
@@ -190,7 +194,8 @@ app.use((req, res, next) => {
   res.locals.money = money;
   res.locals.categories = categories;
   res.locals.productImg = productImg;
-  res.locals.landings = landings;
+  res.locals.landings = occasions;
+  res.locals.areas = areas;
   res.locals.csrf = csrf(req);
   res.locals.cartCount = cartOf(req).count;
   res.locals.path = req.path;
@@ -298,7 +303,10 @@ function productPage(req, res, p, extra = {}) {
   const related = products.filter((x) => x.id !== p.id && x.category === p.category).slice(0, 3);
   const base = res.locals.base;
   const img = productImg(p);
-  if (!/\.svg$/i.test(img)) res.locals.ogImage = /^https?:/.test(img) ? img : base + img;
+  if (!/\.svg$/i.test(img)) {
+    res.locals.ogImage = /^https?:/.test(img) ? img : base + img;
+    res.locals.ogImageAlt = req.t('prodAlt', p);
+  }
   res.locals.ogType = 'product';
   res.locals.jsonLd.push({
     '@context': 'https://schema.org', '@type': 'Product',
@@ -336,7 +344,7 @@ landings.forEach((l) => {
         mainEntity: l.faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
       });
     }
-    res.render('landing', { title: l.title, desc: l.desc, l, combos: pickProducts(l.combos), others: landings.filter((x) => x !== l) });
+    res.render('landing', { title: l.title, desc: l.desc, l, combos: pickProducts(l.combos), others: (l.area ? areas : occasions).filter((x) => x !== l) });
   });
 });
 

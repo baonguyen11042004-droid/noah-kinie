@@ -13,6 +13,8 @@
       <% if (lang === 'vi') { %>
       <h4 class="mt-xs"><%= t('footOccasion') %></h4>
       <% landings.forEach(l => { %><a href="/<%= l.slug %>"><%= l.nav %></a><% }) %>
+      <% if (areas.length) { %><h4 class="mt-xs"><%= t('footArea') %></h4>
+      <% areas.forEach(l => { %><a href="/<%= l.slug %>"><%= l.h1 %></a><% }) %><% } %>
       <% } %>
     </div>
     <div>

@@ -2,7 +2,7 @@
 <section class="sec">
   <div class="wrap narrow">
     <p class="crumb"><a href="/"><%= t('crumbHome') %></a> / <%= l.h1 %></p>
-    <p class="eyebrow"><%= t('occasionEyebrow') %> · <%= l.nav %></p>
+    <p class="eyebrow"><%= l.area ? t('footArea') : t('occasionEyebrow') %> · <%= l.nav %></p>
     <h1 class="h2"><%= l.h1 %></h1>
     <p class="lead"><%= l.intro %></p>
     <div class="hero__cta">
@@ -29,10 +29,14 @@
     </div>
     <p class="mt-s"><a class="link" href="/hoi-dap"><%= t('faqLink') %></a></p>
     <% } %>
-    <h2 class="h2 mt"><%= t('occasionTitle') %></h2>
+    <h2 class="h2 mt"><%= l.area ? 'Kinie giao tận nơi khu vực khác' : t('occasionTitle') %></h2>
     <ul class="occ occ--sm">
       <% others.forEach(o => { %><li><a href="/<%= o.slug %>"><b><%= o.nav %></b><span><%= o.h1 %></span></a></li><% }) %>
     </ul>
+    <% if (l.area) { %><h2 class="h2 mt"><%= t('occasionTitle') %></h2>
+    <ul class="occ occ--sm">
+      <% landings.forEach(o => { %><li><a href="/<%= o.slug %>"><b><%= o.nav %></b><span><%= o.h1 %></span></a></li><% }) %>
+    </ul><% } %>
     <div class="cta mt">
       <div><h2><%= t('ctaTitle') %></h2><p><%= t('ctaBody') %></p></div>
       <a class="btn btn--zalo" href="<%= site.zalo %>" target="_blank" rel="noopener"><%- include('partials/icon', { name: 'chat' }) %><%= t('zaloCta') %></a>

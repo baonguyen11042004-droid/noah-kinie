@@ -2,6 +2,78 @@
 // body: mảng khối [tiêu đề H2, đoạn văn, (tuỳ chọn) danh sách]. link: trang Kinie nên trỏ tới cuối bài.
 module.exports = [
   {
+    slug: 'qua-sinh-nhat-doc-dao',
+    kw: 'quà sinh nhật độc đáo',
+    date: '2026-10-23',
+    title: 'Quà sinh nhật độc đáo: ý tưởng không đụng hàng',
+    desc: 'Ý tưởng quà sinh nhật độc đáo cho bạn thân, người yêu, bố mẹ, đồng nghiệp: quà tự làm, quà trải nghiệm, quà in ảnh – không đắt mà vẫn khác biệt.',
+    intro: 'Quà sinh nhật độc đáo không nhất thiết phải đắt. Thứ làm món quà khác biệt là nó chỉ dành riêng cho người nhận: một kỷ niệm chung, một sở thích bạn còn nhớ, một trải nghiệm hai người cùng làm.',
+    body: [
+      ['Quà tự làm', 'Quà tự tay làm luôn là quà duy nhất, vì không ai có món giống vậy:', [
+        'Lọ 365 lời nhắn, mỗi ngày mở một mảnh giấy.',
+        'Cuốn sổ ghi lại những kỷ niệm của hai người, dán kèm ảnh.',
+        'Video ngắn ghép lời chúc của bạn bè và người thân.',
+      ]],
+      ['Quà in từ ảnh kỷ niệm', 'Ảnh là thứ ai cũng có nhưng hiếm ai in ra. Chọn những tấm ảnh có người nhận rồi biến chúng thành quà:', [
+        'Bộ 9 ảnh nam châm xếp ô 3 × 3, mỗi tấm là một năm hoặc một kỷ niệm.',
+        'Ảnh nam châm tuổi thơ của người nhận, xin từ bố mẹ họ.',
+        'Một tấm ảnh nhóm bạn in thành nhiều bản để mỗi người giữ một tấm.',
+      ]],
+      ['Quà trải nghiệm', 'Một buổi học làm gốm, làm bánh hay vẽ tranh cho hai người; vé xem phim, xem concert; một ngày đi chơi mà bạn lên kế hoạch từ đầu đến cuối. Nhớ chụp ảnh lại, vì ảnh hôm đó sẽ là món quà cho lần sau.'],
+      ['Quà sinh nhật độc đáo theo từng người', 'Mỗi người nhận hợp với một kiểu quà:', [
+        'Bạn thân: bộ ảnh nam châm những lần đi chơi chung, kèm một lá thư.',
+        'Người yêu: quà gắn với kỷ niệm của hai người, như ảnh lần đầu hẹn hò.',
+        'Bố mẹ: ảnh cả nhà in ra để dán tủ lạnh, nơi bố mẹ nhìn thấy mỗi ngày.',
+        'Đồng nghiệp: món nhỏ, dễ dùng ở bàn làm việc, như vài tấm ảnh team.',
+      ]],
+      ['Đặt quà in ảnh kịp sinh nhật', 'Ảnh nam châm Kinie giao trong khoảng 2–4 ngày, nên bạn đặt trước sinh nhật ít nhất một tuần cho thoải mái. Ở bước thanh toán, bạn có thể ghi thẳng địa chỉ người nhận và ghi chú "quà tặng".'],
+    ],
+    link: ['/anh-nam-cham-qua-tang', 'Xem gợi ý in ảnh nam châm làm quà tặng →'],
+  },
+  {
+    slug: 'qua-tang-ban-gai-tot-nghiep',
+    kw: 'quà tặng bạn gái tốt nghiệp',
+    date: '2026-10-23',
+    title: 'Quà tặng bạn gái tốt nghiệp: gợi ý cho ngày ra trường',
+    desc: 'Gợi ý quà tặng bạn gái tốt nghiệp ý nghĩa: hoa, quà dùng được khi đi làm, bộ ảnh nam châm những năm đại học – món quà giữ lại kỷ niệm thời sinh viên.',
+    intro: 'Ngày tốt nghiệp khép lại mấy năm đại học và mở ra một chặng mới. Một món quà tốt nghiệp ý nghĩa nên vừa ghi nhận cố gắng của cô ấy, vừa giữ lại chút kỷ niệm của thời sinh viên.',
+    body: [
+      ['Hoa và quà trao tận tay hôm lễ', 'Một bó hoa vẫn là món không thể thiếu trong ngày nhận bằng. Bạn có thể thêm một tấm thiệp viết tay hoặc một gấu bông đội mũ cử nhân để cô ấy chụp ảnh cùng.'],
+      ['Quà dùng được khi bắt đầu đi làm', 'Ra trường là lúc cần nhiều đồ mới cho công việc:', [
+        'Túi xách hoặc ba lô đựng laptop gọn gàng.',
+        'Sổ tay, bút đẹp, bình giữ nhiệt cho bàn làm việc.',
+        'Một khoá học kỹ năng cô ấy từng nói muốn học.',
+      ]],
+      ['Quà giữ lại kỷ niệm thời đại học', 'Những năm đại học có biết bao ảnh: ngày nhập học, những lần ôn thi, chuyến đi cùng lớp, ngày bảo vệ đồ án. In những tấm đẹp nhất thành bộ ảnh nam châm, cô ấy có thể dán lên tủ lạnh hay bảng từ ở chỗ làm mới. Combo 15–20 ảnh là vừa đủ kể lại cả chặng đường.'],
+      ['Quà cho cả nhóm bạn cùng tốt nghiệp', 'Nếu cả nhóm ra trường cùng lúc, chọn một tấm ảnh nhóm mặc áo cử nhân rồi in thành nhiều bản, mỗi người giữ một tấm. Combo 20 ảnh được free ship, đủ chia cho cả nhóm.'],
+      ['Mẹo tặng quà tốt nghiệp', 'Đặt ảnh in trước lễ tốt nghiệp vài ngày để kịp giao. Nếu muốn có ảnh ngay trong ngày lễ, bạn tặng hoa trước, rồi gửi bộ ảnh nam châm in từ chính ảnh chụp hôm đó vài ngày sau – món quà nhắc lại ngày vui.'],
+    ],
+    link: ['/anh-nam-cham-qua-tang', 'In ảnh nam châm làm quà tặng →'],
+  },
+  {
+    slug: 'qua-tan-gia',
+    kw: 'quà tặng tân gia',
+    date: '2026-10-23',
+    title: 'Quà tặng tân gia ý nghĩa, hữu ích cho nhà mới',
+    desc: 'Gợi ý quà tặng tân gia ý nghĩa, hữu ích cho nhà mới: cây xanh, đồ bếp, đồ trang trí và quà tặng tân gia bằng ảnh – ảnh nam châm cho chiếc tủ lạnh mới.',
+    intro: 'Đi tân gia, ai cũng muốn mang một món quà vừa hữu ích vừa mang lời chúc cho ngôi nhà mới. Dưới đây là vài gợi ý dễ chọn, hợp nhiều mức chi phí.',
+    body: [
+      ['Quà tân gia mang ý nghĩa may mắn', 'Một số món quen thuộc mang lời chúc an cư, sung túc:', [
+        'Cây xanh để bàn hoặc cây cảnh nhỏ cho ban công.',
+        'Bộ ấm chén, bộ ly để gia chủ tiếp khách.',
+        'Tranh treo tường hoặc đồng hồ treo tường.',
+      ]],
+      ['Quà hữu ích cho nhà mới', 'Nhà mới thường còn thiếu đồ dùng hằng ngày. Hỏi khéo gia chủ còn thiếu gì, hoặc chọn những món ai cũng cần: bộ dao kéo, nồi chảo, khăn tắm, đèn ngủ.'],
+      ['Quà tặng tân gia bằng ảnh', 'Món quà gần gũi nhất là ảnh của chính gia chủ. Gom những tấm ảnh cả nhà, ảnh ngày nhận nhà, ảnh bạn bè cùng chụp với gia chủ rồi in thành ảnh nam châm để dán lên chiếc tủ lạnh mới. Căn bếp sẽ có kỷ niệm ngay từ ngày đầu.', [
+        'Bộ 6–9 ảnh cho một gia đình nhỏ.',
+        'Combo 20 ảnh nếu cả nhóm bạn góp ảnh chung, được free ship.',
+        'Kèm một tấm thiệp ghi lời chúc nhà mới.',
+      ]],
+      ['Lưu ý khi chọn quà tân gia', 'Tránh những món quá cồng kềnh khi chưa biết bố cục nhà, và hỏi trước nếu gia chủ có kiêng kỵ gì. Quà nhỏ mà hợp ý vẫn hơn quà to mà không dùng tới.'],
+    ],
+    link: ['/anh-nam-cham-qua-tang', 'In ảnh nam châm làm quà tặng →'],
+  },
+  {
     slug: 'qua-20-10',
     kw: 'quà 20/10 cho mẹ',
     date: '2026-10-09',
