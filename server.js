@@ -71,7 +71,7 @@ const site = {
   ],
   phone: '0862 328 336 · 0834 231 021',
   zalo: 'https://zalo.me/0862328336',
-  tiktok: 'https://www.tiktok.com/@nhatkykinieu',
+  tiktok: 'https://www.tiktok.com/@nhatkykinieiu',
   instagram: process.env.INSTAGRAM_URL || '#',
   facebook: process.env.FACEBOOK_URL || '#',
   freeShip: FREE_SHIP,
