@@ -254,6 +254,8 @@ const crumbLd = (base, items) => ({
 // ---------- pages ----------
 // Link cũ chuyển ngôn ngữ bằng session: chuyển sang URL mới.
 app.get('/ngon-ngu/:lang', (req, res) => res.redirect(301, localize(LANGS.includes(req.params.lang) ? req.params.lang : 'vi', '/')));
+// Link ngắn đặt ở bio TikTok: chuyển về trang chủ kèm UTM để đếm khách từ TikTok (302 để sau này đổi đích không bị trình duyệt nhớ).
+app.get('/tiktok', (req, res) => res.redirect(302, '/?utm_source=tiktok&utm_medium=bio'));
 
 app.get('/', (req, res) => {
   const products = db.get().products;
