@@ -20,8 +20,14 @@ const reviews = require('./data/reviews');
 
 const app = express();
 const isProd = process.env.NODE_ENV === 'production';
-const SECRET = process.env.SESSION_SECRET || 'dev-secret-change-me';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
+// Trên server không dùng mật khẩu/mã mặc định. Thiếu biến (hoặc còn giá trị mẫu "doi-..." của .env.example) thì
+// khoá trang admin và tạo mã phiên ngẫu nhiên mỗi lần chạy (giỏ hàng mất khi khởi động lại); trang bán hàng vẫn chạy.
+const unset = (v) => !v || v.startsWith('doi-');
+const SECRET = !unset(process.env.SESSION_SECRET) ? process.env.SESSION_SECRET
+  : isProd ? crypto.randomBytes(32).toString('hex') : 'dev-secret-change-me';
+const ADMIN_PASSWORD = !unset(process.env.ADMIN_PASSWORD) ? process.env.ADMIN_PASSWORD : isProd ? '' : 'admin123';
+if (isProd && unset(process.env.SESSION_SECRET)) console.error('Thiếu SESSION_SECRET: đang dùng mã tạm, giỏ hàng mất khi khởi động lại.');
+if (isProd && !ADMIN_PASSWORD) console.error('Thiếu ADMIN_PASSWORD: trang admin bị khoá.');
 const FREE_SHIP = 379000; // = giá combo 20 ảnh, từ mức này trở lên được free ship
 const SHIP_FEE = 25000;
 
@@ -588,7 +594,7 @@ const loginLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 10 });
 
 app.get('/admin/login', (req, res) => res.render('admin/login', { title: 'Admin', error: '' }));
 app.post('/admin/login', loginLimiter, checkCsrf, (req, res) => {
-  if (safeEq(str(req.body.password, 100), ADMIN_PASSWORD)) { req.session.admin = true; return res.redirect('/admin'); }
+  if (ADMIN_PASSWORD && safeEq(str(req.body.password, 100), ADMIN_PASSWORD)) { req.session.admin = true; return res.redirect('/admin'); }
   res.status(401).render('admin/login', { title: 'Admin', error: 'Sai mật khẩu.' });
 });
 app.post('/admin/logout', checkCsrf, (req, res) => { req.session.admin = false; res.redirect('/'); });
