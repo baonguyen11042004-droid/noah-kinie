@@ -43,7 +43,8 @@ app.use(helmet({
       'img-src': ["'self'", 'data:', 'https:'],
       'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
       'font-src': ["'self'", 'https://fonts.gstatic.com'],
-      'script-src': ["'self'"],
+      'script-src': ["'self'", 'https://analytics.tiktok.com'],
+      'connect-src': ["'self'", 'https://analytics.tiktok.com', 'https://analytics-ipv6.tiktokw.com'],
       'form-action': ["'self'"],
       'upgrade-insecure-requests': isProd ? [] : null,
     },
@@ -72,6 +73,8 @@ const site = {
   phone: '0862 328 336 · 0834 231 021',
   zalo: 'https://zalo.me/0862328336',
   tiktok: 'https://www.tiktok.com/@nhatkykinieiu',
+  // Pixel quảng cáo TikTok (ID công khai, tạo 25/10/2026). Đặt TIKTOK_PIXEL_ID= (rỗng) trong .env để tắt.
+  tiktokPixel: process.env.TIKTOK_PIXEL_ID !== undefined ? process.env.TIKTOK_PIXEL_ID : 'DBEQKC3C77U7G56GEBL0',
   instagram: process.env.INSTAGRAM_URL || '#',
   facebook: process.env.FACEBOOK_URL || '#',
   freeShip: FREE_SHIP,

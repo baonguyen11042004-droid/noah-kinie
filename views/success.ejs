@@ -23,6 +23,7 @@
     </div>
     <% if (link) { %><p class="note"><%= t('orderLink') %><br><a class="link pay__link" href="<%= link %>"><%= link %></a></p><% } %>
     <% } %>
+    <span id="ttq-order" hidden data-code="<%= order.code %>" data-value="<%= order.total %>"></span>
     <p><a class="btn" href="<%= u('/bang-gia') %>"><%= t('keepShopping') %></a></p>
   </div>
 </section>
