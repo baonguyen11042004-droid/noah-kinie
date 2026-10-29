@@ -118,7 +118,7 @@ module.exports = [
         'Cắt nam châm theo mép ảnh, bo nhẹ 4 góc để đỡ bị bong.',
       ]],
       ['Ưu và nhược điểm khi tự làm', 'Tự làm rẻ và vui, nhưng ảnh giấy thường mau xuống màu, mép dễ bong, gặp hơi nước trong bếp lâu ngày có thể bị phồng. Mặt ảnh dán băng keo cũng dễ trầy và bám bụi.'],
-      ['Khi nào nên đặt in?', 'Nếu bạn làm quà tặng, cần nhiều ảnh, hoặc muốn ảnh dán bền nhiều năm, đặt in sẽ đỡ công hơn. Ở Kinie, ảnh được in 6 màu, phủ 5 lớp bảo vệ chống nước và chống trầy, gắn tay lên nam châm dẻo dày 3 mm – từ 29k/ảnh, rẻ dần khi đặt nhiều.'],
+      ['Khi nào nên đặt in?', 'Nếu bạn làm quà tặng, cần nhiều ảnh, hoặc muốn ảnh dán bền nhiều năm, đặt in sẽ đỡ công hơn. Ở Kinie, ảnh được in 6 màu, cấu tạo 6 lớp chống nước và chống trầy, gắn tay lên nam châm dẻo – từ 29k/ảnh, rẻ dần khi đặt nhiều.'],
     ],
     link: ['/lam-anh-nam-cham', 'Đặt làm ảnh nam châm theo yêu cầu →'],
   },

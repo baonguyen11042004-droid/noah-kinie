@@ -8,19 +8,19 @@ module.exports = [
     nav: 'Làm theo yêu cầu',
     kw: 'in ảnh nam châm theo yêu cầu',
     title: 'Làm ảnh nam châm theo yêu cầu – in từ ảnh của bạn',
-    desc: 'Dịch vụ in ảnh nam châm theo yêu cầu: gửi ảnh qua link hoặc Zalo, Kinie in 6 màu, phủ 5 lớp, gắn nam châm dẻo 3 mm bằng tay. Từ 29k/ảnh, giao 2–4 ngày.',
+    desc: 'Dịch vụ in ảnh nam châm theo yêu cầu: gửi ảnh qua link hoặc Zalo, Kinie in 6 màu, cấu tạo 6 lớp, gắn nam châm dẻo bằng tay. Từ 29k/ảnh, giao 2–4 ngày.',
     h1: 'Làm ảnh nam châm theo yêu cầu',
-    intro: 'Bạn có ảnh, Kinie làm phần còn lại. Mỗi tấm ảnh nam châm 5,5 × 8 cm được in từ chính ảnh bạn gửi, chỉnh màu, căn khung rồi gắn tay lên nam châm dẻo dày 3 mm để dán tủ lạnh, cửa sổ hay bảng từ.',
+    intro: 'Bạn có ảnh, Kinie làm phần còn lại. Mỗi tấm ảnh nam châm 5,5 × 8 cm được in từ chính ảnh bạn gửi, chỉnh màu, căn khung rồi gắn tay lên nam châm dẻo để dán tủ lạnh, cửa sổ hay bảng từ.',
     sections: [
       ['Dịch vụ in ảnh nam châm của Kinie gồm những gì?', 'Bạn chỉ cần chọn số ảnh và gửi ảnh. Kinie lo toàn bộ phần còn lại:', [
         'Xem từng ảnh, cân màu và căn khung cho vừa khổ 5,5 × 8 cm.',
-        'In 6 màu, phủ 5 lớp bảo vệ chống nước, chống trầy.',
-        'Cắt tay, gắn nam châm dẻo dày 3 mm, kiểm tra trước khi đóng gói.',
+        'In 6 màu, cấu tạo 6 lớp chống nước, chống trầy.',
+        'Cắt tay, gắn nam châm dẻo, kiểm tra trước khi đóng gói.',
         'Giao tận nơi trong khoảng 2–4 ngày, thanh toán trước bằng chuyển khoản (quét mã QR có sẵn số tiền).',
       ]],
       ['Gửi ảnh thế nào?', 'Chọn combo rồi bấm Thêm vào giỏ: bạn chọn ảnh từ điện thoại hoặc máy tính, ảnh tự vào khung in có sẵn, bạn kéo để chỉnh vị trí, xoay hay phóng to cho vừa ý. Không tải được ảnh thì chọn "gửi qua Zalo", Kinie nhắn bạn ngay sau khi đặt.'],
       ['Ảnh thế nào thì in đẹp?', 'Ảnh chụp bằng điện thoại đời mới là đủ nét cho khổ 5,5 × 8 cm. Ưu tiên ảnh đủ sáng, không bị mờ, người hoặc vật chính nằm gần giữa khung. Ảnh ngang vẫn in được, Kinie sẽ căn lại phần quan trọng nhất và hỏi lại bạn nếu cần cắt nhiều.'],
-      ['Làm ảnh nam châm dán tủ lạnh tự làm hay đặt in?', 'Tự làm ở nhà thì rẻ nhưng ảnh giấy dễ bong, dễ thấm nước và phai màu. Đặt in ở Kinie, ảnh được phủ 5 lớp bảo vệ nên lau được bằng khăn ẩm và giữ màu lâu, giá từ 29k/ảnh và rẻ dần khi đặt nhiều.'],
+      ['Làm ảnh nam châm dán tủ lạnh tự làm hay đặt in?', 'Tự làm ở nhà thì rẻ nhưng ảnh giấy dễ bong, dễ thấm nước và phai màu. Đặt in ở Kinie, ảnh có cấu tạo 6 lớp nên lau được bằng khăn ẩm và giữ màu lâu, giá từ 29k/ảnh và rẻ dần khi đặt nhiều.'],
     ],
     combos: ['p6', 'p20', 'p50'],
     faq: [
@@ -180,7 +180,7 @@ module.exports = [
         'Ảnh cả nhà dịp Tết, ảnh ông bà để dán tủ lạnh ở nhà mới.',
         'Quà 20/10, 8/3 gửi thẳng đến người nhận ở quận khác, không phải tự đi giao.',
       ]],
-      ['Ảnh nam châm Kinie có gì khác?', 'Mỗi tấm 5,5 × 8 cm được in 6 màu, phủ 5 lớp bảo vệ nên chống nước, chống trầy, lau được bằng khăn ẩm, rồi gắn tay lên nam châm dẻo dày 3 mm. Ảnh bám chắc tủ lạnh, gỡ ra đổi chỗ không để lại vết keo.'],
+      ['Ảnh nam châm Kinie có gì khác?', 'Mỗi tấm 5,5 × 8 cm được in 6 màu, cấu tạo 6 lớp nên chống nước, chống trầy, lau được bằng khăn ẩm, rồi gắn tay lên nam châm dẻo. Ảnh bám chắc tủ lạnh, gỡ ra đổi chỗ không để lại vết keo.'],
     ],
     combos: ['p6', 'p20', 'p50'],
     faq: [
@@ -210,7 +210,7 @@ module.exports = [
         'Quà tiệc cuối năm, team building: combo 100–200 ảnh có ảnh tặng và free ship.',
         'Quà tặng khách hàng: bạn tự thiết kế ảnh có logo, Kinie in đúng file bạn gửi.',
       ]],
-      ['Chất lượng ảnh nam châm Kinie', 'Mỗi tấm in 6 màu, phủ 5 lớp bảo vệ nên không sợ hơi ẩm, chống trầy, giữ màu lâu; gắn tay lên nam châm dẻo dày 3 mm, bám chắc tủ lạnh, cửa sắt hay bảng từ ở văn phòng.'],
+      ['Chất lượng ảnh nam châm Kinie', 'Mỗi tấm in 6 màu, cấu tạo 6 lớp nên không sợ hơi ẩm, chống trầy, giữ màu lâu; gắn tay lên nam châm dẻo, bám chắc tủ lạnh, cửa sắt hay bảng từ ở văn phòng.'],
     ],
     combos: ['p9', 'p20', 'p100'],
     faq: [
@@ -236,7 +236,7 @@ module.exports = [
       ]],
       ['Giao tận nơi ở Đà Nẵng và về nhà sau chuyến đi', 'Kinie giao tới các quận Hải Châu, Thanh Khê, Sơn Trà, Ngũ Hành Sơn, Liên Chiểu, Cẩm Lệ và huyện Hòa Vang. Đi du lịch thì bạn ghi địa chỉ nhà mình, ảnh về tới nơi sau chuyến đi. Phí ship 25.000đ/đơn, miễn phí từ combo 20 ảnh.'],
       ['Chọn bao nhiêu ảnh cho một chuyến đi?', 'Chuyến đi ngắn 2–3 ngày, bộ 6 ảnh là vừa một góc tủ lạnh. Chuyến đi dài hoặc đi cả nhóm, chọn combo 15–20 ảnh để kể lại từng ngày, chia mỗi người vài tấm.'],
-      ['Ảnh nam châm Kinie bền thế nào?', 'Mỗi tấm 5,5 × 8 cm in 6 màu, phủ 5 lớp bảo vệ nên chống nước, chống trầy, gắn tay lên nam châm dẻo dày 3 mm. Ảnh nhẹ, mỏng, không có kính nên gửi xa không lo vỡ.'],
+      ['Ảnh nam châm Kinie bền thế nào?', 'Mỗi tấm 5,5 × 8 cm in 6 màu, cấu tạo 6 lớp nên chống nước, chống trầy, gắn tay lên nam châm dẻo. Ảnh nhẹ, mỏng, không có kính nên gửi xa không lo vỡ.'],
     ],
     combos: ['p6', 'p15', 'p20'],
     faq: [
