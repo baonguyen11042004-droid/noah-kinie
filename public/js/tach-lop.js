@@ -10,6 +10,7 @@ if (scene3) {
 }
 
 async function batDau() {
+  if (!scene3.clientHeight) return;   // CSS chưa có (trình duyệt còn giữ style.css cũ) thì giữ ảnh tĩnh, không vẽ 3D lệch
   let THREE, RoomEnvironment;
   try {
     THREE = await import('/js/vendor/three.module.min.js');
