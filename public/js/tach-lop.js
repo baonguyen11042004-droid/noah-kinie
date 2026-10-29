@@ -26,6 +26,7 @@ async function batDau() {
   try {
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   } catch (e) { return; }
+  anh.loading = 'eager';   // khối sắp hiện: tải ảnh ngay, không chờ cơ chế lazy của trình duyệt
   if (!anh.complete) await new Promise(xong => { anh.onload = anh.onerror = xong; });
   if (!anh.naturalWidth) return;
   scene3.closest('.ct').classList.add('ct--3d');   // ẩn ảnh tĩnh, hiện nút và gợi ý
