@@ -11,7 +11,7 @@
         <a class="btn btn--zalo" href="<%= site.zalo %>" target="_blank" rel="noopener"><%- include('partials/icon', { name: 'chat' }) %><%= t('zaloCta') %></a>
       </div>
     </div>
-    <div class="about__art"><img src="/img/sp/tu-lanh.webp" alt="<%= t('fridgeAlt') %>" width="900" height="1125"></div>
+    <%- include('partials/cau-tao', { chiMoHinh: true }) %>
   </div>
   <div class="wrap narrow prose">
     <h2><%= t('aboutStoryTitle') %></h2>
@@ -24,13 +24,7 @@
     <ol class="steps steps--list">
       <% t('aboutProcess').forEach((s, i) => { %><li><b><%= i + 1 %></b><h3><%= s[0] %></h3><p><%= s[1] %></p></li><% }) %>
     </ol>
-  </div>
-</section>
 
-<%- include('partials/cau-tao') %>
-
-<section class="sec sec--tiep">
-  <div class="wrap narrow prose">
     <h2><%= t('aboutMaterialTitle') %></h2>
     <ul><% t('aboutList').forEach(s => { %><li><%= s %></li><% }) %><li><%= t('specs')[0][0] %>: <%= t('specs')[0][1] %> · <%= t('specs')[1][0] %>: <%= t('specs')[1][1] %></li></ul>
 

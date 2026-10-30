@@ -2,15 +2,15 @@
 // Không có WebGL thì giữ nguyên ảnh tĩnh trong khối.
 const scene3 = document.getElementById('ct-scene');
 if (scene3) {
+  // Khối chưa có chiều cao (CSS cũ còn trong bộ nhớ trình duyệt, hoặc trang đang bị ẩn) thì chờ lần sau, không vẽ 3D lệch
   new IntersectionObserver((es, ob) => {
-    if (!es[0].isIntersecting) return;
+    if (!es[0].isIntersecting || !scene3.clientHeight) return;
     ob.disconnect();
     batDau();
   }, { rootMargin: '400px 0px' }).observe(scene3);
 }
 
 async function batDau() {
-  if (!scene3.clientHeight) return;   // CSS chưa có (trình duyệt còn giữ style.css cũ) thì giữ ảnh tĩnh, không vẽ 3D lệch
   let THREE, RoomEnvironment;
   try {
     THREE = await import('/js/vendor/three.module.min.js');
@@ -224,9 +224,10 @@ async function batDau() {
   }, { threshold: [0, .45] }).observe(scene3);
 
   // ---- Tương tác ----
-  function moRa(mo) { kDich = mo ? 1 : 0; nut.textContent = mo ? nut.dataset.dong : nut.dataset.mo; if (!mo) danhDau(null); }
+  // bản gọn (đầu trang Về Kinie) không có nút và danh sách lớp
+  function moRa(mo) { kDich = mo ? 1 : 0; if (nut) nut.textContent = mo ? nut.dataset.dong : nut.dataset.mo; if (!mo) danhDau(null); }
   function danhDau(so) { chon = so; items.forEach(li => li.classList.toggle('on', so !== null && li.dataset.lop == so)); }
-  nut.addEventListener('click', () => moRa(kDich === 0));
+  if (nut) nut.addEventListener('click', () => moRa(kDich === 0));
 
   const ray = new THREE.Raycaster(), p = new THREE.Vector2();
   function trung(ev) {
@@ -253,5 +254,17 @@ async function batDau() {
     li.addEventListener('mouseenter', () => { if (kDich === 1) danhDau(so); });
     li.addEventListener('click', () => { if (kDich === 0) moRa(true); else danhDau(chon === so ? null : so); });
   });
-  document.getElementById('ct-lop').addEventListener('mouseleave', () => danhDau(null));
+  document.getElementById('ct-lop')?.addEventListener('mouseleave', () => danhDau(null));
+
+  // Bản gọn: tự tách rồi ghép lại liên tục (chờ chuyển động xong mới đếm giờ); khách rê chuột vào thì dừng ở trạng thái đang xem
+  if (!nut && !giamChuyenDong) {
+    let dangXem = false, mocDung = 0;
+    renderer.domElement.addEventListener('pointerenter', () => { dangXem = true; });
+    renderer.domElement.addEventListener('pointerleave', () => { dangXem = false; mocDung = performance.now(); });
+    renderer.domElement.addEventListener('click', () => { mocDung = performance.now(); });
+    setInterval(() => {
+      if (!daTuMo || dangXem || !dangHien || k !== kDich) { if (k !== kDich) mocDung = performance.now(); return; }
+      if (performance.now() - mocDung > (kDich === 1 ? 3500 : 2500)) moRa(kDich === 0);
+    }, 250);
+  }
 }

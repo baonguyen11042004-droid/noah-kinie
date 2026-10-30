@@ -1,3 +1,11 @@
+<% const gon = typeof chiMoHinh !== 'undefined' && chiMoHinh; /* chiMoHinh: chỉ mô hình 3D, không chữ, không danh sách lớp (đầu trang Về Kinie) */ %>
+<% if (gon) { %>
+<div class="ct ct--gon">
+  <div class="ct__scene" id="ct-scene" role="img" aria-label="<%= t('layersAlt') %>">
+    <img class="ct__anh" id="ct-anh" src="/img/sp/tach-lop.jpg" alt="" width="688" height="1024">
+  </div>
+</div>
+<% } else { %>
 <section class="sec ct" aria-labelledby="ct-title">
   <div class="wrap ct__in">
     <div class="ct__chu">
@@ -19,4 +27,5 @@
     </div>
   </div>
 </section>
-<script type="module" src="/js/tach-lop.js?v=20261029b"></script>
+<% } %>
+<script type="module" src="/js/tach-lop.js?v=20261030c"></script>
