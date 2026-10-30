@@ -240,7 +240,7 @@ const priceRange = () => {
 };
 const storeLd = (req, base) => ({
   '@context': 'https://schema.org', '@type': 'Store', '@id': base + '/#store',
-  name: 'Kinie', alternateName: ['Nhật ký Kinie', 'Kinie Memory'], url: base + req.u('/'),
+  name: 'Ảnh nam châm Kinie', alternateName: ['Kinie', 'Nhật ký Kinie', 'Kinie Memory'], url: base + req.u('/'),
   description: req.t('descHome'), image: base + '/img/logo.jpg', logo: base + '/img/logo.jpg',
   email: site.email, telephone: site.phones.map((p) => p.tel), priceRange: priceRange(),
   address: { '@type': 'PostalAddress', addressCountry: 'VN' },
