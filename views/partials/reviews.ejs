@@ -4,7 +4,7 @@
 <div class="quotes">
   <% list.forEach(r => { %>
   <figure class="rev">
-    <% if (r.image) { %><img src="<%= r.image %>" alt="Ảnh khách nhận hàng – <%= r.name %>" width="400" height="400" loading="lazy"><% } %>
+    <% if (r.image) { %><a class="rev__shot" href="<%= r.image %>" target="_blank" rel="noopener"><img src="<%= r.image %>" alt="Tin nhắn feedback của khách Kinie" width="<%= r.w || 400 %>" height="<%= r.h || 400 %>" loading="lazy"></a><% } %>
     <p class="rev__stars" aria-label="<%= r.stars %>/5"><%= '★'.repeat(r.stars) %><%= '☆'.repeat(5 - r.stars) %></p>
     <blockquote>“<%= r.text %>”</blockquote>
     <figcaption><b><%= r.name %></b> · <%= r.source %></figcaption>

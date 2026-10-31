@@ -397,6 +397,8 @@ form.inline{display:inline-block;margin:6px 0 0 8px}
 .post-card__d{font-size:.82rem;color:var(--ink2);font-weight:700}
 .rev{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:grid;gap:8px}
 .rev img{border-radius:12px;aspect-ratio:1;object-fit:cover}
+.rev__shot img{aspect-ratio:auto;width:100%;height:auto;border:1px solid var(--line)}
+.quotes:has(.rev__shot){align-items:start}
 .rev blockquote{border:0;padding:0;background:none}
 .rev__stars{color:#e8a33d;letter-spacing:2px}
 .rev figcaption{font-size:.9rem;color:var(--ink2)}
