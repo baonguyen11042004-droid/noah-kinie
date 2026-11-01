@@ -35,6 +35,19 @@ module.exports = [
         'Khoảng 300–400k: bộ 15 ảnh (279k) hoặc 20 ảnh (379k, được free ship) kể lại cả một năm, kèm một buổi đi chơi.',
         'Góp quà cả nhóm: mỗi người gửi vài tấm ảnh chung với người nhận, gom thành combo 20–29 ảnh.',
       ]],
+      ['Làm sao để món quà không đụng hàng?', 'Quà đụng hàng thường là những món mua sẵn theo xu hướng: gấu bông, cốc in chữ, nến thơm. Muốn khác đi, hãy bắt đầu từ người nhận thay vì từ cửa hàng. Thử trả lời ba câu: người ấy hay kể về điều gì, hai bạn từng có kỷ niệm nào đáng nhớ, và người ấy sẽ dùng món quà ở đâu. Câu trả lời thường dẫn tới một món quà chỉ có một: tấm ảnh chụp ở chuyến đi mà người ấy hay nhắc, một lá thư nhắc lại lần đầu quen nhau, hay vé xem ban nhạc người ấy thích từ hồi đi học.'],
+      ['Ghép nhiều món nhỏ thành một hộp quà', 'Nếu chưa chọn được một món "đinh", ghép vài món nhỏ vào một hộp cũng tạo cảm giác chăm chút:', [
+        'Một tấm thiệp viết tay, càng cụ thể càng tốt: nhắc đến một kỷ niệm có thật.',
+        'Vài tấm ảnh nam châm in từ ảnh chung, xếp sẵn trong hộp.',
+        'Một món ăn vặt hay đồ uống người nhận thích.',
+        'Một món dùng hằng ngày nhỏ: bút, sổ, móc khoá.',
+      ]],
+      ['Quà sinh nhật độc đáo cho bố mẹ', 'Bố mẹ hay bảo "không cần quà đâu", nhưng thứ bố mẹ thật sự muốn là thấy con cái nhớ đến mình. Vài gợi ý:', [
+        'Bộ ảnh cả nhà qua nhiều năm, từ ảnh cũ trong album đến ảnh mới chụp, in thành ảnh nam châm cho tủ lạnh.',
+        'Một bữa cơm cả nhà do con cái tự nấu, chụp lại một tấm ảnh chung để in lần sau.',
+        'Một chuyến đi ngắn về quê hoặc nơi bố mẹ từng hẹn hò thời trẻ.',
+        'Đồ chăm sóc sức khoẻ: gối tựa lưng, máy đo huyết áp, đôi dép êm.',
+      ]],
     ],
     faq: [
       ['Quà sinh nhật độc đáo mà rẻ nên tặng gì?', 'Quà tự làm hoặc quà in từ ảnh chung của hai người. Bộ 3 ảnh nam châm ở Kinie giá 74k, bộ 6 ảnh 119k, kèm thiệp viết tay là đủ thành một món quà riêng.'],
@@ -68,6 +81,13 @@ module.exports = [
         'Ảnh ngày bảo vệ đồ án hoặc khoá luận.',
         'Ảnh lễ tốt nghiệp với gia đình và với bạn.',
       ]],
+      ['Quà tốt nghiệp theo ngân sách', 'Không cần chi nhiều để món quà có ý nghĩa:', [
+        'Dưới 200k: một bó hoa nhỏ và bộ 6 ảnh nam châm (119k) những năm đại học.',
+        'Khoảng 300–500k: hoa kèm bộ 15 ảnh (279k) hoặc 20 ảnh (379k, free ship).',
+        'Từ 500k trở lên: một món dùng khi đi làm như túi laptop, bình giữ nhiệt, kèm bộ ảnh kỷ niệm.',
+      ]],
+      ['Viết gì trong thiệp tốt nghiệp?', 'Thiệp tốt nghiệp hay nhất là thiệp nhắc lại những chuyện có thật: lần cô ấy thức trắng làm đồ án, lần cả hai đi ăn mừng qua môn, hay khoảnh khắc bạn thấy cô ấy cố gắng nhất. Sau đó là một lời chúc cho chặng mới: công việc đầu tiên, thành phố mới, hay đơn giản là được nghỉ ngơi sau mấy năm học. Vài dòng viết tay như vậy, đặt cạnh bộ ảnh những năm đại học, sẽ được giữ lại lâu hơn mọi món quà mua sẵn.'],
+      ['Nếu không dự được lễ tốt nghiệp', 'Ở xa hay vướng lịch làm, bạn vẫn có thể gửi quà đúng ngày. Đặt hoa giao tận nơi, kèm một bộ ảnh nam châm những năm hai bạn quen nhau gửi tới địa chỉ cô ấy (Kinie giao toàn quốc trong 2–4 ngày, nên đặt sớm khoảng một tuần). Hẹn gọi video sau buổi lễ để cô ấy mở quà, và nhờ bạn bè chụp giúp vài tấm ảnh hôm đó; lần gặp tới, bạn mang theo bộ ảnh in từ chính ngày tốt nghiệp làm món quà thứ hai.'],
     ],
     faq: [
       ['Tặng bạn gái tốt nghiệp gì cho ý nghĩa?', 'Hoa để trao hôm lễ, kèm một món giữ lại kỷ niệm thời sinh viên như bộ ảnh nam châm in từ ảnh những năm đại học, hoặc một món dùng được khi bắt đầu đi làm.'],
@@ -102,6 +122,14 @@ module.exports = [
         'Khoảng 200–500k: bộ ly, đèn ngủ, hoặc combo 20 ảnh nam châm (379k, free ship) gom ảnh của cả nhóm bạn.',
         'Góp quà cả nhóm: một món đồ gia dụng gia chủ đang cần, kèm bộ ảnh nam châm chụp chung để dán lên tủ lạnh mới.',
       ]],
+      ['Quà tân gia cho từng kiểu gia chủ', 'Chọn theo người ở trong nhà sẽ dễ trúng ý hơn:', [
+        'Vợ chồng trẻ: bộ ly đôi, đèn ngủ, ảnh cưới in thành nam châm cho căn bếp mới.',
+        'Gia đình có con nhỏ: đồ dùng an toàn cho bé, ảnh cả nhà dán ở chỗ cao trên tủ lạnh.',
+        'Bạn bè ra ở riêng: bộ nồi chảo cơ bản, cây xanh dễ chăm, ảnh nhóm bạn để nhà mới đỡ trống.',
+        'Bố mẹ, ông bà chuyển nhà: ảnh con cháu in thành nam châm, món quà được nhìn thấy mỗi ngày.',
+      ]],
+      ['Mẹo tặng quà tân gia bằng ảnh', 'Hỏi khéo người thân của gia chủ để xin vài tấm ảnh cả nhà, hoặc gom ảnh nhóm bạn trong điện thoại. Nếu nhà mới có tủ lạnh mặt kính hoặc inox không hít nam châm, bộ ảnh vẫn dán được lên bảng từ hay cửa sắt. Gói bộ ảnh trong một hộp nhỏ kèm thiệp chúc, gia chủ có thể tự tay dán tấm đầu tiên ngay trong buổi tân gia.'],
+      ['Đi tân gia theo nhóm: góp quà thế nào?', 'Đi cả nhóm thì góp tiền mua một món lớn sẽ có ích hơn nhiều món nhỏ trùng nhau. Cử một người hỏi khéo gia chủ còn thiếu gì (nồi cơm, quạt, kệ bếp), chia tiền đều, rồi thêm một phần nhỏ mang dấu ấn của cả nhóm: mỗi người gửi một tấm ảnh chụp chung với gia chủ, gom lại in thành combo 20 ảnh (379k, free ship). Món lớn để dùng, bộ ảnh để nhớ, và gia chủ biết rõ món quà đến từ những ai.'],
     ],
     faq: [
       ['Đi tân gia nên tặng quà gì?', 'Cây xanh, bộ ấm chén hay đồ gia dụng gia chủ đang thiếu là những lựa chọn an toàn. Nếu muốn quà có dấu ấn riêng, tặng bộ ảnh nam châm in từ ảnh của gia chủ để dán lên tủ lạnh mới.'],
@@ -137,6 +165,13 @@ module.exports = [
         'Khoảng 100–200k: bộ 6 ảnh (119k) hoặc 9 ảnh (179k) cả nhà, dán lên tủ lạnh của mẹ.',
         'Quà cả lớp hoặc cả phòng: combo 20 ảnh (379k, free ship) hoặc combo 29 ảnh tặng thêm 1 ảnh.',
       ]],
+      ['Quà 20/10 cho bà, cho chị em gái', 'Bà thường thích ảnh con cháu hơn mọi món đồ: một bộ ảnh nam châm cả nhà dán lên tủ lạnh của bà là món quà được ngắm mỗi ngày. Với chị em gái, chọn món gắn với sở thích riêng, như một cuốn sách, một buổi đi cà phê, kèm vài tấm ảnh hai chị em từ hồi nhỏ xin từ album của bố mẹ.'],
+      ['Lời chúc 20/10 viết kèm quà', 'Một vài câu ngắn, viết tay, làm món quà nhỏ ấm hơn nhiều:', [
+        'Cho mẹ: cảm ơn mẹ vì những bữa cơm, những lần thức khuya chờ con về.',
+        'Cho người yêu: nhắc lại một kỷ niệm của hai người và một điều bạn thích ở cô ấy.',
+        'Cho cô giáo: cảm ơn cô vì một bài học hay một lần cô giúp cả lớp, kèm chữ ký của từng bạn.',
+      ]],
+      ['Chọn ảnh nào để in tặng mẹ?', 'Bộ ảnh tặng mẹ đẹp nhất khi trộn ảnh cũ và ảnh mới. Chụp lại vài tấm trong album gia đình hồi bố mẹ còn trẻ, thêm ảnh các con lúc nhỏ, ảnh cả nhà dịp Tết gần nhất và một tấm mẹ cười thật tươi. Ảnh cũ chụp lại bằng điện thoại nên chụp thẳng, đủ sáng, không bị loá đèn. Xếp thành ô 3 × 3 trên tủ lạnh, mẹ sẽ có cả một câu chuyện gia đình ở ngay căn bếp.'],
     ],
     faq: [
       ['Quà 20/10 cho mẹ nên tặng gì?', 'Mẹ thường quý những món cho thấy con nhớ đến mình: một bữa cơm con nấu, đồ chăm sóc sức khoẻ nhỏ, hoặc bộ ảnh cả nhà in thành ảnh nam châm để dán lên tủ lạnh mẹ mở mỗi ngày.'],
@@ -174,6 +209,14 @@ module.exports = [
         'Độ phẳng: ảnh tự làm dán thẳng lên nam châm mỏng nên dễ cong; ảnh Kinie có khung form và lớp đệm nên phẳng, dày 3 mm.',
         'Thời gian: tự làm mất vài giờ cho một bộ; đặt in thì chọn ảnh trên web, nhận hàng sau 2–4 ngày.',
       ]],
+      ['Lỗi hay gặp khi tự làm và cách tránh', 'Vài lỗi người mới làm hay mắc:', [
+        'Ảnh bị bọt khí: miết từ giữa ra mép bằng thẻ nhựa thay vì ngón tay.',
+        'Mép ảnh bong sau vài tuần: bo tròn 4 góc và để màng ép trùm qua mép ảnh một chút.',
+        'Ảnh bị mờ khi in: dùng ảnh gốc trong điện thoại, không dùng ảnh chụp lại màn hình.',
+        'Nam châm hít yếu: chọn tấm nam châm dày hơn, và thử trước xem tủ lạnh có hít nam châm không (một số tủ mặt inox hay mặt kính không hít).',
+      ]],
+      ['Chọn kích thước ảnh nam châm', 'Kích thước phổ biến là 5,5 × 8 cm (hình chữ nhật đứng, hợp ảnh chụp dọc), 6,5 × 9 cm (to hơn chút, hợp ảnh nhóm) và vuông khoảng 6,3 × 6,3 cm (hợp ảnh vuông). Nếu tự làm, nên cắt tất cả cùng một cỡ để khi xếp lưới trên tủ lạnh trông gọn. Ảnh của Kinie là cỡ 5,5 × 8 cm, một lưới 3 × 3 chiếm khoảng 17 × 24 cm trên cửa tủ.'],
+      ['Giữ ảnh nam châm bền lâu', 'Dù tự làm hay đặt in, vài thói quen nhỏ giúp ảnh giữ màu lâu hơn: lau bằng khăn ẩm thay vì chất tẩy rửa, tránh dán sát bếp nấu hay nơi nắng chiếu thẳng cả ngày, và khi gỡ ra thì cầm mép nam châm kéo nhẹ chứ không bóc từ mặt ảnh. Ảnh đặt in có lớp bảo vệ nên chịu hơi nước trong bếp tốt hơn ảnh tự làm.'],
     ],
     faq: [
       ['Tự làm ảnh nam châm cần mua những gì?', 'Ảnh đã in, tấm nam châm dẻo có sẵn keo một mặt, kéo hoặc dao rọc giấy, thước kẻ và màng ép hoặc băng keo trong để phủ mặt ảnh.'],
@@ -204,6 +247,23 @@ module.exports = [
         'Ảnh đời thường: bữa ăn, quán quen, những lúc chụp vội mà cả hai đều cười.',
         'Ảnh dịp đặc biệt: sinh nhật, Tết, các ngày lễ đã đi cùng nhau.',
         'Ảnh dọc chụp bằng điện thoại vừa khung 5,5 × 8 cm nhất; tránh ảnh chụp lại màn hình vì in ra kém nét.',
+      ]],
+      ['Quà kỷ niệm theo ngân sách', 'Một vài mức để tham khảo:', [
+        'Dưới 150k: bộ 6 ảnh nam châm (119k) kèm thư tay.',
+        'Khoảng 300–400k: bộ 15 ảnh (279k) hoặc 20 ảnh (379k, free ship) kèm hoa.',
+        'Cao hơn: một chuyến đi ngắn hai người, rồi in ảnh chuyến đi đó làm quà cho mốc kỷ niệm sau.',
+      ]],
+      ['Kỷ niệm khi đang yêu xa', 'Yêu xa thì món quà cần đi được đường dài và đến đúng ngày. Ảnh nam châm nhẹ, mỏng, không có kính nên gửi xa không lo vỡ; bạn đặt online, ghi địa chỉ của người ấy và hẹn giờ gọi video để cùng mở hộp. Thêm một tấm ảnh chụp chung lần gần nhất gặp nhau và một tấm ảnh nơi hai bạn hẹn sẽ đi cùng, món quà sẽ có cả kỷ niệm lẫn lời hẹn.'],
+      ['Kỷ niệm ngày cưới', 'Sau khi cưới, mốc kỷ niệm chuyển sang ngày cưới, và bộ ảnh có thể kể tiếp câu chuyện của cả gia đình:', [
+        'Năm đầu: vài tấm ảnh cưới đẹp nhất cùng ảnh tuần trăng mật.',
+        'Có con: thêm ảnh ngày con chào đời, ảnh cả nhà ba người.',
+        'Mỗi năm: chọn một tấm ảnh chung đẹp nhất trong năm, dán thêm vào hàng ảnh trên tủ lạnh, lâu dần thành dòng thời gian của gia đình.',
+      ]],
+      ['Tặng kèm gì với bộ ảnh kỷ niệm?', 'Bộ ảnh nam châm sẽ tròn hơn khi đi cùng một món nhỏ:', [
+        'Thư tay kể lại kỷ niệm đứng sau từng tấm ảnh.',
+        'Hoa hoặc một món ăn cả hai cùng thích.',
+        'Một "phiếu hẹn" tự làm: một buổi xem phim, một chuyến đi ngắn, một ngày bạn lo hết việc nhà.',
+        'Một tấm ảnh trống chỗ: hẹn sẽ in ảnh của buổi hẹn hôm nay để thêm vào bộ sưu tập.',
       ]],
     ],
     faq: [
@@ -241,6 +301,23 @@ module.exports = [
         'Một tấm ảnh chụp vội nhưng đáng nhớ.',
         'Tấm cuối để dành cho ảnh chụp chung trong buổi sinh nhật năm nay.',
       ]],
+      ['Quà sinh nhật bạn gái theo ngân sách', 'Món quà đắt chưa chắc đã được nhớ lâu. Vài mức tham khảo:', [
+        'Dưới 200k: bộ 9 ảnh nam châm (179k) và một tấm thiệp viết tay.',
+        'Khoảng 300–500k: bộ ảnh kèm hoa, hoặc kèm một món cô ấy từng nhắc là thích.',
+        'Cao hơn: một ngày đi chơi do bạn lên kế hoạch, kết thúc bằng bộ ảnh in từ chính ngày hôm đó.',
+      ]],
+      ['Sinh nhật bất ngờ: lên kế hoạch thế nào?', 'Đặt ảnh in trước khoảng một tuần để kịp nhận (Kinie giao 2–4 ngày). Nếu cô ấy ở cùng nhà, chọn giao đến chỗ làm của bạn hoặc nhà một người bạn. Đến hôm sinh nhật, dán sẵn bộ ảnh lên cửa tủ lạnh hoặc bảng từ trước khi cô ấy về, xếp thành hình trái tim hay ô 3 × 3, để món quà là thứ đầu tiên cô ấy nhìn thấy.'],
+      ['Quà theo từng giai đoạn yêu', 'Mỗi giai đoạn hợp với một kiểu quà khác nhau:', [
+        'Mới yêu vài tháng: quà nhẹ nhàng như hoa, sách, vài tấm ảnh những buổi hẹn đầu.',
+        'Yêu một vài năm: quà gắn với kỷ niệm chung, như bộ ảnh kể lại từng năm hoặc một chuyến đi.',
+        'Đã về chung nhà: quà dùng chung cho hai người, kèm bộ ảnh dán lên tủ lạnh của căn bếp nhỏ.',
+      ]],
+      ['Những điều nên tránh khi tặng quà sinh nhật', 'Một vài lỗi nhỏ có thể làm món quà kém vui:', [
+        'Tặng món giống hệt năm trước, hoặc món bạn thích nhiều hơn cô ấy.',
+        'Đặt quà sát ngày rồi giao trễ: đặt sớm ít nhất một tuần.',
+        'Chọn ảnh cô ấy không thích của mình: nếu không chắc, chọn những tấm cô ấy từng đăng lên mạng hay đặt làm ảnh đại diện.',
+        'Quên viết thiệp: vài dòng viết tay luôn được nhớ lâu hơn.',
+      ]],
     ],
     faq: [
       ['Tặng bạn gái sinh nhật gì cho độc đáo?', 'Quà gắn với kỷ niệm của hai người, như bộ 9 ảnh nam châm mỗi tấm là một kỷ niệm trong năm, hoặc một ngày đi chơi do bạn lên kế hoạch từ đầu đến cuối.'],
@@ -268,6 +345,20 @@ module.exports = [
         'Lưới 2 × 3 (6 ảnh): khoảng 11 × 24 cm hoặc 17 × 16 cm, vừa một góc nhỏ.',
         'Lưới 3 × 3 (9 ảnh): khoảng 17 × 24 cm, vừa giữa một cánh tủ.',
         'Lưới 4 × 5 (20 ảnh): khoảng 22 × 40 cm, phủ gần hết một cánh tủ lạnh nhỏ.',
+      ]],
+      ['Giữ ảnh trên tủ lạnh luôn sạch, đẹp', 'Cửa tủ lạnh hay bị chạm tay và bám dầu mỡ từ bếp. Ảnh nam châm có lớp bảo vệ chống nước nên chỉ cần lau bằng khăn ẩm. Tránh dán ảnh sát bếp nấu hoặc chỗ hơi nóng phả trực tiếp, và thỉnh thoảng gỡ ảnh ra lau cả mặt tủ phía dưới.'],
+      ['Ngoài tủ lạnh, dán ảnh nam châm ở đâu?', 'Bất cứ bề mặt nào hít nam châm đều dùng được:', [
+        'Bảng từ ở bàn học hoặc góc làm việc.',
+        'Cửa sắt, tủ hồ sơ sắt ở văn phòng.',
+        'Máy giặt, lò vi sóng có vỏ kim loại.',
+        'Khung ảnh hít nam châm để bàn, đổi ảnh theo mùa.',
+      ]],
+      ['Chọn ảnh sao cho cửa tủ lạnh hài hoà', 'Ảnh đẹp từng tấm nhưng đặt cạnh nhau vẫn có thể rối mắt. Vài mẹo để cả mảng ảnh trông gọn: chọn ảnh có tông màu gần nhau (cùng ấm, cùng sáng), xen kẽ ảnh có người với ảnh cảnh, và đặt tấm ảnh bạn thích nhất ở giữa lưới hoặc ngang tầm mắt. Tủ lạnh màu tối hợp với ảnh sáng màu; tủ lạnh trắng hay bạc thì gần như ảnh nào cũng hợp.'],
+      ['Thay ảnh theo mùa, theo dịp', 'Ảnh nam châm gỡ ra đổi chỗ dễ, nên bạn có thể làm mới cửa tủ lạnh vài lần mỗi năm:', [
+        'Tết: ảnh cả nhà đi chúc Tết, ảnh mâm cỗ.',
+        'Mùa hè: ảnh các chuyến đi biển, đi chơi xa.',
+        'Ngày sinh nhật của ai trong nhà: dồn ảnh của người đó vào giữa cửa tủ.',
+        'Cuối năm: chọn 9 ảnh đẹp nhất trong năm, xếp thành lưới tổng kết.',
       ]],
     ],
     faq: [

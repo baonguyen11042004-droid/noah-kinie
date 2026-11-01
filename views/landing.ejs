@@ -9,6 +9,10 @@
       <a class="btn" href="/bang-gia"><%- include('partials/icon', { name: 'bag' }) %><%= t('aboutCta') %></a>
       <a class="btn btn--zalo" href="<%= site.zalo %>" target="_blank" rel="noopener"><%- include('partials/icon', { name: 'chat' }) %><%= t('zaloCta') %></a>
     </div>
+    <h2 class="faq__q facts-t"><%= t('faqFactsTitle') %></h2>
+    <table class="facts">
+      <% facts.forEach(([k, v]) => { %><tr><th scope="row"><%= k %></th><td><%= v %></td></tr><% }) %>
+    </table>
     <div class="prose">
       <% l.sections.forEach(([h, p, list]) => { %>
       <h2><%= h %></h2>

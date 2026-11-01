@@ -344,6 +344,12 @@ app.get('/ve-kinie', (req, res) => {
 // ---------- trang theo dịp, blog, đánh giá (chỉ tiếng Việt) ----------
 const pickProducts = (ids) => ids.map((id) => db.get().products.find((p) => p.id === id)).filter(Boolean);
 
+// Giá lẻ thấp nhất, mức free ship, phí ship: dùng cho Hỏi đáp và bảng "Tóm tắt nhanh".
+const faqArgs = () => {
+  const minPrice = Math.min(...db.get().products.filter((p) => p.qty === 1).map((p) => p.price));
+  return [money(Number.isFinite(minPrice) ? minPrice : 29000), money(FREE_SHIP), money(SHIP_FEE)];
+};
+
 landings.forEach((l) => {
   app.get('/' + l.slug, (req, res) => {
     if (!viOnly(req, res)) return;
@@ -355,7 +361,7 @@ landings.forEach((l) => {
         mainEntity: l.faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
       });
     }
-    res.render('landing', { title: l.title, desc: l.desc, l, combos: pickProducts(l.combos), others: (l.area ? areas : occasions).filter((x) => x !== l) });
+    res.render('landing', { title: l.title, desc: l.desc, l, combos: pickProducts(l.combos), others: (l.area ? areas : occasions).filter((x) => x !== l), facts: req.t('faqFacts', ...faqArgs()) });
   });
 });
 
@@ -397,8 +403,7 @@ app.get('/danh-gia', (req, res) => {
 });
 
 app.get('/hoi-dap', (req, res) => {
-  const minPrice = Math.min(...db.get().products.filter((p) => p.qty === 1).map((p) => p.price));
-  const args = [money(Number.isFinite(minPrice) ? minPrice : 29000), money(FREE_SHIP), money(SHIP_FEE)];
+  const args = faqArgs();
   const faq = req.t('faq', ...args);
   const facts = req.t('faqFacts', ...args);
   res.locals.jsonLd.push({

@@ -74,7 +74,11 @@ module.exports = [
       ['Gửi ảnh bí mật thế nào?', 'Bạn tự đặt ảnh vào khung ngay trên web từ máy của mình, không cần nhờ ai gửi giúp. Kinie giao tới địa chỉ bạn ghi, có thể là địa chỉ của người ấy.'],
     ],
     combos: ['p6', 'p15', 'p20'],
-    faq: [],
+    faq: [
+      ['Quà kỷ niệm ngày yêu nhau nên in bao nhiêu ảnh?', 'Mốc 100 ngày khoảng 6 ảnh (119k), mốc 1 năm khoảng 15 ảnh (279k), mốc 1000 ngày khoảng 20 ảnh (379k, được free ship).'],
+      ['Kinie có giao thẳng đến người yêu không?', 'Có. Bạn ghi địa chỉ người ấy ở bước thanh toán và ghi chú "quà tặng"; Kinie giao toàn quốc trong khoảng 2–4 ngày.'],
+      ['Ảnh selfie chụp gần in ra có đẹp không?', 'Đẹp, ảnh gốc trong điện thoại đủ nét cho khổ 5,5 × 8 cm. Nên tránh ảnh chụp lại màn hình hoặc ảnh đã gửi qua mạng xã hội nhiều lần vì bị nén.'],
+    ],
   },
   {
     slug: 'anh-nam-cham-dam-cuoi',
@@ -94,7 +98,11 @@ module.exports = [
       ['Đặt sớm bao lâu?', 'Đơn từ 100 ảnh cần thêm thời gian làm tay. Bạn nhắn Kinie qua Zalo trước ngày cưới để Kinie báo thời gian hoàn thành, tránh sát ngày.'],
     ],
     combos: ['p50', 'p100', 'p200'],
-    faq: [],
+    faq: [
+      ['In ảnh nam châm làm quà cưới giá bao nhiêu?', 'Combo 50 ảnh 929k (tặng 2 ảnh), combo 100 ảnh 1.899k (tặng 3 ảnh), combo 200 ảnh 3.799k (tặng 5 ảnh, khoảng 19k/ảnh). Các combo này đều được free ship.'],
+      ['Có in tên cô dâu chú rể và ngày cưới lên ảnh được không?', 'Được. Bạn thiết kế sẵn ảnh theo khổ dọc có tên và ngày cưới, rồi đặt file vào khung khi đặt hàng; Kinie in đúng file bạn gửi.'],
+      ['Nên đặt ảnh nam châm trước ngày cưới bao lâu?', 'Đơn từ 100 ảnh cần thêm thời gian làm tay. Nhắn Kinie qua Zalo số lượng và ngày cưới để được báo thời gian hoàn thành, tránh đặt sát ngày.'],
+    ],
   },
   {
     slug: 'anh-nam-cham-em-be',
@@ -114,7 +122,11 @@ module.exports = [
       ['An toàn khi có trẻ nhỏ', 'Ảnh nam châm nhỏ, nên dán ở chỗ cao ngoài tầm tay bé và không để bé ngậm hay cầm chơi, như với mọi đồ vật nhỏ trong nhà.'],
     ],
     combos: ['p9', 'p15', 'p29'],
-    faq: [],
+    faq: [
+      ['Bộ ảnh tháng tuổi của bé nên in bao nhiêu tấm?', 'Combo 15 ảnh (279k) đủ 12 tháng đầu đời cộng vài ảnh đặc biệt như ngày về nhà, lần đầu biết lẫy, biết đi.'],
+      ['Ảnh nam châm có an toàn khi nhà có trẻ nhỏ không?', 'Ảnh nam châm là đồ vật nhỏ, nên dán ở chỗ cao ngoài tầm tay bé và không để bé ngậm hay cầm chơi.'],
+      ['Có gửi ảnh của bé thẳng đến ông bà ở xa được không?', 'Được. Kinie giao toàn quốc trong khoảng 2–4 ngày; bạn ghi địa chỉ ông bà ở bước thanh toán.'],
+    ],
   },
   {
     slug: 'anh-nam-cham-du-lich',
@@ -133,7 +145,11 @@ module.exports = [
       ['Chọn ảnh du lịch để in', 'Ảnh có người và cảnh trong cùng một khung thường đẹp nhất ở khổ nhỏ. Ảnh phong cảnh rộng nên chọn tấm có điểm nhấn rõ (ngọn núi, cây cầu, quán cà phê) để khi thu nhỏ vẫn dễ nhận ra.'],
     ],
     combos: ['p6', 'p15', 'p20'],
-    faq: [],
+    faq: [
+      ['In ảnh du lịch thành nam châm giá bao nhiêu?', 'Ảnh lẻ 29k, bộ 6 ảnh 119k, bộ 15 ảnh 279k, bộ 20 ảnh 379k và được free ship.'],
+      ['Ảnh phong cảnh in khổ nhỏ có rõ không?', 'Rõ nếu ảnh có điểm nhấn như ngọn núi, cây cầu, quán cà phê hoặc có người đứng trong cảnh. Ảnh cảnh quá rộng, nhiều chi tiết nhỏ sẽ khó nhìn ở khổ 5,5 × 8 cm.'],
+      ['Đang đi du lịch có đặt in được không?', 'Được. Bạn đặt và tải ảnh ngay trên điện thoại, ghi địa chỉ nhà để nhận sau chuyến đi.'],
+    ],
   },
   {
     slug: 'anh-nam-cham-su-kien',
@@ -153,7 +169,11 @@ module.exports = [
       ['Thời gian làm', 'Mỗi ảnh được cắt và gắn nam châm bằng tay, nên đơn lớn cần thêm thời gian. Nhắn Kinie qua Zalo với số lượng và ngày cần nhận để được báo thời gian hoàn thành trước khi đặt.'],
     ],
     combos: ['p50', 'p100', 'p200'],
-    faq: [],
+    faq: [
+      ['In ảnh nam châm số lượng lớn giá bao nhiêu?', 'Combo 50 ảnh 929k (tặng 2 ảnh), combo 100 ảnh 1.899k (tặng 3 ảnh), combo 200 ảnh 3.799k (tặng 5 ảnh, khoảng 19k/ảnh), đều free ship.'],
+      ['Có in logo công ty lên ảnh nam châm được không?', 'Được. Bạn tự thiết kế ảnh có logo hoặc thông điệp theo khổ dọc 5,5 × 8 cm rồi gửi file; Kinie in đúng file bạn gửi.'],
+      ['Đơn số lượng lớn làm trong bao lâu?', 'Mỗi ảnh được cắt và gắn nam châm bằng tay, nên đơn lớn cần thêm thời gian. Nhắn Kinie qua Zalo số lượng và ngày cần nhận để được báo thời gian trước khi đặt.'],
+    ],
   },
   // ---------- trang khu vực (area: true): liệt kê ở mục "Giao tận nơi" của footer, không nằm trong "Theo dịp" ----------
   // Chỉ ghi điều Kinie làm được thật: đặt online, giao tận nơi, phí ship chung toàn quốc. Không nhận có cửa hàng tại địa phương.
