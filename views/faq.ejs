@@ -5,6 +5,10 @@
     <p class="eyebrow"><%= t('faqEyebrow') %></p>
     <h1 class="h2"><%= t('faqTitle') %></h1>
     <p class="lead"><%= t('faqSub') %></p>
+    <h2 class="faq__q facts-t"><%= t('faqFactsTitle') %></h2>
+    <table class="facts">
+      <% facts.forEach(([k, v]) => { %><tr><th scope="row"><%= k %></th><td><%= v %></td></tr><% }) %>
+    </table>
     <div class="faq">
       <% faq.forEach(([q, a], i) => { %>
       <details <%= i === 0 ? 'open' : '' %>>

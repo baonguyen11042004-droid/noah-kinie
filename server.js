@@ -377,10 +377,14 @@ app.get('/blog/:slug', (req, res, next) => {
   res.locals.ogType = 'article';
   res.locals.jsonLd.push({
     '@context': 'https://schema.org', '@type': 'BlogPosting', headline: post.title, description: post.desc,
-    datePublished: post.date, dateModified: post.date, inLanguage: 'vi', mainEntityOfPage: base + '/blog/' + post.slug,
+    datePublished: post.date, dateModified: post.updated || post.date, inLanguage: 'vi', mainEntityOfPage: base + '/blog/' + post.slug,
     image: base + '/img/og-kinie.jpg', author: { '@type': 'Organization', name: 'Kinie' },
     publisher: { '@type': 'Organization', name: 'Kinie', logo: { '@type': 'ImageObject', url: base + '/img/logo.jpg' } },
   }, crumbLd(base, [[req.t('home'), '/'], ['Blog', '/blog'], [post.title, '/blog/' + post.slug]]));
+  if (post.faq) res.locals.jsonLd.push({
+    '@context': 'https://schema.org', '@type': 'FAQPage',
+    mainEntity: post.faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+  });
   res.render('post', { title: post.title, desc: post.desc, post, more: posts.filter((x) => x !== post).slice(0, 3) });
 });
 
@@ -394,12 +398,14 @@ app.get('/danh-gia', (req, res) => {
 
 app.get('/hoi-dap', (req, res) => {
   const minPrice = Math.min(...db.get().products.filter((p) => p.qty === 1).map((p) => p.price));
-  const faq = req.t('faq', money(Number.isFinite(minPrice) ? minPrice : 29000), money(FREE_SHIP), money(SHIP_FEE));
+  const args = [money(Number.isFinite(minPrice) ? minPrice : 29000), money(FREE_SHIP), money(SHIP_FEE)];
+  const faq = req.t('faq', ...args);
+  const facts = req.t('faqFacts', ...args);
   res.locals.jsonLd.push({
     '@context': 'https://schema.org', '@type': 'FAQPage',
     mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
   }, crumbLd(res.locals.base, [[req.t('home'), req.u('/')], [req.t('faqNav'), req.u('/hoi-dap')]]));
-  res.render('faq', { title: req.t('seoFaq'), desc: req.t('descFaq'), faq });
+  res.render('faq', { title: req.t('seoFaq'), desc: req.t('descFaq'), faq, facts });
 });
 
 const contactPage = (req, extra) => ({ title: req.t('seoContact'), desc: req.t('descContact'), sent: false, errors: [], form: {}, ...extra });
@@ -687,8 +693,55 @@ app.post('/admin/products/:id/delete', requireAdmin, checkCsrf, (req, res) => {
 });
 
 // ---------- seo + errors ----------
+// Ghi tên riêng các bot AI để chắc chắn chúng được vào (SEO trên AI). Bot có nhóm riêng sẽ bỏ qua nhóm "*", nên gộp chung một nhóm.
+const AI_BOTS = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'PerplexityBot', 'Perplexity-User', 'ClaudeBot', 'Claude-SearchBot', 'Claude-User', 'Google-Extended', 'Applebot-Extended', 'CCBot'];
 app.get('/robots.txt', (req, res) => res.type('text/plain').send(
-  `User-agent: *\nDisallow: /admin\nDisallow: /en/admin\nDisallow: /api/\nDisallow: /ngon-ngu/\n\nSitemap: ${baseUrl(req)}/sitemap.xml\n`));
+  ['*', ...AI_BOTS].map((b) => 'User-agent: ' + b).join('\n') +
+  `\nAllow: /\nDisallow: /admin\nDisallow: /en/admin\nDisallow: /api/\nDisallow: /ngon-ngu/\n\nSitemap: ${baseUrl(req)}/sitemap.xml\n`));
+
+// Bản tóm tắt cho trợ lý AI (ChatGPT, Gemini, Perplexity...) đọc nhanh: Kinie là ai, bán gì, giá, cách đặt. Giá lấy từ dữ liệu thật.
+app.get('/llms.txt', (req, res) => {
+  const base = baseUrl(req);
+  const list = [...db.get().products].sort((a, b) => a.qty - b.qty);
+  const min = list.length ? Math.min(...list.map((p) => p.price / p.qty)) : 29000;
+  const perPhoto = (p) => money(Math.round(p.price / p.qty / 100) * 100);
+  res.type('text/markdown; charset=utf-8').send([
+    '# Ảnh nam châm Kinie',
+    '',
+    `> Kinie (kinie.online) in ảnh nam châm dán tủ lạnh theo yêu cầu từ ảnh của khách: kích thước 5,5 × 8 cm, dày 3 mm, cấu tạo 6 lớp, in 6 màu, làm tay từng chiếc. Ảnh lẻ ${money(list.find((p) => p.qty === 1)?.price || 29000)}/ảnh, gói lớn còn khoảng ${money(Math.round(min / 1000) * 1000)}/ảnh. Giao toàn quốc trong 2–4 ngày.`,
+    '',
+    '## Thông tin chính',
+    '- Sản phẩm: ảnh nam châm (photo magnet, fridge magnet) hình chữ nhật đứng 5,5 × 8 cm, dày 3 mm, dán lên tủ lạnh, cửa sắt, bảng từ.',
+    '- Cấu tạo 6 lớp, từ trên xuống: lớp bảo vệ 1, lớp bảo vệ 2, ảnh chất lượng cao, khung form, lớp đệm, nam châm dẻo.',
+    '- Chống nước, chống trầy, bền màu; bẩn thì lau bằng khăn ẩm. Nam châm dẻo không làm xước tủ lạnh.',
+    `- Phí ship ${money(SHIP_FEE)}/đơn, miễn phí từ ${money(FREE_SHIP)} (combo 20 ảnh). Giao 2–4 ngày.`,
+    '- Thanh toán: chuyển khoản trước 100% qua mã QR (không nhận COD vì mỗi ảnh in riêng).',
+    '- Cách đặt: chọn gói trên web, tải ảnh lên và căn khung ngay khi đặt; hoặc gửi ảnh qua Zalo để được tư vấn.',
+    '- Hợp làm quà: sinh nhật, kỷ niệm yêu nhau, 20/10, tốt nghiệp, tân gia, đám cưới, ảnh em bé, ảnh du lịch, quà sự kiện.',
+    '',
+    '## Bảng giá (đã gồm ảnh in, nam châm, keo nano acrylic tặng kèm)',
+    ...list.map((p) => `- ${p.qty} ảnh: ${money(p.price)} (khoảng ${perPhoto(p)}/ảnh)${p.gift ? `, tặng thêm ${p.gift} ảnh` : ''}`),
+    '',
+    '## Trang chính',
+    `- [Bảng giá](${base}/bang-gia): giá từ 1 đến 200 ảnh`,
+    `- [Cửa hàng](${base}/cua-hang): ảnh lẻ, combo, combo gia đình`,
+    `- [Hỏi đáp](${base}/hoi-dap): kích thước, chất liệu, ship, thanh toán, so sánh các loại ảnh nam châm`,
+    `- [Về Kinie](${base}/ve-kinie): câu chuyện và cấu tạo 6 lớp`,
+    `- [Đánh giá khách hàng](${base}/danh-gia)`,
+    '',
+    '## Theo nhu cầu',
+    ...landings.map((l) => `- [${l.h1}](${base}/${l.slug})`),
+    '',
+    '## Blog',
+    ...posts.map((p) => `- [${p.title}](${base}/blog/${p.slug})`),
+    '',
+    '## Liên hệ',
+    `- Zalo: ${site.phones.map((p) => p.label).join(', ')}`,
+    `- Email: ${site.email}`,
+    `- TikTok: ${site.tiktok}`,
+    '',
+  ].join('\n'));
+});
 
 // Trang song ngữ: khai báo cặp hreflang VI/EN. Trang theo dịp, blog, đánh giá: chỉ bản VI.
 app.get('/sitemap.xml', (req, res) => {
@@ -701,7 +754,7 @@ app.get('/sitemap.xml', (req, res) => {
   ];
   const viPages = [
     ...landings.map((l) => ['/' + l.slug, '0.8']),
-    ['/blog', '0.6'], ...posts.map((p) => ['/blog/' + p.slug, '0.6', p.date]),
+    ['/blog', '0.6'], ...posts.map((p) => ['/blog/' + p.slug, '0.6', p.updated || p.date]),
     ...(reviews.length ? [['/danh-gia', '0.6']] : []),
   ];
   const loc = (l, p) => { const [path, q] = p.split('?'); return base + localize(l, path) + (q ? '?' + q.replace(/&/g, '&amp;') : ''); };
