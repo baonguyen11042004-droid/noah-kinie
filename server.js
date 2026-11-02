@@ -437,6 +437,15 @@ app.get('/chinh-sach-bao-mat', (req, res) => {
   });
 });
 
+app.get('/chinh-sach-doi-tra', (req, res) => {
+  if (!viOnly(req, res)) return;
+  res.locals.jsonLd.push(crumbLd(res.locals.base, [[req.t('home'), '/'], ['Chính sách đổi trả', '/chinh-sach-doi-tra']]));
+  res.render('returns', {
+    title: 'Chính sách đổi trả',
+    desc: 'Ảnh nam châm Kinie bị lỗi khi in, khi làm hoặc khi giao được in lại miễn phí nếu bạn báo trong 7 ngày kể từ ngày nhận hàng.',
+  });
+});
+
 app.post('/lien-he', formLimiter, checkCsrf, async (req, res) => {
   const form = { name: str(req.body.name, 80), email: str(req.body.email, 120), message: str(req.body.message, 2000) };
   if (str(req.body.website)) return res.redirect(req.u('/lien-he') + '?sent=1'); // honeypot
@@ -740,6 +749,7 @@ const llmsText = (req) => {
     '- Chống nước, chống trầy, bền màu; bẩn thì lau bằng khăn ẩm. Nam châm dẻo không làm xước tủ lạnh.',
     `- Phí ship ${money(SHIP_FEE)}/đơn, miễn phí từ ${money(FREE_SHIP)} (combo 20 ảnh). Giao 2–4 ngày.`,
     '- Thanh toán: chuyển khoản trước 100% qua mã QR (không nhận COD vì mỗi ảnh in riêng).',
+    '- Đổi trả: ảnh lỗi khi in, khi làm hoặc khi giao được in lại miễn phí nếu báo trong 7 ngày kể từ ngày nhận hàng.',
     '- Cách đặt: chọn gói trên web, tải ảnh lên và căn khung ngay khi đặt; hoặc gửi ảnh qua Zalo để được tư vấn.',
     '- Hợp làm quà: sinh nhật, kỷ niệm yêu nhau, 20/10, tốt nghiệp, tân gia, đám cưới, ảnh em bé, ảnh du lịch, quà sự kiện.',
     '',
@@ -753,6 +763,7 @@ const llmsText = (req) => {
     `- [Về Kinie](${base}/ve-kinie): câu chuyện và cấu tạo 6 lớp`,
     `- [Đánh giá khách hàng](${base}/danh-gia)`,
     `- [Chính sách bảo mật](${base}/chinh-sach-bao-mat)`,
+    `- [Chính sách đổi trả](${base}/chinh-sach-doi-tra): ảnh lỗi khi in, làm hoặc giao được in lại miễn phí nếu báo trong 7 ngày`,
     '',
     '## Theo nhu cầu',
     ...landings.map((l) => `- [${l.h1}](${base}/${l.slug})`),
@@ -780,7 +791,7 @@ app.get('/sitemap.xml', (req, res) => {
   ];
   const viPages = [
     ...landings.map((l) => ['/' + l.slug, '0.8']),
-    ['/blog', '0.6'], ...posts.map((p) => ['/blog/' + p.slug, '0.6', p.updated || p.date]), ['/chinh-sach-bao-mat', '0.3'],
+    ['/blog', '0.6'], ...posts.map((p) => ['/blog/' + p.slug, '0.6', p.updated || p.date]), ['/chinh-sach-bao-mat', '0.3'], ['/chinh-sach-doi-tra', '0.4'],
     ...(reviews.length ? [['/danh-gia', '0.6']] : []),
   ];
   const loc = (l, p) => { const [path, q] = p.split('?'); return base + localize(l, path) + (q ? '?' + q.replace(/&/g, '&amp;') : ''); };

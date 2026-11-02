@@ -1,0 +1,36 @@
+<%- include('partials/header') %>
+<%# CEO chốt 02/11/2026: ảnh lỗi/sai do Kinie được in lại miễn phí nếu khách báo trong 7 ngày kể từ khi nhận hàng. %>
+<article class="sec">
+  <div class="wrap narrow">
+    <p class="crumb"><a href="/"><%= t('crumbHome') %></a> / Chính sách đổi trả</p>
+    <h1 class="h2">Chính sách đổi trả</h1>
+    <p class="lead">Ảnh bị lỗi khi in, khi làm hoặc khi giao, Kinie in lại miễn phí nếu bạn báo trong vòng 7 ngày kể từ ngày nhận hàng.</p>
+    <div class="prose">
+      <h2>Trường hợp được in lại miễn phí</h2>
+      <ul>
+        <li>Ảnh in sai: không đúng ảnh bạn đã đặt vào khung, thiếu ảnh hoặc sai số lượng.</li>
+        <li>Lỗi khi làm: ảnh bị lem, sọc màu, bong lớp bảo vệ, lệch khung, nam châm bong.</li>
+        <li>Hư hỏng khi vận chuyển: ảnh bị gãy, cong vênh, trầy xước khi bạn mở hàng.</li>
+      </ul>
+      <h2>Cách báo lỗi</h2>
+      <ul>
+        <li>Nhắn Kinie qua Zalo hoặc email trong vòng 7 ngày kể từ ngày nhận hàng.</li>
+        <li>Gửi kèm mã đơn và ảnh chụp những tấm bị lỗi.</li>
+        <li>Kinie kiểm tra rồi in lại đúng những tấm lỗi và gửi cho bạn, bạn không phải trả thêm tiền.</li>
+      </ul>
+      <h2>Trường hợp không áp dụng</h2>
+      <ul>
+        <li>Ảnh gốc mờ, tối hoặc độ phân giải thấp (ví dụ ảnh chụp lại màn hình): ảnh in ra đúng như ảnh bạn gửi.</li>
+        <li>Bạn chọn nhầm ảnh hay căn khung chưa ưng: ảnh được in theo đúng khung bạn đã xem và chỉnh khi đặt hàng.</li>
+        <li>Đổi ý sau khi nhận hàng: mỗi tấm được in riêng từ ảnh của bạn nên Kinie không nhận trả hàng hay hoàn tiền vì lý do này.</li>
+        <li>Báo lỗi sau 7 ngày kể từ ngày nhận hàng.</li>
+      </ul>
+      <h2>Chưa chắc ảnh có in đẹp không?</h2>
+      <p>Trước khi đặt, bạn cứ gửi ảnh qua Zalo để Kinie xem và báo nếu ảnh khó in nét.</p>
+      <h2>Liên hệ</h2>
+      <p>Email: <a href="mailto:<%= site.email %>"><%= site.email %></a> · Zalo: <% site.phones.forEach((ph, i) => { %><%= i ? ', ' : '' %><a href="<%= ph.zalo %>" target="_blank" rel="noopener"><%= ph.label %></a><% }) %></p>
+      <p><small>Cập nhật ngày 02/11/2026.</small></p>
+    </div>
+  </div>
+</article>
+<%- include('partials/footer') %>
