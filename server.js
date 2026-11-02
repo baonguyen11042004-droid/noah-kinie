@@ -428,6 +428,15 @@ app.get('/lien-he', (req, res) => {
   res.render('contact', contactPage(req, { sent }));
 });
 
+app.get('/chinh-sach-bao-mat', (req, res) => {
+  if (!viOnly(req, res)) return;
+  res.locals.jsonLd.push(crumbLd(res.locals.base, [[req.t('home'), '/'], ['Chính sách bảo mật', '/chinh-sach-bao-mat']]));
+  res.render('privacy', {
+    title: 'Chính sách bảo mật',
+    desc: 'Kinie thu thập thông tin gì khi bạn đặt in ảnh nam châm, ảnh của bạn được giữ và xóa thế nào, cookie, thanh toán và quyền của bạn.',
+  });
+});
+
 app.post('/lien-he', formLimiter, checkCsrf, async (req, res) => {
   const form = { name: str(req.body.name, 80), email: str(req.body.email, 120), message: str(req.body.message, 2000) };
   if (str(req.body.website)) return res.redirect(req.u('/lien-he') + '?sent=1'); // honeypot
@@ -743,6 +752,7 @@ const llmsText = (req) => {
     `- [Hỏi đáp](${base}/hoi-dap): kích thước, chất liệu, ship, thanh toán, so sánh các loại ảnh nam châm`,
     `- [Về Kinie](${base}/ve-kinie): câu chuyện và cấu tạo 6 lớp`,
     `- [Đánh giá khách hàng](${base}/danh-gia)`,
+    `- [Chính sách bảo mật](${base}/chinh-sach-bao-mat)`,
     '',
     '## Theo nhu cầu',
     ...landings.map((l) => `- [${l.h1}](${base}/${l.slug})`),
@@ -770,7 +780,7 @@ app.get('/sitemap.xml', (req, res) => {
   ];
   const viPages = [
     ...landings.map((l) => ['/' + l.slug, '0.8']),
-    ['/blog', '0.6'], ...posts.map((p) => ['/blog/' + p.slug, '0.6', p.updated || p.date]),
+    ['/blog', '0.6'], ...posts.map((p) => ['/blog/' + p.slug, '0.6', p.updated || p.date]), ['/chinh-sach-bao-mat', '0.3'],
     ...(reviews.length ? [['/danh-gia', '0.6']] : []),
   ];
   const loc = (l, p) => { const [path, q] = p.split('?'); return base + localize(l, path) + (q ? '?' + q.replace(/&/g, '&amp;') : ''); };

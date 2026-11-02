@@ -1,0 +1,41 @@
+<%- include('partials/header') %>
+<%# Nội dung khớp cách web đang chạy thật: sửa cách lưu dữ liệu (lib/photos.js, cookie, Sheet đơn hàng) thì sửa cả trang này. %>
+<article class="sec">
+  <div class="wrap narrow">
+    <p class="crumb"><a href="/"><%= t('crumbHome') %></a> / Chính sách bảo mật</p>
+    <h1 class="h2">Chính sách bảo mật</h1>
+    <p class="lead">Kinie chỉ hỏi những thông tin cần để in và giao ảnh cho bạn, và không bán hay cho bên khác thuê thông tin đó. Dưới đây là cụ thể Kinie lưu gì, dùng vào việc gì và bạn có thể yêu cầu gì.</p>
+    <div class="prose">
+      <h2>Kinie thu thập thông tin gì?</h2>
+      <ul>
+        <li>Khi đặt hàng: họ tên, số điện thoại, địa chỉ giao hàng, email (nếu bạn điền) và ghi chú cho đơn.</li>
+        <li>Ảnh bạn tải lên để in, đã được cắt theo khung 5,5 × 8 cm ngay trên trình duyệt của bạn.</li>
+        <li>Khi gửi tin ở trang Liên hệ: tên, email và nội dung tin nhắn.</li>
+      </ul>
+      <h2>Thông tin được dùng vào việc gì?</h2>
+      <p>Để in đúng ảnh, giao hàng, liên hệ xác nhận đơn và hỗ trợ bạn sau khi nhận hàng. Họ tên, số điện thoại và địa chỉ được đưa cho đơn vị vận chuyển chỉ để giao hàng. Kinie không bán, không cho thuê và không trao đổi thông tin của bạn với bên nào khác.</p>
+      <h2>Ảnh của bạn được giữ thế nào?</h2>
+      <ul>
+        <li>Ảnh chỉ dùng để in đơn của bạn. Kinie chỉ đăng ảnh của bạn hay ảnh thành phẩm lên mạng khi bạn đồng ý.</li>
+        <li>Ảnh trong giỏ hàng mà bạn không đặt sẽ tự động bị xóa sau 3 ngày.</li>
+        <li>Ảnh của đơn đã đặt được lưu để Kinie in và hỗ trợ bạn khi cần. Muốn xóa, bạn nhắn Kinie qua Zalo hoặc email.</li>
+      </ul>
+      <h2>Thanh toán</h2>
+      <p>Kinie nhận chuyển khoản qua mã QR. Web không hỏi và không lưu số thẻ, mật khẩu hay thông tin đăng nhập ngân hàng của bạn.</p>
+      <h2>Cookie và công cụ đo lường</h2>
+      <ul>
+        <li>Một cookie phiên để giữ giỏ hàng của bạn, tự hết hạn sau 14 ngày.</li>
+        <li>Lựa chọn giao diện sáng hoặc tối được lưu ngay trên máy của bạn.</li>
+        <li>TikTok Pixel giúp Kinie biết quảng cáo trên TikTok có hiệu quả không, ví dụ có bao nhiêu người vào trang thanh toán hay bấm nhắn Zalo.</li>
+      </ul>
+      <h2>Lưu trữ và bảo vệ</h2>
+      <p>Thông tin đơn hàng và ảnh được lưu trên máy chủ của Kinie và trong bảng theo dõi đơn hàng mà chỉ chủ shop xem được. Mọi trang trên kinie.online đều dùng kết nối mã hoá HTTPS.</p>
+      <h2>Quyền của bạn</h2>
+      <p>Bạn có thể yêu cầu Kinie cho xem, sửa hoặc xóa thông tin và ảnh của mình bất cứ lúc nào. Kinie sẽ phản hồi qua kênh bạn liên hệ.</p>
+      <h2>Liên hệ</h2>
+      <p>Email: <a href="mailto:<%= site.email %>"><%= site.email %></a> · Zalo: <% site.phones.forEach((ph, i) => { %><%= i ? ', ' : '' %><a href="<%= ph.zalo %>" target="_blank" rel="noopener"><%= ph.label %></a><% }) %></p>
+      <p><small>Cập nhật ngày 02/11/2026.</small></p>
+    </div>
+  </div>
+</article>
+<%- include('partials/footer') %>
