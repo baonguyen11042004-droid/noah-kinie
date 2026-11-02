@@ -1,4 +1,8 @@
 (function () {
+  // Bật stylesheet font Google (đặt media="print" trong header.ejs để không chặn hiển thị trang).
+  var font = document.querySelector('link[data-font]');
+  if (font) font.media = 'all';
+
   var root = document.documentElement;
   var KEY = 'kinie-theme';
   function stored() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
