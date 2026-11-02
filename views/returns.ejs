@@ -1,5 +1,5 @@
 <%- include('partials/header') %>
-<%# CEO chốt 02/11/2026: ảnh lỗi/sai do Kinie được in lại miễn phí nếu khách báo trong 7 ngày kể từ khi nhận hàng. %>
+<%# CEO chốt 02/11/2026: ảnh lỗi/sai do Kinie được in lại miễn phí (Kinie chịu ship) nếu khách báo trong 7 ngày kể từ khi nhận hàng; ảnh mờ/chọn nhầm thì xác nhận với khách trước khi in. %>
 <article class="sec">
   <div class="wrap narrow">
     <p class="crumb"><a href="/"><%= t('crumbHome') %></a> / Chính sách đổi trả</p>
@@ -16,17 +16,15 @@
       <ul>
         <li>Nhắn Kinie qua Zalo hoặc email trong vòng 7 ngày kể từ ngày nhận hàng.</li>
         <li>Gửi kèm mã đơn và ảnh chụp những tấm bị lỗi.</li>
-        <li>Kinie kiểm tra rồi in lại đúng những tấm lỗi và gửi cho bạn, bạn không phải trả thêm tiền.</li>
+        <li>Kinie kiểm tra rồi in lại đúng những tấm lỗi và gửi cho bạn. Kinie chịu cả tiền in lại và phí ship lần gửi lại.</li>
       </ul>
+      <h2>Kinie xác nhận ảnh với bạn trước khi in</h2>
+      <p>Trước khi in, Kinie xem từng ảnh và nhắn bạn xác nhận lại nếu ảnh bị mờ, tối, độ phân giải thấp, cần cắt nhiều, hoặc có vẻ chọn nhầm. Bạn đồng ý thì Kinie mới in, nên những trường hợp này được xử lý trước, không phải đợi đến khi nhận hàng.</p>
       <h2>Trường hợp không áp dụng</h2>
       <ul>
-        <li>Ảnh gốc mờ, tối hoặc độ phân giải thấp (ví dụ ảnh chụp lại màn hình): ảnh in ra đúng như ảnh bạn gửi.</li>
-        <li>Bạn chọn nhầm ảnh hay căn khung chưa ưng: ảnh được in theo đúng khung bạn đã xem và chỉnh khi đặt hàng.</li>
-        <li>Đổi ý sau khi nhận hàng: mỗi tấm được in riêng từ ảnh của bạn nên Kinie không nhận trả hàng hay hoàn tiền vì lý do này.</li>
+        <li>Đổi ý sau khi nhận hàng với những ảnh đã được bạn xác nhận: mỗi tấm được in riêng từ ảnh của bạn nên Kinie không nhận trả hàng hay hoàn tiền vì lý do này.</li>
         <li>Báo lỗi sau 7 ngày kể từ ngày nhận hàng.</li>
       </ul>
-      <h2>Chưa chắc ảnh có in đẹp không?</h2>
-      <p>Trước khi đặt, bạn cứ gửi ảnh qua Zalo để Kinie xem và báo nếu ảnh khó in nét.</p>
       <h2>Liên hệ</h2>
       <p>Email: <a href="mailto:<%= site.email %>"><%= site.email %></a> · Zalo: <% site.phones.forEach((ph, i) => { %><%= i ? ', ' : '' %><a href="<%= ph.zalo %>" target="_blank" rel="noopener"><%= ph.label %></a><% }) %></p>
       <p><small>Cập nhật ngày 02/11/2026.</small></p>
