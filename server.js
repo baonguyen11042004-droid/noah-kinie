@@ -264,11 +264,19 @@ app.get('/ngon-ngu/:lang', (req, res) => res.redirect(301, localize(LANGS.includ
 app.get('/tiktok', (req, res) => res.redirect(302, '/?utm_source=tiktok&utm_medium=bio'));
 
 app.get('/', (req, res) => {
+  // Trợ lý AI giới thiệu tài liệu cho máy đọc qua Link header, và nhận bản Markdown nếu xin.
+  res.set('Link', '</llms.txt>; rel="describedby"; type="text/markdown", </sitemap.xml>; rel="sitemap"; type="application/xml"');
+  res.vary('Accept');
+  if (req.accepts(['text/html', 'text/markdown']) === 'text/markdown') return res.type('text/markdown; charset=utf-8').send(llmsText(req));
   const products = db.get().products;
   const quick = ['p6', 'p20', 'p50'].map((id) => products.find((p) => p.id === id)).filter(Boolean);
   const base = res.locals.base;
   res.locals.jsonLd.push(storeLd(req, base), {
     '@context': 'https://schema.org', '@type': 'WebSite', name: 'Ảnh nam châm Kinie', alternateName: ['Kinie', 'Nhật ký Kinie'], url: base + req.u('/'), inLanguage: req.t('htmlLang'),
+  }, {
+    // Các combo hiện trên trang chủ
+    '@context': 'https://schema.org', '@type': 'ItemList', name: req.t('htmlLang') === 'vi' ? 'Combo ảnh nam châm gợi ý' : 'Suggested photo magnet packs',
+    itemListElement: quick.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: p.name, url: base + req.u('/san-pham/' + p.slug) })),
   });
   // Tiêu đề trang chủ (bản VI) khớp tên site "Ảnh nam châm Kinie" khai báo cho Google.
   if (req.lang === 'vi') res.locals.titleSuffix = 'Ảnh nam châm Kinie';
@@ -702,15 +710,17 @@ app.post('/admin/products/:id/delete', requireAdmin, checkCsrf, (req, res) => {
 const AI_BOTS = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'PerplexityBot', 'Perplexity-User', 'ClaudeBot', 'Claude-SearchBot', 'Claude-User', 'Google-Extended', 'Applebot-Extended', 'CCBot'];
 app.get('/robots.txt', (req, res) => res.type('text/plain').send(
   ['*', ...AI_BOTS].map((b) => 'User-agent: ' + b).join('\n') +
-  `\nAllow: /\nDisallow: /admin\nDisallow: /en/admin\nDisallow: /api/\nDisallow: /ngon-ngu/\n\nSitemap: ${baseUrl(req)}/sitemap.xml\n`));
+  // Content-Signal (contentsignals.org): cho phép dùng nội dung để tìm kiếm, trả lời bằng AI và huấn luyện AI.
+  `\nContent-Signal: search=yes, ai-input=yes, ai-train=yes\nAllow: /\nDisallow: /admin\nDisallow: /en/admin\nDisallow: /api/\nDisallow: /ngon-ngu/\n\nSitemap: ${baseUrl(req)}/sitemap.xml\n`));
 
 // Bản tóm tắt cho trợ lý AI (ChatGPT, Gemini, Perplexity...) đọc nhanh: Kinie là ai, bán gì, giá, cách đặt. Giá lấy từ dữ liệu thật.
-app.get('/llms.txt', (req, res) => {
+// Cũng trả về cho trang chủ khi trợ lý AI xin bản Markdown (Accept: text/markdown).
+const llmsText = (req) => {
   const base = baseUrl(req);
   const list = [...db.get().products].sort((a, b) => a.qty - b.qty);
   const min = list.length ? Math.min(...list.map((p) => p.price / p.qty)) : 29000;
   const perPhoto = (p) => money(Math.round(p.price / p.qty / 100) * 100);
-  res.type('text/markdown; charset=utf-8').send([
+  return [
     '# Ảnh nam châm Kinie',
     '',
     `> Kinie (kinie.online) in ảnh nam châm dán tủ lạnh theo yêu cầu từ ảnh của khách: kích thước 5,5 × 8 cm, dày 3 mm, cấu tạo 6 lớp, in 6 màu, làm tay từng chiếc. Ảnh lẻ ${money(list.find((p) => p.qty === 1)?.price || 29000)}/ảnh, gói lớn còn khoảng ${money(Math.round(min / 1000) * 1000)}/ảnh. Giao toàn quốc trong 2–4 ngày.`,
@@ -745,8 +755,9 @@ app.get('/llms.txt', (req, res) => {
     `- Email: ${site.email}`,
     `- TikTok: ${site.tiktok}`,
     '',
-  ].join('\n'));
-});
+  ].join('\n');
+};
+app.get('/llms.txt', (req, res) => res.type('text/markdown; charset=utf-8').send(llmsText(req)));
 
 // Trang song ngữ: khai báo cặp hreflang VI/EN. Trang theo dịp, blog, đánh giá: chỉ bản VI.
 app.get('/sitemap.xml', (req, res) => {
