@@ -81,8 +81,9 @@ const site = {
   tiktok: 'https://www.tiktok.com/@nhatkykinieiu',
   // Pixel quảng cáo TikTok (ID công khai, tạo 25/10/2026). Đặt TIKTOK_PIXEL_ID= (rỗng) trong .env để tắt.
   tiktokPixel: process.env.TIKTOK_PIXEL_ID !== undefined ? process.env.TIKTOK_PIXEL_ID : 'DBEQKC3C77U7G56GEBL0',
-  instagram: process.env.INSTAGRAM_URL || '#',
-  facebook: process.env.FACEBOOK_URL || '#',
+  // Trang thật của Kinie (CEO gửi 04/11/2026); đặt INSTAGRAM_URL / FACEBOOK_URL trong .env để đổi.
+  instagram: process.env.INSTAGRAM_URL || 'https://www.instagram.com/kinieanhnamcham/',
+  facebook: process.env.FACEBOOK_URL || 'https://www.facebook.com/kinieanhnamcham/',
   freeShip: FREE_SHIP,
   shipFee: SHIP_FEE,
 };
@@ -775,6 +776,8 @@ const llmsText = (req) => {
     `- Zalo: ${site.phones.map((p) => p.label).join(', ')}`,
     `- Email: ${site.email}`,
     `- TikTok: ${site.tiktok}`,
+    `- Facebook: ${site.facebook}`,
+    `- Instagram: ${site.instagram}`,
     '',
   ].join('\n');
 };
